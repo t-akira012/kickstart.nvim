@@ -224,6 +224,16 @@ require('telescope').setup {
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ghq')
+local telescope_project_find = function()
+  local opts = {
+    prompt_title = "Search Project",
+    preview = true,
+  }
+  local ok = pcall(require("telescope.builtin").git_files, opts)
+  if not ok then
+    require("telescope.builtin").find_files(opts)
+  end
+end
 
 vim.keymap.set('n', ',', '<Plug>(te)')
 vim.keymap.set('n', '<Plug>(te)', '')
@@ -239,25 +249,13 @@ vim.keymap.set('n', '<Plug>(te)/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-
-local telescope_project_find = function()
-  local opts = {
-    prompt_title = "Search Project",
-    preview = true,
-  }
-  local ok = pcall(require("telescope.builtin").git_files, opts)
-  if not ok then
-    require("telescope.builtin").find_files(opts)
-  end
-end
-
 vim.keymap.set('n', '<Plug>(te)p', telescope_project_find, { desc = 'Search [P]roject' })
 -- vim.keymap.set('n', '<Plug>(te)gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 -- vim.keymap.set('n', '<Plug>(te)sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<Plug>(te)h', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<Plug>(te)w', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<Plug>(te)g', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<Plug>(te)d', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<Plug>(te)h', require('telescope.builtin').help_tags, { desc = 'Search [H]elp' })
+vim.keymap.set('n', '<Plug>(te)w', require('telescope.builtin').grep_string, { desc = 'Search current [W]ord' })
+vim.keymap.set('n', '<Plug>(te)g', require('telescope.builtin').live_grep, { desc = 'Search by [G]rep' })
+vim.keymap.set('n', '<Plug>(te)d', require('telescope.builtin').diagnostics, { desc = 'Search [D]iagnostics' })
 -- ghq
 vim.keymap.set('n', '<Plug>(te)s', '<CMD>Telescope ghq list<CR>', { desc = 'Search [S]ources' })
 
