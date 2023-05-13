@@ -237,13 +237,10 @@ local telescope_project_find = function()
   end
 end
 
-vim.keymap.set('n', ',', '<Plug>(te)')
-vim.keymap.set('n', '<Plug>(te)', '')
-
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<Plug>(te)m', require('telescope.builtin').oldfiles, { desc = '[m] Find recently opened files' })
-vim.keymap.set('n', '<Plug>(te)b', require('telescope.builtin').buffers, { desc = '[b] Find existing buffers' })
-vim.keymap.set('n', '<Plug>(te)/', function()
+vim.keymap.set('n', ',m', require('telescope.builtin').oldfiles, { desc = '[m] Find recently opened files' })
+vim.keymap.set('n', ',b', require('telescope.builtin').buffers, { desc = '[b] Find existing buffers' })
+vim.keymap.set('n', ',/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 0,
@@ -251,15 +248,15 @@ vim.keymap.set('n', '<Plug>(te)/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<Plug>(te)p', telescope_project_find, { desc = 'Search [P]roject' })
+vim.keymap.set('n', ',p', telescope_project_find, { desc = 'Search [P]roject' })
 -- vim.keymap.set('n', '<Plug>(te)gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 -- vim.keymap.set('n', '<Plug>(te)sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<Plug>(te)h', require('telescope.builtin').help_tags, { desc = 'Search [H]elp' })
-vim.keymap.set('n', '<Plug>(te)w', require('telescope.builtin').grep_string, { desc = 'Search current [W]ord' })
-vim.keymap.set('n', '<Plug>(te)g', require('telescope.builtin').live_grep, { desc = 'Search by [G]rep' })
-vim.keymap.set('n', '<Plug>(te)d', require('telescope.builtin').diagnostics, { desc = 'Search [D]iagnostics' })
+vim.keymap.set('n', ',h', require('telescope.builtin').help_tags, { desc = 'Search [H]elp' })
+vim.keymap.set('n', ',w', require('telescope.builtin').grep_string, { desc = 'Search current [W]ord' })
+vim.keymap.set('n', ',g', require('telescope.builtin').live_grep, { desc = 'Search by [G]rep' })
+vim.keymap.set('n', ',d', require('telescope.builtin').diagnostics, { desc = 'Search [D]iagnostics' })
 -- ghq
-vim.keymap.set('n', '<Plug>(te)s', '<CMD>Telescope ghq list<CR>', { desc = 'Search [S]ources' })
+vim.keymap.set('n', ',s', '<CMD>Telescope ghq list<CR>', { desc = 'Search [S]ources' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -350,15 +347,15 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  nmap(',rn', vim.lsp.buf.rename, '[R]e[n]ame')
+  nmap(',ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+  nmap(',D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+  nmap(',ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+  nmap(',ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -366,9 +363,9 @@ local on_attach = function(_, bufnr)
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function()
+  nmap(',wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+  nmap(',wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  nmap(',wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
 
