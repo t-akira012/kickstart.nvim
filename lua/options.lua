@@ -3,14 +3,13 @@ local opt = vim.opt
 
 vim.cmd("autocmd!")
 
--- Vim Script file encoding
-vim.scriptencoding = "utf-8"
-opt.encoding = "utf-8"
-opt.fileencoding = "utf-8"
 -- Decrease update time
 opt.updatetime = 250
 opt.timeout = true
 opt.timeoutlen = 300
+
+
+opt.autochdir = true
 
 -- https://github.com/willelz/nvim-lua-guide-ja/blob/master/README.ja.md
 -- 検索ヒット件数を表示
