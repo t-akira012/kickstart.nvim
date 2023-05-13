@@ -162,6 +162,8 @@ require('lazy').setup({
     end,
   },
 
+  { 'nvim-telescope/telescope-ghq.nvim' },
+
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
@@ -221,6 +223,7 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
+pcall(require('telescope').load_extension, 'ghq')
 
 vim.keymap.set('n', ',', '<Plug>(te)')
 vim.keymap.set('n', '<Plug>(te)', '')
@@ -255,6 +258,8 @@ vim.keymap.set('n', '<Plug>(te)h', require('telescope.builtin').help_tags, { des
 vim.keymap.set('n', '<Plug>(te)w', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<Plug>(te)g', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<Plug>(te)d', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+-- ghq
+vim.keymap.set('n', '<Plug>(te)s', '<CMD>Telescope ghq list<CR>', { desc = 'Search [S]ources' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
