@@ -65,7 +65,7 @@ opt.virtualedit = "onemore"
 -- タイトルをウィンドウ枠に表示
 opt.title = true
 -- 上下のスクロールに余裕を持たせる
-opt.scrolloff = 30
+opt.scrolloff = 10
 -- Use True color syntax highlight
 opt.termguicolors = true
 -- floatwindow透過
