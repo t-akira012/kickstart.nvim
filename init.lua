@@ -250,7 +250,7 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', ',p', telescope_project_find, { desc = 'Search [P]roject' })
 -- vim.keymap.set('n', '<Plug>(te)gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
--- vim.keymap.set('n', '<Plug>(te)sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', ',f', require('telescope.builtin').find_files, { desc = 'Search [F]iles' })
 vim.keymap.set('n', ',h', require('telescope.builtin').help_tags, { desc = 'Search [H]elp' })
 vim.keymap.set('n', ',w', require('telescope.builtin').grep_string, { desc = 'Search current [W]ord' })
 vim.keymap.set('n', ',g', require('telescope.builtin').live_grep, { desc = 'Search by [G]rep' })
