@@ -27,8 +27,6 @@ h.vmap("c", '"_c')
 -- 選択文字列を置換
 -- https://www.pandanoir.info/entry/2018/01/13/150000
 
-h.vmap("<Leader>gg", ":ToGithub<cr>")
-h.nmap("<Leader>gg", ":ToGithub<cr>")
 h.nmap("<Leader>b", ":! ")
 h.nmap("<Leader>-", ":split<CR>")
 h.nmap("<Leader>\\", ":vsplit<CR>")
@@ -45,8 +43,6 @@ h.nmap("<Leader>k", "<C-w>k")
 h.nmap("<Leader>l", "<C-w>l")
 h.nmap("<Leader><Leader>", "<C-w>w")
 h.imap("<C-r>", "<C-r><C-p>")
-
-h.nmap("gb", ":ToGithub<CR>")
 
 -- カーソル下文字列を置換
 -- http://miniman2011.blog55.fc2.com/blog-entry-295.html
