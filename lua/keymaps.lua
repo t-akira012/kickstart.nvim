@@ -52,6 +52,9 @@ vim.cmd([[
   vnoremap <expr> RR ':s ?\<' . expand('<cword>') . '\>?'
   vnoremap SS :s/
   xnoremap <expr> p 'pgv"'.v:register.'ygv<esc>'
+
+  ab env! #!/usr/bin/env
+  ab tt - [ ]
 ]])
 
 local change_current_directory = function()
