@@ -148,6 +148,15 @@ require('lazy').setup({
       char = '┊',
       show_trailing_blankline_indent = false,
     },
+    config = function()
+      vim.g.indent_blankline_filetype_exclude = {
+        "lspinfo",
+        "checkhealth",
+        "help",
+        "man",
+        "markdown",
+      }
+    end
   },
 
   -- "gc" to comment visual regions/lines
