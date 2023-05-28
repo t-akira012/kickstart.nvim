@@ -12,7 +12,7 @@ return {
         auto_trigger = true,
         debounce = 75,
         keymap = {
-          accept = "<c-l>",
+          accept = "<c-a>",
           accept_word = false,
           accept_line = false,
           dismiss = "<c-e>",
