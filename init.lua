@@ -251,15 +251,15 @@ vim.keymap.set('n', ',/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', ',p', telescope_project_find, { desc = 'Search [P]roject' })
--- vim.keymap.set('n', '<Plug>(te)gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', ',f', require('telescope.builtin').find_files, { desc = 'Search [F]iles' })
-vim.keymap.set('n', ',h', require('telescope.builtin').help_tags, { desc = 'Search [H]elp' })
+vim.keymap.set('n', ',f', require('telescope.builtin').git_status, { desc = 'Search Git [F]iles Status' })
+vim.keymap.set('n', ',l', require('telescope.builtin').find_files, { desc = 'Search File [L]ist' })
 vim.keymap.set('n', ',w', require('telescope.builtin').grep_string, { desc = 'Search current [W]ord' })
 vim.keymap.set('n', ',g', require('telescope.builtin').live_grep, { desc = 'Search by [G]rep' })
 vim.keymap.set('n', ',d', require('telescope.builtin').diagnostics, { desc = 'Search [D]iagnostics' })
 -- ghq
-vim.keymap.set('n', ',s', '<CMD>Telescope ghq list<CR>', { desc = 'Search [S]ources' })
+vim.keymap.set('n', ',s', '<CMD>Telescope ghq list<CR>', { desc = 'Search ghq [s]ources' })
 
+-- vim.keymap.set('n', ',h', require('telescope.builtin').help_tags, { desc = 'Search H[e]lp' })
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
