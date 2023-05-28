@@ -14,7 +14,7 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 h.nmap(";", ":")
 h.imap("jj", "<ESC>")
 
-h.nmap("<C-b>", ":Ex<CR>")
+-- h.nmap("<C-b>", ":Ex<CR>")
 
 h.nmap("q", "<nop>")
 h.nmap("x", '"_x')
