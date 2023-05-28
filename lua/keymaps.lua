@@ -58,10 +58,20 @@ vim.cmd([[
   " iabbrev <expr> ddd strftime('%Y-%m-%d (%aaa)')
   iabbrev <expr> ddd strftime('%-m/%-d %a')
   iabbrev <expr> ttt strftime('%H:%M')
-
-  ab env! #!/usr/bin/env
-  ab tt - [ ]
 ]])
+
+local generate_weekly_todo = function()
+
+	for i = 0, 6 do
+		local bufnr = vim.api.nvim_get_current_buf()
+		local cursor = vim.api.nvim_win_get_cursor(0)
+		local row = cursor[1]
+		local day = vim.fn.strftime("%-m/%d %a", vim.fn.localtime() + i * 24 * 60 * 60)
+		local str = ('- [ ] ' .. day)
+		vim.api.nvim_buf_set_lines(bufnr, row - 1, row - 1, false, { str })
+	end
+end
+h.usercmd("GenerateWeeklyTodo", generate_weekly_todo)
 
 local change_current_directory = function()
 	vim.cmd(":lcd %:h")
@@ -81,5 +91,30 @@ end
 h.usercmd("Cd", change_current_directory)
 h.usercmd("Pwd", show_current_dir)
 h.usercmd("Filepath", show_file_path)
+
+
+-- for Bash
+vim.api.nvim_create_augroup('sh', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+	group = 'sh',
+	pattern = 'sh',
+	callback = function()
+		vim.cmd([[
+		abbr <buffer> env! #!/usr/bin/env
+		]])
+	end
+})
+-- for Markdown
+vim.api.nvim_create_augroup('markdown', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+	group = 'markdown',
+	pattern = 'markdown',
+	callback = function()
+		vim.cmd([[
+		inoremap <buffer> <C-g> <C-o>:GenerateWeeklyTodo<CR>
+		abbr <buffer> tt - [ ]
+		]])
+	end
+})
 
 return {}
