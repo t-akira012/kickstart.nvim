@@ -72,6 +72,18 @@ local generate_weekly_todo = function()
 	end
 end
 h.usercmd("GenerateWeeklyTodo", generate_weekly_todo)
+local generate_weekly_head = function()
+
+	for i = 0, 6 do
+		local bufnr = vim.api.nvim_get_current_buf()
+		local cursor = vim.api.nvim_win_get_cursor(0)
+		local row = cursor[1]
+		local day = vim.fn.strftime("%-m/%d %a", vim.fn.localtime() + i * 24 * 60 * 60)
+		local str = ('### ' .. day)
+		vim.api.nvim_buf_set_lines(bufnr, row - 1, row - 1, false, { str })
+	end
+end
+h.usercmd("GenerateWeeklyHead", generate_weekly_head)
 
 local change_current_directory = function()
 	vim.cmd(":lcd %:h")
@@ -112,6 +124,7 @@ vim.api.nvim_create_autocmd('FileType', {
 	callback = function()
 		vim.cmd([[
 		inoremap <buffer> <C-g> <C-o>:GenerateWeeklyTodo<CR>
+		inoremap <buffer> <C-h> <C-o>:GenerateWeeklyHead<CR>
 		abbr <buffer> tt - [ ]
 		]])
 	end
