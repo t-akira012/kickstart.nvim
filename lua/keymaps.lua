@@ -123,8 +123,10 @@ vim.api.nvim_create_autocmd('FileType', {
 	pattern = 'markdown',
 	callback = function()
 		vim.cmd([[
-		inoremap <buffer> <C-g> <C-o>:GenerateWeeklyTodo<CR>
-		inoremap <buffer> <C-h> <C-o>:GenerateWeeklyHead<CR>
+		inoremap <buffer>       <C-l> <C-o>:GenerateWeeklyTodo<CR>
+		inoremap <buffer>       <C-g> <C-o>:GenerateWeeklyHead<CR>
+		inoremap <expr><buffer> <C-d> strftime('%-m/%-d %a')
+		inoremap <expr><buffer> <C-t> strftime('%H:%M')
 		abbr <buffer> tt - [ ]
 		]])
 	end
