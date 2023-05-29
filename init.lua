@@ -118,11 +118,9 @@ require('lazy').setup({
   },
 
   { -- Theme inspired by Atom
-    -- 'sainnhe/gruvbox-material',
     'folke/tokyonight.nvim',
     priority = 1000,
     config = function()
-      -- vim.cmd.colorscheme 'gruvbox-material'
       vim.cmd.colorscheme 'tokyonight-storm'
     end,
   },
@@ -154,7 +152,6 @@ require('lazy').setup({
         "checkhealth",
         "help",
         "man",
-        "markdown",
       }
     end
   },

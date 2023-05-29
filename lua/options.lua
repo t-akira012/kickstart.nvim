@@ -164,9 +164,6 @@ opt.formatoptions:append({ "r" })
 
 -- other
 vim.cmd([[
-  " html タグをジャンプする
-  runtime macros/matchit.vim
-  let b:match_words = "if:endif,foreach:endforeach,\<begin\>:\<end\>"
   " undercurl
   let &t_Cs = "\e[4:3m"
   let &t_Ce = "\e[4:0m"
