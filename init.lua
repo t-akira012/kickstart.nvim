@@ -270,6 +270,9 @@ vim.keymap.set('n', ',g', require('telescope.builtin').live_grep, { desc = 'Sear
 vim.keymap.set('n', ',d', require('telescope.builtin').diagnostics, { desc = 'Search [D]iagnostics' })
 -- ghq
 vim.keymap.set('n', ',s', '<CMD>Telescope ghq list<CR>', { desc = 'Search ghq [s]ources' })
+-- yank
+vim.keymap.set('n', '@', require('telescope.builtin').registers)
+vim.keymap.set('i', '<C-r>', require('telescope.builtin').registers)
 
 -- vim.keymap.set('n', ',h', require('telescope.builtin').help_tags, { desc = 'Search H[e]lp' })
 -- [[ Configure Treesitter ]]
