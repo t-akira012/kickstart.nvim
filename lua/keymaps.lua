@@ -14,7 +14,7 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 h.nmap(";", ":")
 h.imap("jj", "<ESC>")
 
--- h.nmap("<C-b>", ":Ex<CR>")
+h.nmap("<C-b>", ":Ex<CR>")
 
 h.nmap("q", "<nop>")
 h.nmap("x", '"_x')
@@ -91,19 +91,42 @@ local change_current_directory = function()
 end
 
 local show_file_path = function()
-	local var = vim.fn.getcwd()
-	print("file_path: " .. var)
+	local var = vim.fn.expand("%:p")
+	print("Filepath: " .. var)
 end
 
 local show_current_dir = function()
-	local var = vim.fn.expand("%:p")
-	print("file_path: " .. var)
+	local var = vim.fn.getcwd()
+	print("PWD: " .. var)
 end
 
 h.usercmd("Cd", change_current_directory)
-h.usercmd("Pwd", show_current_dir)
 h.usercmd("Filepath", show_file_path)
+h.usercmd("Pwd", show_current_dir)
 
+-- doc
+
+local open_document_dir = function()
+	local dir = '$HOME/Documents/doc/'
+	vim.api.nvim_command(':vs' .. dir)
+end
+local create_new_daily_memo = function()
+	local dir = '$HOME/Documents/doc/daily/'
+	local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
+	vim.api.nvim_command(':vs' .. dir .. today .. '.md')
+end
+local open_memo = function()
+	local file = '$HOME/Documents/doc/memo.md'
+	local today = vim.fn.strftime("%Y-%-m-%d", vim.fn.localtime())
+	vim.api.nvim_command(':vs' .. file)
+end
+
+h.usercmd("Doc", open_document_dir)
+h.usercmd("Docnew", create_new_daily_memo)
+h.usercmd("Docmemo", open_memo)
+h.nmap('--', '<CMD>Doc<CR>')
+h.nmap('-=', '<CMD>Docnew<CR>')
+h.nmap('==', '<CMD>Docmemo<CR>')
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
