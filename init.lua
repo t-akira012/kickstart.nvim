@@ -397,6 +397,7 @@ local servers = {
   pyright = {},
   rust_analyzer = {},
   tsserver = {},
+  terraformls = {},
 
   lua_ls = {
     Lua = {
