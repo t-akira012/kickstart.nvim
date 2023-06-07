@@ -117,12 +117,9 @@ require('lazy').setup({
     },
   },
 
-  { -- Theme inspired by Atom
+  { -- colorscheme は lua/options.lua で設定
     'folke/tokyonight.nvim',
     priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'tokyonight-storm'
-    end,
   },
 
   { -- Set lualine as statusline

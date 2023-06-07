@@ -37,13 +37,13 @@ opt.swapfile = false
 -- 色設定
 -- set printfont="HackGenNerd:h11"
 opt.background = "dark"
--- vim.cmd([[
---   if &diff
---     colorscheme hybrid
---   else
---     colorscheme gruvbox-material
---   endif
--- ]])
+vim.cmd([[
+  if &diff
+    colorscheme slate
+  else
+    colorscheme tokyonight-night
+  endif
+]])
 
 
 -- ウィンドウ設定
