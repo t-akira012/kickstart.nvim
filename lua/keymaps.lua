@@ -56,7 +56,7 @@ vim.cmd([[
 
   " add current date
   " iabbrev <expr> ddd strftime('%Y-%m-%d (%aaa)')
-  " iabbrev <expr> ddd strftime('%-m/%d %a')
+  iabbrev <expr> lll strftime('%-m/%d %a')
   iabbrev <expr> ddd strftime('%Y%m%d %a')
   iabbrev <expr> ttt strftime('%H:%M')
 ]])
