@@ -1,8 +1,8 @@
 return {
 	"voldikss/vim-floaterm",
 	config = function()
-		vim.keymap.set('n', ',,', '<CMD>FloatermToggle<CR>', { silent = true })
-		vim.keymap.set('v', ',,', '<CMD>FloatermToggle<CR>', { silent = true })
+		-- vim.keymap.set('n', ',,', '<CMD>FloatermToggle<CR>', { silent = true })
+		-- vim.keymap.set('v', ',,', '<CMD>FloatermToggle<CR>', { silent = true })
 		vim.keymap.set('t', '<ESC>', '<CMD>FloatermHide<CR>', { silent = true })
 		vim.keymap.set('t', '<C-g>', '<CMD>FloatermShow google<CR>', { silent = true })
 		vim.keymap.set('t', '<C-c>', '<CMD>FloatermKill google<CR>', { silent = true })
