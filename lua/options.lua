@@ -6,7 +6,7 @@ vim.cmd("autocmd!")
 -- Decrease update time
 opt.updatetime = 250
 opt.timeout = true
-opt.timeoutlen = 300
+opt.timeoutlen = 500
 
 
 opt.autochdir = true
