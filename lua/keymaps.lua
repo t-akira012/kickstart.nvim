@@ -12,6 +12,7 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 h.nmap(";", ":")
+h.nmap("'", ";")
 h.imap("jj", "<ESC>")
 
 h.nmap("<C-b>", ":Ex<CR>")
