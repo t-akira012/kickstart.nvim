@@ -7,9 +7,11 @@ return {
 		'nvim-telescope/telescope.nvim'
 	},
 	config = function()
-		require("chatgpt").setup({
-			api_key_cmd = "echo $OPENAI_API_KEY"
-		})
-		vim.keymap.set('n', '<C-c>', '<CMD>ChatGPT<CR>', { silent = true })
+		if os.getenv('USER') == 't-akira012' then
+			require("chatgpt").setup({
+				api_key_cmd = "echo $OPENAI_API_KEY"
+			})
+			vim.keymap.set('n', '<C-c>', '<CMD>ChatGPT<CR>', { silent = true })
+		end
 	end
 }
