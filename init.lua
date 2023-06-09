@@ -260,10 +260,10 @@ vim.keymap.set('n', '<Leader>p', telescope_project_find, { desc = 'Search [P]roj
 vim.keymap.set('n', '<Leader>f', require('telescope.builtin').git_status, { desc = 'Search Git [F]iles Status' })
 vim.keymap.set('n', '<Leader>o', require('telescope.builtin').find_files, { desc = 'Search [O]pen File List' })
 -- vim.keymap.set('n', '<Leader>w', require('telescope.builtin').grep_string, { desc = 'Search current [W]ord' })
-vim.keymap.set('n', '<Leader>g', require('telescope.builtin').live_grep, { desc = 'Search by [G]rep' })
+vim.keymap.set('n', '<Leader>r', require('telescope.builtin').live_grep, { desc = 'Search by g[R]ep' })
 vim.keymap.set('n', '<Leader>d', require('telescope.builtin').diagnostics, { desc = 'Search [D]iagnostics' })
 -- ghq
-vim.keymap.set('n', '<Leader>G', '<CMD>Telescope ghq list<CR>', { desc = 'Search [G]hq sources' })
+vim.keymap.set('n', '<Leader>g', '<CMD>Telescope ghq list<CR>', { desc = 'Search [G]hq sources' })
 -- yank
 vim.keymap.set('n', '@', require('telescope.builtin').registers)
 vim.keymap.set('i', '<C-r>', require('telescope.builtin').registers)
@@ -358,8 +358,8 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  nmap('<Leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  -- nmap(',ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  nmap('<Leader>n', vim.lsp.buf.rename, 'Re[N]ame')
+  nmap('<Leader>a', vim.lsp.buf.code_action, 'Code [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
