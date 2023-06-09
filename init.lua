@@ -258,12 +258,12 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<Leader>p', telescope_project_find, { desc = 'Search [P]roject' })
 vim.keymap.set('n', '<Leader>f', require('telescope.builtin').git_status, { desc = 'Search Git [F]iles Status' })
-vim.keymap.set('n', '<Leader>l', require('telescope.builtin').find_files, { desc = 'Search File [L]ist' })
+vim.keymap.set('n', '<Leader>o', require('telescope.builtin').find_files, { desc = 'Search [O]pen File List' })
 -- vim.keymap.set('n', '<Leader>w', require('telescope.builtin').grep_string, { desc = 'Search current [W]ord' })
 vim.keymap.set('n', '<Leader>g', require('telescope.builtin').live_grep, { desc = 'Search by [G]rep' })
 vim.keymap.set('n', '<Leader>d', require('telescope.builtin').diagnostics, { desc = 'Search [D]iagnostics' })
 -- ghq
-vim.keymap.set('n', '<Leader>h', '<CMD>Telescope ghq list<CR>', { desc = 'Search ghq [s]ources' })
+vim.keymap.set('n', '<Leader>G', '<CMD>Telescope ghq list<CR>', { desc = 'Search [G]hq sources' })
 -- yank
 vim.keymap.set('n', '@', require('telescope.builtin').registers)
 vim.keymap.set('i', '<C-r>', require('telescope.builtin').registers)
