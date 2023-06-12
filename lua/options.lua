@@ -41,7 +41,11 @@ vim.cmd([[
   if &diff
     colorscheme slate
   else
-    colorscheme tokyonight-night
+    if $TERM_COLOR_MODE == "LIGHT"
+      colorscheme tokyonight-day
+    else
+      colorscheme gruvbox-material
+    endif
   endif
 ]])
 

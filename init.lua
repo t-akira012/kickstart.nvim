@@ -117,10 +117,9 @@ require('lazy').setup({
     },
   },
 
-  { -- colorscheme は lua/options.lua で設定
-    'folke/tokyonight.nvim',
-    priority = 1000,
-  },
+  -- colorscheme は lua/options.lua で設定
+  { 'folke/tokyonight.nvim', priority = 1000, },
+  { 'sainnhe/gruvbox-material', priority = 1000, },
 
   { -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
