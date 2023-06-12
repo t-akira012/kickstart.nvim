@@ -133,7 +133,7 @@ h.usercmd("Docnew", create_new_daily_memo)
 h.usercmd("Docflow", open_flow)
 h.usercmd("Docmemo", open_memo)
 h.nmap('--', '<CMD>Doc<CR>')
-h.nmap('-=', '<CMD>Docflow<CR>')
+h.nmap('-=', '<CMD>Docnew<CR>')
 h.nmap('==', '<CMD>Docmemo<CR>')
 
 -- for Bash
