@@ -36,19 +36,14 @@ opt.swapfile = false
 
 -- 色設定
 -- set printfont="HackGenNerd:h11"
-opt.background = "dark"
-vim.cmd([[
-  if &diff
-    colorscheme slate
-  else
-    if $TERM_COLOR_MODE == "LIGHT"
-      colorscheme tokyonight-day
-    else
-      colorscheme gruvbox-material
-    endif
-  endif
-]])
 
+if os.getenv('TERM_COLOR_MODE') == 'LIGHT' then
+	opt.background = "light"
+	vim.cmd.colorscheme(os.getenv('NVIM_COLOR_LIGHT'))
+else
+	opt.background = "dark"
+	vim.cmd.colorscheme(os.getenv('NVIM_COLOR_DARK'))
+end
 
 -- ウィンドウ設定
 -- 新規windowは右, 下に開く
