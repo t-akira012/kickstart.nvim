@@ -4,6 +4,7 @@ return {
   event = "InsertEnter",
   config = function()
     if os.getenv('USER') == 't-akira012' then
+      vim.keymap.set('n', '<F2>', '<CMD>Copilot disable<CR>', { silent = true })
       require("copilot").setup({
         panel = {
           auto_refresh = true,
