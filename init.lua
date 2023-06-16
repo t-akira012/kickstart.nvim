@@ -387,7 +387,7 @@ end
 
 --  ref.
 --  https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-require 'lspconfig'.racket_langserver.setup {}
+-- require 'lspconfig'.racket_langserver.setup {}
 
 local servers = {
   -- clangd = {},
