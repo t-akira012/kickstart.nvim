@@ -122,9 +122,9 @@ opt.shell = "zsh"
 -- expandtab  Tab文字を半角スペースにする
 opt.expandtab = true
 -- tabstop    行頭以外のTab文字の表示幅（スペースいくつ分）
-opt.tabstop = 2
+opt.tabstop = 4
 -- shiftwidth 行頭でのTab文字の表示幅
-opt.shiftwidth = 2
+opt.shiftwidth = 4
 -- Tab in front of line inserts blanks
 opt.smarttab = true
 
