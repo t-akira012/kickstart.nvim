@@ -118,13 +118,11 @@ local create_new_daily_memo = function()
 	vim.api.nvim_command(':vs' .. dir .. today .. '.md')
 end
 local open_memo = function()
-	local file = '$HOME/Documents/doc/memo.md'
-	local today = vim.fn.strftime("%Y-%-m-%d", vim.fn.localtime())
+	local file = '$HOME/Documents/doc/bucket-list.md'
 	vim.api.nvim_command(':vs' .. file)
 end
 local open_flow = function()
 	local file = '$HOME/Documents/doc/daily/flow.md'
-	local today = vim.fn.strftime("%Y-%-m-%d", vim.fn.localtime())
 	vim.api.nvim_command(':vs' .. file)
 end
 
