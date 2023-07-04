@@ -43,7 +43,7 @@ h.nmap("<Leader>k", "<C-w>k")
 h.nmap("<Leader>l", "<C-w>l")
 h.nmap("<Leader><Leader>", "<C-w>w")
 h.imap("<C-r>", "<C-r><C-p>")
-
+h.nmap("<C-h>", "<CMD>GBrowse<CR>")
 -- カーソル下文字列を置換
 -- http://miniman2011.blog55.fc2.com/blog-entry-295.html
 -- https://vim-jp.org/vim-users-jp/2009/08/25/Hack-62.html
