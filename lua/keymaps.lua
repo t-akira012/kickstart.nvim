@@ -41,7 +41,7 @@ h.nmap("<Leader>h", "<C-w>h")
 h.nmap("<Leader>j", "<C-w>j")
 h.nmap("<Leader>k", "<C-w>k")
 h.nmap("<Leader>l", "<C-w>l")
-h.nmap("<Leader><Leader>", "<C-w>w")
+-- h.nmap("<Leader><Leader>", "<C-w>w")
 h.imap("<C-r>", "<C-r><C-p>")
 h.nmap("<C-h>", "<CMD>GBrowse<CR>")
 -- カーソル下文字列を置換
