@@ -3,6 +3,10 @@ local opt = vim.opt
 
 vim.cmd("autocmd!")
 
+
+-- shell
+-- opt.shell = "zsh"
+
 -- Decrease update time
 opt.updatetime = 250
 opt.timeout = true
@@ -114,9 +118,6 @@ opt.breakindent = true
 opt.wrap = true
 -- 改行を超えてbackspaceを働かせる
 opt.backspace = { "start", "eol", "indent" }
-
--- shell
-opt.shell = "zsh"
 
 -- Tab系
 -- expandtab  Tab文字を半角スペースにする
