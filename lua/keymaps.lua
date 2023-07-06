@@ -15,7 +15,7 @@ h.nmap(";", ":")
 h.nmap("'", ";")
 h.imap("jj", "<ESC>")
 
-h.nmap("<C-b>", ":Ex<CR>")
+-- h.nmap("<C-b>", ":Ex<CR>")
 
 h.nmap("q", "<nop>")
 h.nmap("x", '"_x')
