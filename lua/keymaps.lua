@@ -102,7 +102,7 @@ local show_current_dir = function()
 	print("PWD: " .. var)
 end
 
-h.usercmd("Cd", change_current_directory)
+h.usercmd("ChangeCurrentDir", change_current_directory)
 h.usercmd("Filepath", show_file_path)
 h.usercmd("Pwd", show_current_dir)
 
@@ -157,6 +157,7 @@ vim.api.nvim_create_autocmd('FileType', {
 		inoremap <expr><buffer> <C-d> strftime('%-m/%-d %a')
 		inoremap <expr><buffer> <C-t> strftime('%H:%M')
 		abbr <buffer> tt - [ ]
+		abbr <buffer> aaa **TODAY**
 		]])
 	end
 })
