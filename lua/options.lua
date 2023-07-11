@@ -189,7 +189,7 @@ vim.cmd([[
 
 
   " vimgrep
-    au QuickfixCmdPost vimgrep copen
+  "  au QuickfixCmdPost vimgrep copen
 ]])
 
 return {}

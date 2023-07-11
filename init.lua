@@ -118,6 +118,7 @@ require('lazy').setup({
   },
 
   -- colorscheme は lua/options.lua で設定
+  { 'lifepillar/vim-solarized8', priority = 1000, },
   { 'folke/tokyonight.nvim', priority = 1000, },
   { 'sainnhe/gruvbox-material', priority = 1000, },
 
