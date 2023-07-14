@@ -190,6 +190,9 @@ vim.cmd([[
 
   " vimgrep
   "  au QuickfixCmdPost vimgrep copen
+
+  " Browse Command
+  command! -nargs=1 Browse silent exec '!open "<args>"'
 ]])
 
 return {}

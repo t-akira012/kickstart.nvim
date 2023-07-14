@@ -157,8 +157,6 @@ vim.api.nvim_create_autocmd('FileType', {
 		inoremap <expr><buffer> <C-d> strftime('%-m/%-d %a')
 		inoremap <expr><buffer> <C-t> strftime('%H:%M')
 		abbr <buffer> tt - [ ]
-		abbr <buffer> aaa **TODAY**
-		nnoremap <buffer> <C-t> :vim TODAY %<CR><CMD>copen<CR>
 		]])
 	end
 })
