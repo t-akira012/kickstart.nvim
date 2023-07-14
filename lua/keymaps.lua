@@ -109,30 +109,19 @@ h.usercmd("Pwd", show_current_dir)
 -- doc
 
 local open_document_dir = function()
-	local dir = '$HOME/Documents/doc/'
+	local dir = '$MEMO_DIR/'
 	vim.api.nvim_command(':vs' .. dir)
 end
 local create_new_daily_memo = function()
-	local dir = '$HOME/Documents/doc/daily/'
+	local dir = '$MEMO_DIR/daily/'
 	local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
 	vim.api.nvim_command(':vs' .. dir .. today .. '.md')
-end
-local open_memo = function()
-	local file = '$HOME/Documents/doc/bucket-list.md'
-	vim.api.nvim_command(':vs' .. file)
-end
-local open_flow = function()
-	local file = '$HOME/Documents/doc/daily/flow.md'
-	vim.api.nvim_command(':vs' .. file)
 end
 
 h.usercmd("Doc", open_document_dir)
 h.usercmd("Docnew", create_new_daily_memo)
-h.usercmd("Docflow", open_flow)
-h.usercmd("Docmemo", open_memo)
 h.nmap('--', '<CMD>Doc<CR>')
 h.nmap('-=', '<CMD>Docnew<CR>')
-h.nmap('==', '<CMD>Docmemo<CR>')
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
