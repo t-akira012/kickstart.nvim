@@ -56,9 +56,9 @@ vim.cmd([[
   xnoremap <expr> p 'pgv"'.v:register.'ygv<esc>'
 
   " add current date
-  " iabbrev <expr> ddd strftime('%Y-%m-%d (%aaa)')
+  iabbrev <expr> ddd strftime('%Y-%m-%d (%a)')
   iabbrev <expr> lll strftime('%-m/%d %a')
-  iabbrev <expr> ddd strftime('%Y%m%d %a')
+  " iabbrev <expr> ddd strftime('%Y%m%d %a')
   iabbrev <expr> ttt strftime('%H:%M')
 ]])
 
@@ -112,6 +112,11 @@ local open_document_dir = function()
 	local dir = '$MEMO_DIR/'
 	vim.api.nvim_command(':vs' .. dir)
 end
+local open_todo_document = function()
+	local dir = '$MEMO_DIR/'
+	local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
+	vim.api.nvim_command(':vs' .. dir .. 'home.md')
+end
 local create_new_daily_memo = function()
 	local dir = '$MEMO_DIR/daily/'
 	local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
@@ -120,8 +125,10 @@ end
 
 h.usercmd("Doc", open_document_dir)
 h.usercmd("Docnew", create_new_daily_memo)
+h.usercmd("Doctodo", open_todo_document)
 h.nmap('--', '<CMD>Doc<CR>')
 h.nmap('-=', '<CMD>Docnew<CR>')
+h.nmap('==', '<CMD>Doctodo<CR>')
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
