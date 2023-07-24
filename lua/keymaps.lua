@@ -64,42 +64,42 @@ vim.cmd([[
 
 local generate_weekly_todo = function()
 
-	for i = 0, 6 do
-		local bufnr = vim.api.nvim_get_current_buf()
-		local cursor = vim.api.nvim_win_get_cursor(0)
-		local row = cursor[1]
-		local day = vim.fn.strftime("%-m/%d %a", vim.fn.localtime() + i * 24 * 60 * 60)
-		local str = ('- [ ] ' .. day)
-		vim.api.nvim_buf_set_lines(bufnr, row - 1, row - 1, false, { str })
-	end
+    for i = 0, 6 do
+        local bufnr = vim.api.nvim_get_current_buf()
+        local cursor = vim.api.nvim_win_get_cursor(0)
+        local row = cursor[1]
+        local day = vim.fn.strftime("%-m/%d %a", vim.fn.localtime() + i * 24 * 60 * 60)
+        local str = ('- [ ] ' .. day)
+        vim.api.nvim_buf_set_lines(bufnr, row - 1, row - 1, false, { str })
+    end
 end
-h.usercmd("GenerateWeeklyTodo", generate_weekly_todo)
+h.usercmd("AddWeeklyTodo", generate_weekly_todo)
 local generate_weekly_head = function()
 
-	for i = 0, 6 do
-		local bufnr = vim.api.nvim_get_current_buf()
-		local cursor = vim.api.nvim_win_get_cursor(0)
-		local row = cursor[1]
-		local day = vim.fn.strftime("%-m/%d %a", vim.fn.localtime() + i * 24 * 60 * 60)
-		local str = ('### ' .. day)
-		vim.api.nvim_buf_set_lines(bufnr, row - 1, row - 1, false, { str })
-	end
+    for i = 0, 6 do
+        local bufnr = vim.api.nvim_get_current_buf()
+        local cursor = vim.api.nvim_win_get_cursor(0)
+        local row = cursor[1]
+        local day = vim.fn.strftime("%-m/%d %a", vim.fn.localtime() + i * 24 * 60 * 60)
+        local str = ('# ' .. day)
+        vim.api.nvim_buf_set_lines(bufnr, row - 1, row - 1, false, { str })
+    end
 end
-h.usercmd("GenerateWeeklyHead", generate_weekly_head)
+h.usercmd("AddWeeklyHead", generate_weekly_head)
 
 local change_current_directory = function()
-	vim.cmd(":lcd %:h")
-	vim.cmd(":pwd")
+    vim.cmd(":lcd %:h")
+    vim.cmd(":pwd")
 end
 
 local show_file_path = function()
-	local var = vim.fn.expand("%:p")
-	print("Filepath: " .. var)
+    local var = vim.fn.expand("%:p")
+    print("Filepath: " .. var)
 end
 
 local show_current_dir = function()
-	local var = vim.fn.getcwd()
-	print("PWD: " .. var)
+    local var = vim.fn.getcwd()
+    print("PWD: " .. var)
 end
 
 h.usercmd("ChangeCurrentDir", change_current_directory)
@@ -109,52 +109,57 @@ h.usercmd("Pwd", show_current_dir)
 -- doc
 
 local open_document_dir = function()
-	local dir = '$MEMO_DIR/'
-	vim.api.nvim_command(':vs' .. dir)
+    local dir = '$MEMO_DIR/'
+    vim.api.nvim_command(':vs' .. dir)
 end
 local open_todo_document = function()
-	local dir = '$MEMO_DIR/'
-	local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
-	vim.api.nvim_command(':vs' .. dir .. 'home.md')
+    local dir = '$MEMO_DIR/'
+    local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
+    vim.api.nvim_command(':vs' .. dir .. 'home.md')
 end
 local create_new_daily_memo = function()
-	local dir = '$MEMO_DIR/daily/'
-	local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
-	vim.api.nvim_command(':vs' .. dir .. today .. '.md')
+    local dir = '$MEMO_DIR/daily/'
+    local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
+    vim.api.nvim_command(':vs' .. dir .. today .. '.md')
+end
+local create_new_weekly_memo = function()
+    local dir = '$MEMO_DIR/weekly/'
+    local year = vim.fn.strftime("%Y", vim.fn.localtime())
+    local week_num = vim.fn.strftime("%W", vim.fn.localtime())
+    vim.api.nvim_command(':vs' .. dir .. year .. '-W' .. week_num .. '.md')
 end
 
 h.usercmd("Doc", open_document_dir)
-h.usercmd("Docnew", create_new_daily_memo)
-h.usercmd("Doctodo", open_todo_document)
+h.usercmd("DocOpenWeeklyMemo", create_new_weekly_memo)
+h.usercmd("DocOpenDailyMemo", create_new_daily_memo)
+h.usercmd("DocOpenHomeMemo", open_todo_document)
 h.nmap('--', '<CMD>Doc<CR>')
-h.nmap('-=', '<CMD>Docnew<CR>')
-h.nmap('==', '<CMD>Doctodo<CR>')
+h.nmap('-=', '<CMD>DocOpenWeeklyMemo<CR>')
+h.nmap('==', '<CMD>DocOpenHomeMemo<CR>')
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
-	group = 'sh',
-	pattern = 'sh',
-	callback = function()
-		vim.cmd([[
+    group = 'sh',
+    pattern = 'sh',
+    callback = function()
+        vim.cmd([[
 		abbr <buffer> env! #!/usr/bin/env
-		]])
-	end
+		]]     )
+    end
 })
 -- for Markdown
 vim.api.nvim_create_augroup('markdown', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
-	group = 'markdown',
-	pattern = 'markdown',
-	callback = function()
-		vim.cmd([[
-		inoremap <buffer>       <C-l> <C-o>:GenerateWeeklyTodo<CR>
-		inoremap <buffer>       <C-g> <C-o>:GenerateWeeklyHead<CR>
+    group = 'markdown',
+    pattern = 'markdown',
+    callback = function()
+        vim.cmd([[
 		inoremap <expr><buffer> <C-d> strftime('%-m/%-d %a')
 		inoremap <expr><buffer> <C-t> strftime('%H:%M')
 		abbr <buffer> tt - [ ]
-		]])
-	end
+		]]     )
+    end
 })
 
 return {}
