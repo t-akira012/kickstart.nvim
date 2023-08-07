@@ -15,8 +15,6 @@ h.nmap(";", ":")
 h.nmap("'", ";")
 h.imap("jj", "<ESC>")
 
--- h.nmap("<C-b>", ":Ex<CR>")
-
 h.nmap("q", "<nop>")
 h.nmap("x", '"_x')
 h.nmap("s", '"_s')
@@ -28,9 +26,9 @@ h.vmap("c", '"_c')
 h.nmap("<Leader>z", ":res <CR>:vertical res<CR>")
 h.nmap("<Leader>x", "<C-w>=")
 
--- h.nmap("<Leader>e", ":e<CR>")
--- h.nmap("<Leader>w", ":w<CR>")
--- h.nmap("<Leader>q", ":q<CR>")
+h.nmap("<Leader>e", ":e<CR>")
+h.nmap("<Leader>w", ":w<CR>")
+h.nmap("<Leader>q", ":q<CR>")
 
 h.nmap("<Leader>t", ":tabnew<CR>")
 h.nmap("<Leader>s", ":new<CR>")
