@@ -121,6 +121,7 @@ require('lazy').setup({
   { 'lifepillar/vim-solarized8', priority = 1000, },
   { 'folke/tokyonight.nvim', priority = 1000, },
   { 'sainnhe/gruvbox-material', priority = 1000, },
+  { 'ayu-theme/ayu-vim', priority = 1000, },
 
   { -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
