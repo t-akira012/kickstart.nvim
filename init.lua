@@ -102,11 +102,16 @@ require('lazy').setup({
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   },
-
+  { 'hrsh7th/cmp-omni' },
+  { 'hrsh7th/cmp-buffer' },
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {}, config = function()
-    vim.keymap.set('n', ',W', '<CMD>WhichKey<CR>')
-  end },
+  {
+    'folke/which-key.nvim',
+    opts = {},
+    config = function()
+      vim.keymap.set('n', ',W', '<CMD>WhichKey<CR>')
+    end
+  },
   { -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -465,11 +470,18 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
+    -- ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-n>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        cmp.complete()
+      end
+    end, { 'i', 's' }),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
+    ['<S-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
@@ -496,6 +508,13 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'buffer' },
+    {
+      name = 'omni',
+      option = {
+        disable_omnifuncs = { 'v:lua.vim.lsp.omnifunc' }
+      },
+    },
   },
 }
 
