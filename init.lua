@@ -387,6 +387,7 @@ local on_attach = function(_, bufnr)
 
   nmap('<Leader>n', vim.lsp.buf.rename, 'Re[N]ame')
   nmap('<Leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -413,26 +414,6 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
---  ref.
---  https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
--- require 'lspconfig'.racket_langserver.setup {}
-
-local servers = {
-  -- clangd = {},
-  gopls = {},
-  pyright = {},
-  rust_analyzer = {},
-  tsserver = {},
-  terraformls = {},
-
-  lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-    },
-  },
-}
-
 -- Setup neovim lua configuration
 require('neodev').setup()
 
@@ -442,10 +423,51 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
-
+local servers = {
+  gopls = {},
+  pyright = {},
+  rust_analyzer = {},
+  terraformls = {},
+  tsserver = {
+  },
+  denols = {},
+  lua_ls = {
+    Lua = {
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
+    },
+  },
+}
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
+
+
+
+--  ref.
+--  https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+-- require 'lspconfig'.racket_langserver.setup {}
+
+local lspconfig = require("lspconfig")
+lspconfig.tsserver.setup({
+  root_dir = lspconfig.util.root_pattern("package.json"),
+})
+lspconfig.denols.setup({
+  root_dir = lspconfig.util.root_pattern("deno.json"),
+  init_options = {
+    lint = true,
+    unstable = true,
+    suggest = {
+      imports = {
+        hosts = {
+          ["https://deno.land"] = true,
+          ["https://cdn.nest.land"] = true,
+          ["https://crux.land"] = true,
+        },
+      },
+    },
+  },
+})
 
 mason_lspconfig.setup_handlers {
   function(server_name)
