@@ -10,6 +10,8 @@ return {
                     theme = "ivy",
                     -- disables netrw and use telescope-file-browser in its place
                     hijack_netrw = false,
+                    hidden = true,
+                    respect_gitignore = false,
                     mappings = {
                         ["i"] = {
                         },
