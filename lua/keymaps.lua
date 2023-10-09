@@ -124,7 +124,7 @@ local create_new_daily_memo = function()
     vim.api.nvim_command(':vs' .. dir .. today .. '.md')
 end
 local create_new_weekly_memo = function()
-    local dir = '$MEMO_DIR/weekly/'
+    local dir = '$MEMO_DIR/'
     local year = vim.fn.strftime("%Y", vim.fn.localtime())
     local week_num = vim.fn.strftime("%W", vim.fn.localtime())
     -- vim.api.nvim_command(':vs' .. dir .. year .. '-W' .. week_num .. '.md')
