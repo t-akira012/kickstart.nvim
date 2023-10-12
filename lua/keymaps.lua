@@ -115,8 +115,11 @@ local open_document_dir = function()
 end
 local open_kanban = function()
     local dir = '$PJ_DIR/'
-    local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
     vim.api.nvim_command(':vs' .. dir .. 'kanban.md')
+end
+local open_flow_memo = function()
+    local dir = '$PJ_DIR/'
+    vim.api.nvim_command(':vs' .. dir .. 'flow.md')
 end
 local open_todo_document = function()
     local dir = '$MEMO_DIR/'
@@ -141,9 +144,10 @@ h.usercmd("DocOpenWeeklyMemo", create_new_weekly_memo)
 h.usercmd("DocOpenDailyMemo", create_new_daily_memo)
 h.usercmd("DocOpenHomeMemo", open_todo_document)
 h.usercmd("DocOpenKanban", open_kanban)
+h.usercmd("DocOpenFlowMemo", open_flow_memo)
 h.nmap('--', '<CMD>DocOpenKanban<CR>')
-h.nmap('-=', '<CMD>DocOpenWeeklyMemo<CR>')
-h.nmap('==', '<CMD>DocOpenHomeMemo<CR>')
+h.nmap('-=', '<CMD>DocOpenFlowMemo<CR>')
+h.nmap('==', '<CMD>DocOpenWeeklyMemo<CR>')
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
