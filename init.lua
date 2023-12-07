@@ -105,6 +105,7 @@ require('lazy').setup({
   },
   { 'hrsh7th/cmp-omni' },
   { 'hrsh7th/cmp-buffer' },
+  { 'hrsh7th/cmp-path' },
   -- Useful plugin to show you pending keybinds.
   {
     'folke/which-key.nvim',
@@ -534,6 +535,7 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
+    { name = 'path' },
     {
       name = 'omni',
       option = {
