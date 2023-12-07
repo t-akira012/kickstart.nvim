@@ -28,13 +28,13 @@ h.nmap("<Leader>x", "<C-w>=")
 
 h.nmap("<Leader>e", ":e<CR>")
 h.nmap("<Leader>w", ":w<CR>")
--- h.nmap("<Leader>q", ":q<CR>")
+h.nmap("<Leader>q", ":q<CR>")
 
 h.nmap("<Leader>t", ":tabnew<CR>")
 h.nmap("<Leader>s", ":new<CR>")
 h.nmap("<Leader>v", ":vnew<CR>")
 
-h.nmap("<Leader><Leader>", "<C-w>w")
+-- h.nmap("<Leader><Leader>", "<C-w>w")
 h.nmap("<Leader>h", "<C-w>h")
 h.nmap("<Leader>j", "<C-w>j")
 h.nmap("<Leader>k", "<C-w>k")

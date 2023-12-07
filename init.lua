@@ -69,6 +69,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
+  'vim-scripts/dbext.vim',
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
@@ -128,9 +129,9 @@ require('lazy').setup({
 
   -- colorscheme は lua/options.lua で設定
   { 'lifepillar/vim-solarized8', priority = 1000, },
-  { 'folke/tokyonight.nvim', priority = 1000, },
-  { 'sainnhe/gruvbox-material', priority = 1000, },
-  { 'ayu-theme/ayu-vim', priority = 1000, },
+  { 'folke/tokyonight.nvim',     priority = 1000, },
+  { 'sainnhe/gruvbox-material',  priority = 1000, },
+  { 'ayu-theme/ayu-vim',         priority = 1000, },
 
   { -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -151,10 +152,10 @@ require('lazy').setup({
             path = 3,
             shorting_target = 40,
             symbols = {
-              modified = '[+]', -- Text to show when the file is modified.
-              readonly = '[-]', -- Text to show when the file is non-modifiable or readonly.
+              modified = '[+]',      -- Text to show when the file is modified.
+              readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
               unnamed = '[No Name]', -- Text to show for unnamed buffers.
-              newfile = '[New]', -- Text to show for newly created file before first write
+              newfile = '[New]',     -- Text to show for newly created file before first write
             }
           }
         }
@@ -184,7 +185,7 @@ require('lazy').setup({
   -- { 'numToStr/Comment.nvim', opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 'nvim-telescope/telescope.nvim',    tag = "0.1.5", dependencies = { 'nvim-lua/plenary.nvim' } },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
@@ -265,6 +266,8 @@ local telescope_project_find = function()
   local opts = {
     prompt_title = "Search Project",
     preview = true,
+    hidden = true,
+    no_ignore = false,
   }
   local ok = pcall(require("telescope.builtin").git_files, opts)
   if not ok then
@@ -425,7 +428,7 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 local mason_lspconfig = require 'mason-lspconfig'
 local servers = {
   gopls = {},
-  pyright = {},
+  pylsp = {},
   rust_analyzer = {},
   terraformls = {},
   tsserver = {
