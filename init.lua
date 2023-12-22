@@ -134,6 +134,7 @@ require('lazy').setup({
   { 'folke/tokyonight.nvim',     priority = 1000, },
   { 'sainnhe/gruvbox-material',  priority = 1000, },
   { 'ayu-theme/ayu-vim',         priority = 1000, },
+  { 'hzchirs/vim-material',      priority = 1000, },
 
   { -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -392,7 +393,7 @@ local on_attach = function(_, bufnr)
 
   nmap('<Leader>n', vim.lsp.buf.rename, 'Re[N]ame')
   nmap('<Leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=true})]]
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')

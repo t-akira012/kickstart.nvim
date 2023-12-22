@@ -46,6 +46,7 @@ if os.getenv('TERM_COLOR_MODE') == 'LIGHT' then
     vim.cmd.colorscheme(os.getenv('NVIM_COLOR_LIGHT'))
 else
     opt.background = "dark"
+    vim.cmd([[ let g:material_style='oceanic' ]])
     vim.cmd.colorscheme(os.getenv('NVIM_COLOR_DARK'))
 end
 
