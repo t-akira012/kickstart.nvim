@@ -43,6 +43,9 @@ h.nmap("<Leader>l", "<C-w>l")
 h.imap("<C-r>", "<C-r><C-p>")
 h.nmap("<Leader>H", "<CMD>GBrowse<CR>")
 
+-- h.nmap("gb", ":vertical wincmd f<CR>")
+h.nmap("gf", ":vertical wincmd f<CR>")
+
 -- ESC で terminal を抜ける
 h.tmap("<esc>", "<C-\\><C-n>")
 -- カーソル下文字列を置換
@@ -112,11 +115,11 @@ local open_document_dir = function()
     vim.api.nvim_command(':vs' .. dir)
 end
 local open_kanban = function()
-    local dir = '$PJ_DIR/'
+    local dir = '$MEMO_DIR/'
     vim.api.nvim_command(':vs' .. dir .. 'kanban.md')
 end
 local open_flow_memo = function()
-    local dir = '$PJ_DIR/'
+    local dir = '$MEMO_DIR/'
     vim.api.nvim_command(':vs' .. dir .. 'flow.md')
 end
 local open_todo_document = function()
