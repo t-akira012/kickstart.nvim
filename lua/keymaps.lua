@@ -64,7 +64,6 @@ vim.cmd([[
 ]])
 
 local generate_weekly_todo = function()
-
     for i = 0, 6 do
         local bufnr = vim.api.nvim_get_current_buf()
         local cursor = vim.api.nvim_win_get_cursor(0)
@@ -76,7 +75,6 @@ local generate_weekly_todo = function()
 end
 h.usercmd("AddWeeklyTodo", generate_weekly_todo)
 local generate_weekly_head = function()
-
     for i = 0, 6 do
         local bufnr = vim.api.nvim_get_current_buf()
         local cursor = vim.api.nvim_win_get_cursor(0)
@@ -145,9 +143,9 @@ h.usercmd("DocOpenDailyMemo", create_new_daily_memo)
 h.usercmd("DocOpenHomeMemo", open_todo_document)
 h.usercmd("DocOpenKanban", open_kanban)
 h.usercmd("DocOpenFlowMemo", open_flow_memo)
-h.nmap('--', '<CMD>DocOpenKanban<CR>')
 h.nmap('-=', '<CMD>DocOpenFlowMemo<CR>')
-h.nmap('==', '<CMD>DocOpenWeeklyMemo<CR>')
+h.nmap('--', '<CMD>DocOpenDailyMemo<CR>')
+-- h.nmap('--', '<CMD>DocOpenKanban<CR>')
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
@@ -157,7 +155,7 @@ vim.api.nvim_create_autocmd('FileType', {
     callback = function()
         vim.cmd([[
 		abbr <buffer> env! #!/usr/bin/env
-		]]     )
+		]])
     end
 })
 -- for Markdown
@@ -170,7 +168,7 @@ vim.api.nvim_create_autocmd('FileType', {
 		inoremap <expr><buffer> <C-d> strftime('%-m/%-d %a')
 		inoremap <expr><buffer> <C-t> strftime('%H:%M')
 		abbr <buffer> tt - [ ]
-		]]     )
+		]])
     end
 })
 
