@@ -16,8 +16,8 @@ return {
             end
 
             api.config.mappings.default_on_attach(bufnr)
-            vim.keymap.set('n', '<CR>', api.node.open.vertical, opts('Open: Vertical Split'))
-
+            vim.keymap.set('n', 'o', api.node.open.vertical, opts('Open: Vertical Split'))
+            vim.keymap.set('n', '<CR>', api.node.open.edit, opts('Open'))
         end
 
         -- setup
@@ -53,6 +53,5 @@ return {
             },
             on_attach = fix_keybind,
         })
-
     end
 }
