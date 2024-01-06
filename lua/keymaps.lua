@@ -59,9 +59,12 @@ vim.cmd([[
   vnoremap SS :s/
   xnoremap <expr> p 'pgv"'.v:register.'ygv<esc>'
 
+
   " add current date
-  iabbrev <expr> ddd strftime('%Y-%m-%d (%a)')
-  iabbrev <expr> lll strftime('%-m/%d %a')
+  inoreabbrev ddb <C-R>=substitute(system("date -v-1d '+\%Y-\%m-\%d (\%a)'"), '\n', '', 'g')<CR>
+  inoreabbrev <expr> ddd strftime('%Y-%m-%d (%a)')
+  inoreabbrev dda <C-R>=substitute(system("date -v+1d '+\%Y-\%m-\%d (\%a)'"), '\n', '', 'g')<CR>
+  inoreabbrev <expr> lll strftime('%-m/%d %a')
   " iabbrev <expr> ddd strftime('%Y%m%d %a')
   iabbrev <expr> ttt strftime('%H:%M')
 ]])
