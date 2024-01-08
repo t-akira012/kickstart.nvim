@@ -131,23 +131,24 @@ local open_flow_memo = function()
 end
 h.usercmd("DocOpenFlowMemo", open_flow_memo)
 
--- local create_new_daily_memo = function()
---     local dir = '$MEMO_DIR/daily/'
---     local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
---     vim.api.nvim_command(':vs' .. dir .. today .. '.md')
--- end
--- h.usercmd("DocOpenDailyMemo", create_new_daily_memo)
--- local create_new_weekly_memo = function()
---     local dir = '$MEMO_DIR/'
---     local year = vim.fn.strftime("%Y", vim.fn.localtime())
---     local week_num = vim.fn.strftime("%W", vim.fn.localtime())
---     -- vim.api.nvim_command(':vs' .. dir .. year .. '-W' .. week_num .. '.md')
---     vim.api.nvim_command(':vs' .. dir .. 'weekly.md')
--- end
--- h.usercmd("DocOpenWeeklyMemo", create_new_weekly_memo)
+local create_new_daily_memo = function()
+    local dir = '$MEMO_DIR/archives/daily/'
+    local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
+    vim.api.nvim_command(':vs' .. dir .. today .. '.md')
+end
+h.usercmd("DocOpenDailyMemo", create_new_daily_memo)
+local create_new_weekly_memo = function()
+    local dir = '$MEMO_DIR/archives/weekly/'
+    local year = vim.fn.strftime("%Y", vim.fn.localtime())
+    local week_num = vim.fn.strftime("%W", vim.fn.localtime())
+    vim.api.nvim_command(':vs' .. dir .. year .. '-W' .. week_num .. '.md')
+end
+h.usercmd("DocOpenWeeklyMemo", create_new_weekly_memo)
 
 h.nmap('--', '<CMD>DocOpenFlowMemo<CR>')
 h.nmap('-=', '<CMD>DocOpenHomeMemo<CR>')
+h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
+h.nmap('-w', '<CMD>DocOpenWeeklyMemo<CR>')
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
