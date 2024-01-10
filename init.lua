@@ -393,7 +393,13 @@ local on_attach = function(_, bufnr)
 
   nmap('<Leader>n', vim.lsp.buf.rename, 'Re[N]ame')
   nmap('<Leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+  vim.diagnostic.config({
+    virtual_text = { severity = { min = vim.diagnostic.severity.ERROR } },
+    signs = { severity = { min = vim.diagnostic.severity.ERROR } },
+    underline = { severity = { min = vim.diagnostic.severity.ERROR } },
+  })
+  -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+  vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float)
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
