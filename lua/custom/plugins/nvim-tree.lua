@@ -27,6 +27,9 @@ return {
                 enable = true,
                 update_cwd = false,
             },
+            git = {
+                ignore = false,
+            },
             view = {
                 width = 60,
             },
