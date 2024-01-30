@@ -62,6 +62,7 @@ vim.cmd([[
 
   " add current date
   inoreabbrev ddb <C-R>=substitute(system("date -v-1d '+\%Y-\%m-\%d (\%a)'"), '\n', '', 'g')<CR>
+  inoreabbrev <expr> ddt strftime('%Y-%m-%d (%a) %H:%M')
   inoreabbrev <expr> ddd strftime('%Y-%m-%d (%a)')
   inoreabbrev dda <C-R>=substitute(system("date -v+1d '+\%Y-\%m-\%d (\%a)'"), '\n', '', 'g')<CR>
   inoreabbrev <expr> lll strftime('%-m/%d %a')
