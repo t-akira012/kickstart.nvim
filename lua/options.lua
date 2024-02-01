@@ -172,34 +172,34 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 -- other
 vim.cmd([[
-  " undercurl
-  let &t_Cs = "\e[4:3m"
-  let &t_Ce = "\e[4:0m"
-  " mode から抜ける際に IME OFF
-  let &t_SI .= "\e[<0t"
-  let &t_EI .= "\e[<0t"
+    " undercurl
+    let &t_Cs = "\e[4:3m"
+    let &t_Ce = "\e[4:0m"
+    " mode から抜ける際に IME OFF
+    let &t_SI .= "\e[<0t"
+    let &t_EI .= "\e[<0t"
 
-  " ture color support
-  " https://qiita.com/delphinus/items/b8c1a8d3af9bbacb85b8
-  " https://paper.dropbox.com/doc/Iceberg-DxgSSwvtgHkV8lPs7MW6k
-  if exists('+termguicolors')
+    " ture color support
+    " https://qiita.com/delphinus/items/b8c1a8d3af9bbacb85b8
+    " https://paper.dropbox.com/doc/Iceberg-DxgSSwvtgHkV8lPs7MW6k
+    if exists('+termguicolors')
     let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
-  endif
+    endif
 
-  " netrw
-  let g:netrw_preview=1
-  let g:netrw_liststyle=3
-  let g:netrw_keepdir=0
-  let g:netrw_banner=0
+    " netrw
+    let g:netrw_preview=1
+    let g:netrw_liststyle=3
+    let g:netrw_keepdir=0
+    let g:netrw_banner=0
 
 
-  " vimgrep
-  "  au QuickfixCmdPost vimgrep copen
+    " vimgrep
+    "  au QuickfixCmdPost vimgrep copen
 
-  " Browse Command
-  command! -nargs=1 Browse silent exec '!open "<args>"'
+    " Browse Command
+    command! -nargs=1 Browse silent exec '!open "<args>"'
 ]])
 
 return {}

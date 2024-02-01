@@ -120,23 +120,6 @@ local open_document_dir = function()
 end
 h.usercmd("Doc", open_document_dir)
 
-local open_memo = function()
-    local dir = '$MEMO_DIR/'
-    vim.api.nvim_command(':vs' .. dir .. 'memo.md')
-end
-h.usercmd("DocOpenMemo", open_memo)
-
-local open_memo2 = function()
-    local dir = '$MEMO_DIR/'
-    vim.api.nvim_command(':vs' .. dir .. 'memo2.md')
-end
-h.usercmd("DocOpenMemo2", open_memo2)
-local open_memo3 = function()
-    local dir = '$MEMO_DIR/'
-    vim.api.nvim_command(':vs' .. dir .. 'memo3.md')
-end
-h.usercmd("DocOpenMemo3", open_memo3)
-
 local open_home_memo = function()
     local dir = '$MEMO_DIR/'
     vim.api.nvim_command(':vs' .. dir .. 'home.md')
@@ -165,11 +148,18 @@ h.usercmd("DocOpenWeeklyMemo", create_new_weekly_memo)
 
 h.nmap('--', '<CMD>DocOpenFlowMemo<CR>')
 h.nmap('-=', '<CMD>DocOpenHomeMemo<CR>')
-h.nmap('-m', '<CMD>DocOpenMemo<CR>')
-h.nmap('-m2', '<CMD>DocOpenMemo2<CR>')
-h.nmap('-m3', '<CMD>DocOpenMemo3<CR>')
 h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
 h.nmap('-w', '<CMD>DocOpenWeeklyMemo<CR>')
+
+
+-- メモファイルを開く関数
+-- '-m'に続く1桁の数字のためのマッピングを設定
+vim.api.nvim_set_keymap('n', '-m', "<cmd>lua vim.cmd('vs $MEMO_DIR/memo.md')<CR>",
+    { noremap = true, silent = true })
+for i = 0, 9 do
+    vim.api.nvim_set_keymap('n', '-m' .. i, "<cmd>lua vim.cmd('vs $MEMO_DIR/memo" .. i .. ".md')<CR>",
+        { noremap = true, silent = true })
+end
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
