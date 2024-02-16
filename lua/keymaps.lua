@@ -133,13 +133,13 @@ end
 h.usercmd("DocOpenFlowMemo", open_flow_memo)
 
 local create_new_daily_memo = function()
-    local dir = '$MEMO_DIR/archives/daily/'
+    local dir = '$MEMO_DIR/daily/'
     local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
     vim.api.nvim_command(':vs' .. dir .. today .. '.md')
 end
 h.usercmd("DocOpenDailyMemo", create_new_daily_memo)
 local create_new_weekly_memo = function()
-    local dir = '$MEMO_DIR/archives/weekly/'
+    local dir = '$MEMO_DIR/weekly/'
     local year = vim.fn.strftime("%Y", vim.fn.localtime())
     local week_num = vim.fn.strftime("%W", vim.fn.localtime())
     vim.api.nvim_command(':vs' .. dir .. year .. '-W' .. week_num .. '.md')
