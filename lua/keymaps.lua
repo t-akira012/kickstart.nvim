@@ -54,9 +54,10 @@ h.tmap("<esc>", "<C-\\><C-n>")
 -- カーソル範囲にyankで置換
 -- https://baqamore.hatenablog.com/entry/2016/07/07/201856
 vim.cmd([[
+  nnoremap / /\v
+  nnoremap SS :%s\v
   nnoremap <expr> RR ':%s ?\<' . expand('<cword>') . '\>?'
   vnoremap <expr> RR ':s ?\<' . expand('<cword>') . '\>?'
-  vnoremap SS :s/
   xnoremap <expr> p 'pgv"'.v:register.'ygv<esc>'
 
 
@@ -185,21 +186,5 @@ vim.api.nvim_create_autocmd('FileType', {
 		]])
     end
 })
-
--- local _format = function()
---     local type = vim.bo.filetype
---     if type == "sh" then
---         local last_line = vim.fn.line('$')
---         local range = "1," .. last_line
---         local cmd = range .. "! shfmt %"
---         vim.cmd(cmd)
---         -- else vim.lsp.buf.format()
---     end
--- end
--- h.usercmd("Fmt", _format)
--- vim.api.nvim_create_autocmd("BufWritePre", {
---     pattern = '*',
---     callback = _format,
--- })
 
 return {}
