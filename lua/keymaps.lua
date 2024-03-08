@@ -54,10 +54,8 @@ h.tmap("<esc>", "<C-\\><C-n>")
 -- カーソル範囲にyankで置換
 -- https://baqamore.hatenablog.com/entry/2016/07/07/201856
 vim.cmd([[
-  nnoremap / /\v
-  nnoremap SS :%s\v
-  nnoremap <expr> RR ':%s ?\<' . expand('<cword>') . '\>?'
-  vnoremap <expr> RR ':s ?\<' . expand('<cword>') . '\>?'
+  nnoremap <expr> gs ':%s/' . expand('<cword>') . '/'
+  vnoremap <expr> gs ':s/' . expand('<cword>') . '/'
   xnoremap <expr> p 'pgv"'.v:register.'ygv<esc>'
 
 
