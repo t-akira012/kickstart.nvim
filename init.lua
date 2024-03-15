@@ -112,7 +112,7 @@ require('lazy').setup({
     'folke/which-key.nvim',
     opts = {},
     config = function()
-      vim.keymap.set('n', ',W', '<CMD>WhichKey<CR>')
+      vim.keymap.set('n', 'gW', '<CMD>WhichKey<CR>')
     end
   },
   { -- Adds git releated signs to the gutter, as well as utilities for managing changes
