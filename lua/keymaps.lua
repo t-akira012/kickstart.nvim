@@ -131,6 +131,12 @@ local open_flow_memo = function()
 end
 h.usercmd("DocOpenFlowMemo", open_flow_memo)
 
+local open_draft_memo = function()
+    local dir = '$MEMO_DIR/'
+    vim.api.nvim_command(':vs' .. dir .. 'draft.md')
+end
+h.usercmd("DocOpenDraftMemo", open_draft_memo)
+
 local create_new_daily_memo = function()
     local dir = '$MEMO_DIR/daily/'
     local today = vim.fn.strftime("%Y-%m-%d", vim.fn.localtime())
@@ -146,7 +152,8 @@ end
 h.usercmd("DocOpenWeeklyMemo", create_new_weekly_memo)
 
 h.nmap('--', '<CMD>DocOpenFlowMemo<CR>')
-h.nmap('-=', '<CMD>DocOpenHomeMemo<CR>')
+h.nmap('==', '<CMD>DocOpenDraftMemo<CR>')
+-- h.nmap('-=', '<CMD>DocOpenHomeMemo<CR>')
 h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
 h.nmap('-w', '<CMD>DocOpenWeeklyMemo<CR>')
 
