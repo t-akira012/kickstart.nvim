@@ -99,8 +99,8 @@ opt.undolevels = 300
 
 -- 不可視文字を可視化
 opt.list = true
-opt.listchars:append({ tab = "» ", extends = "»", precedes = "«", trail = " " })
--- opt.listchars:append({ tab = "» ", eol = "↵", extends = "»", precedes = "«", trail = " " })
+-- opt.listchars:append({ tab = "» ", extends = "»", precedes = "«", trail = " " })
+opt.listchars:append({ tab = "» ", eol = ".", extends = "»", precedes = "«", trail = " " })
 
 -- ダブルクォート非表示対策 ( indentLine 対策 )
 opt.conceallevel = 0
