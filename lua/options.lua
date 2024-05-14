@@ -100,7 +100,7 @@ opt.undolevels = 300
 -- 不可視文字を可視化
 opt.list = true
 -- opt.listchars:append({ tab = "» ", extends = "»", precedes = "«", trail = " " })
-opt.listchars:append({ tab = "» ", eol = ".", extends = "»", precedes = "«", trail = " " })
+opt.listchars:append({ tab = "‥‥‥", eol = ".", extends = "»", precedes = "«", trail = " " })
 
 -- ダブルクォート非表示対策 ( indentLine 対策 )
 opt.conceallevel = 0
@@ -123,13 +123,13 @@ opt.backspace = { "start", "eol", "indent" }
 
 -- Tab系
 -- expandtab  Tab文字を半角スペースにする
-opt.expandtab = true
+opt.expandtab = false
 -- tabstop    行頭以外のTab文字の表示幅（スペースいくつ分）
-opt.tabstop = 4
+opt.tabstop = 2
 -- shiftwidth 行頭でのTab文字の表示幅
-opt.shiftwidth = 4
+opt.shiftwidth = 2
 -- Tab in front of line inserts blanks
-opt.smarttab = true
+opt.smarttab = false
 
 -- 置換系
 -- interactive 置換
