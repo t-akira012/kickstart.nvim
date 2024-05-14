@@ -42,12 +42,12 @@ opt.swapfile = false
 -- set printfont="HackGenNerd:h11"
 
 if os.getenv('TERM_COLOR_MODE') == 'LIGHT' then
-    opt.background = "light"
-    vim.cmd.colorscheme(os.getenv('NVIM_COLOR_LIGHT'))
+	opt.background = "light"
+	vim.cmd.colorscheme(os.getenv('NVIM_COLOR_LIGHT'))
 else
-    opt.background = "dark"
-    vim.cmd([[ let g:material_style='oceanic' ]])
-    vim.cmd.colorscheme(os.getenv('NVIM_COLOR_DARK'))
+	opt.background = "dark"
+	vim.cmd([[ let g:material_style='oceanic' ]])
+	vim.cmd.colorscheme(os.getenv('NVIM_COLOR_DARK'))
 end
 
 -- ウィンドウ設定
@@ -123,13 +123,13 @@ opt.backspace = { "start", "eol", "indent" }
 
 -- Tab系
 -- expandtab  Tab文字を半角スペースにする
-opt.expandtab = false
+opt.expandtab = true
 -- tabstop    行頭以外のTab文字の表示幅（スペースいくつ分）
-opt.tabstop = 2
+opt.tabstop = 4
 -- shiftwidth 行頭でのTab文字の表示幅
-opt.shiftwidth = 2
+opt.shiftwidth = 4
 -- Tab in front of line inserts blanks
-opt.smarttab = false
+opt.smarttab = true
 
 -- 置換系
 -- interactive 置換
@@ -151,8 +151,8 @@ opt.wildignore:append({ "*/node_modules/*" })
 
 -- paste mode を自動で解除
 vim.api.nvim_create_autocmd("InsertLeave", {
-    pattern = "*",
-    command = "set nopaste",
+	pattern = "*",
+	command = "set nopaste",
 })
 -- paste mode を自動で解除
 -- インサートモード時はハイライトを除去
@@ -166,7 +166,7 @@ opt.formatoptions:append({ "r" })
 
 -- lsp
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
+	vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
 )
 
 
