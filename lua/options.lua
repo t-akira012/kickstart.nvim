@@ -42,12 +42,12 @@ opt.swapfile = false
 -- set printfont="HackGenNerd:h11"
 
 if os.getenv('TERM_COLOR_MODE') == 'LIGHT' then
-	opt.background = "light"
-	vim.cmd.colorscheme(os.getenv('NVIM_COLOR_LIGHT'))
+    opt.background = "light"
+    vim.cmd.colorscheme(os.getenv('NVIM_COLOR_LIGHT'))
 else
-	opt.background = "dark"
-	vim.cmd([[ let g:material_style='oceanic' ]])
-	vim.cmd.colorscheme(os.getenv('NVIM_COLOR_DARK'))
+    opt.background = "dark"
+    vim.cmd([[ let g:material_style='oceanic' ]])
+    vim.cmd.colorscheme(os.getenv('NVIM_COLOR_DARK'))
 end
 
 -- ウィンドウ設定
@@ -100,7 +100,8 @@ opt.undolevels = 300
 -- 不可視文字を可視化
 opt.list = true
 -- opt.listchars:append({ tab = "» ", extends = "»", precedes = "«", trail = " " })
-opt.listchars:append({ tab = "‥‥‥", eol = ".", extends = "»", precedes = "«", trail = " " })
+-- opt.listchars:append({ tab = "‥‥‥", eol = ".", extends = "»", precedes = "«", trail = " " })
+opt.listchars:append({ eol = "↲", extends = "»", precedes = "«", trail = " " })
 
 -- ダブルクォート非表示対策 ( indentLine 対策 )
 opt.conceallevel = 0
@@ -151,8 +152,8 @@ opt.wildignore:append({ "*/node_modules/*" })
 
 -- paste mode を自動で解除
 vim.api.nvim_create_autocmd("InsertLeave", {
-	pattern = "*",
-	command = "set nopaste",
+    pattern = "*",
+    command = "set nopaste",
 })
 -- paste mode を自動で解除
 -- インサートモード時はハイライトを除去
@@ -166,37 +167,15 @@ opt.formatoptions:append({ "r" })
 
 -- lsp
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-	vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
+    vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
 )
 
 
 -- other
 vim.cmd([[
-    " undercurl
-    let &t_Cs = "\e[4:3m"
-    let &t_Ce = "\e[4:0m"
-    " mode から抜ける際に IME OFF
-    let &t_SI .= "\e[<0t"
-    let &t_EI .= "\e[<0t"
-
-    " ture color support
-    " https://qiita.com/delphinus/items/b8c1a8d3af9bbacb85b8
-    " https://paper.dropbox.com/doc/Iceberg-DxgSSwvtgHkV8lPs7MW6k
-    if exists('+termguicolors')
-    let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-    set termguicolors
-    endif
-
-    " netrw
-    let g:netrw_preview=1
-    let g:netrw_liststyle=3
-    let g:netrw_keepdir=0
-    let g:netrw_banner=0
-
-
-    " vimgrep
-    "  au QuickfixCmdPost vimgrep copen
+    " 不可視文字、インデント
+    highlight NonText cterm=NONE guifg=#232323 gui=NONE
+    highlight SpecialKey cterm=NONE guifg=#232323 gui=NONE
 
     " Browse Command
     command! -nargs=1 Browse silent exec '!open "<args>"'
