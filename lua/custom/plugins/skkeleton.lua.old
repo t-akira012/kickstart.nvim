@@ -1,0 +1,13 @@
+return {
+    'vim-skk/skkeleton',
+    dependencies = {
+        'vim-denops/denops.vim'
+    },
+    config = function()
+        vim.keymap.set("i", "<C-j>", "<Plug>(skkeleton-enable)", {})
+        vim.keymap.set("c", "<C-j>", "<Plug>(skkeleton-enable)", {})
+        vim.fn['skkeleton#config']({
+            globalDictionaries = { '/Users/t-akira012/.config/SKK-JISYO.L' }
+        })
+    end
+}

@@ -2,7 +2,7 @@ return {
     "akinsho/toggleterm.nvim",
     config = function()
         require("toggleterm").setup({
-            open_mapping = [[<c-j>]],
+            open_mapping = [[<c-h>]],
             size = function(term)
                 if term.direction == "horizontal" then
                     return 33
