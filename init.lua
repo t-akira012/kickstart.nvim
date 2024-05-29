@@ -447,7 +447,7 @@ local servers = {
   terraformls = {},
   tsserver = {
   },
-  denols = {},
+  -- denols = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -469,23 +469,23 @@ local lspconfig = require("lspconfig")
 lspconfig.tsserver.setup({
   root_dir = lspconfig.util.root_pattern("package.json"),
 })
-lspconfig.denols.setup({
-  root_dir = lspconfig.util.root_pattern("deno.json"),
-  init_options = {
-    lint = true,
-    unstable = true,
-    suggest = {
-      imports = {
-        hosts = {
-          ["https://deno.land"] = true,
-          ["https://cdn.nest.land"] = true,
-          ["https://crux.land"] = true,
-        },
-      },
-    },
-  },
-})
-
+-- lspconfig.denols.setup({
+--   root_dir = lspconfig.util.root_pattern("deno.json"),
+--   init_options = {
+--     lint = true,
+--     unstable = true,
+--     suggest = {
+--       imports = {
+--         hosts = {
+--           ["https://deno.land"] = true,
+--           ["https://cdn.nest.land"] = true,
+--           ["https://crux.land"] = true,
+--         },
+--       },
+--     },
+--   },
+-- })
+--
 mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
