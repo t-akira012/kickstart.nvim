@@ -157,7 +157,6 @@ h.nmap('==', '<CMD>DocOpenDraftMemo<CR>')
 h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
 h.nmap('-w', '<CMD>DocOpenWeeklyMemo<CR>')
 
-
 -- メモファイルを開く関数
 -- '-m'に続く1桁の数字のためのマッピングを設定
 vim.api.nvim_set_keymap('n', '-m', "<cmd>lua vim.cmd('vs $MEMO_DIR/memo.md')<CR>",
@@ -166,6 +165,13 @@ for i = 0, 9 do
     vim.api.nvim_set_keymap('n', '-m' .. i, "<cmd>lua vim.cmd('vs $MEMO_DIR/memo" .. i .. ".md')<CR>",
         { noremap = true, silent = true })
 end
+
+local paste_image = function()
+    -- シェルスクリプトの出力を現在のバッファに挿入
+    vim.cmd('r! ~/.config/nvim/sh/paste_image.sh')
+end
+h.usercmd("PasteImage", paste_image)
+h.nmap('<Leader>S', '<CMD>PasteImage<CR>')
 
 -- for Bash
 vim.api.nvim_create_augroup('sh', { clear = true })
