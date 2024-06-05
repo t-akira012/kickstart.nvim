@@ -241,6 +241,7 @@ require 'options'
 
 -- [[ Basic Keymaps ]]
 require 'keymaps'
+require 'functions'
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
