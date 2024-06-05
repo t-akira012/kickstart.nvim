@@ -113,7 +113,7 @@ require('lazy').setup({
     opts = {},
     config = function()
       vim.keymap.set('n', 'gW', '<CMD>WhichKey<CR>')
-    end
+    end,
   },
   { -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -130,12 +130,12 @@ require('lazy').setup({
   },
 
   -- colorscheme は lua/options.lua で設定
-  { 'lifepillar/vim-solarized8',       priority = 1000, },
-  { 'folke/tokyonight.nvim',           priority = 1000, },
-  { 'sainnhe/gruvbox-material',        priority = 1000, },
-  { 'ayu-theme/ayu-vim',               priority = 1000, },
-  { 'hzchirs/vim-material',            priority = 1000, },
-  { 'olivercederborg/poimandres.nvim', priority = 1000, },
+  { 'lifepillar/vim-solarized8',       priority = 1000 },
+  { 'folke/tokyonight.nvim',           priority = 1000 },
+  { 'sainnhe/gruvbox-material',        priority = 1000 },
+  { 'ayu-theme/ayu-vim',               priority = 1000 },
+  { 'hzchirs/vim-material',            priority = 1000 },
+  { 'olivercederborg/poimandres.nvim', priority = 1000 },
 
   { -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -160,10 +160,10 @@ require('lazy').setup({
               readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
               unnamed = '[No Name]', -- Text to show for unnamed buffers.
               newfile = '[New]',     -- Text to show for newly created file before first write
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     },
   },
 
@@ -177,12 +177,12 @@ require('lazy').setup({
     },
     config = function()
       vim.g.indent_blankline_filetype_exclude = {
-        "lspinfo",
-        "checkhealth",
-        "help",
-        "man",
+        'lspinfo',
+        'checkhealth',
+        'help',
+        'man',
       }
-    end
+    end,
   },
 
   -- "gc" to comment visual regions/lines
@@ -192,7 +192,7 @@ require('lazy').setup({
   {
     'nvim-telescope/telescope.nvim',
     branch = 'master',
-    dependencies = { 'nvim-lua/plenary.nvim' }
+    dependencies = { 'nvim-lua/plenary.nvim' },
   },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -215,7 +215,7 @@ require('lazy').setup({
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
-    build = ":TSUpdate",
+    build = ':TSUpdate',
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -237,11 +237,10 @@ require('lazy').setup({
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
-require('options')
+require 'options'
 
 -- [[ Basic Keymaps ]]
-require('keymaps')
-
+require 'keymaps'
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -272,14 +271,14 @@ pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ghq')
 local telescope_project_find = function()
   local opts = {
-    prompt_title = "Search Project",
+    prompt_title = 'Search Project',
     preview = true,
     hidden = true,
     no_ignore = false,
   }
-  local ok = pcall(require("telescope.builtin").git_files, opts)
+  local ok = pcall(require('telescope.builtin').git_files, opts)
   if not ok then
-    require("telescope.builtin").find_files(opts)
+    require('telescope.builtin').find_files(opts)
   end
 end
 
@@ -295,7 +294,7 @@ vim.keymap.set('n', '<Leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<Leader>p', telescope_project_find, { desc = 'Search [P]roject' })
-vim.keymap.set('n', '<Leader>f', require('telescope.builtin').git_status, { desc = 'Search Git [F]iles Status' })
+vim.keymap.set('n', '<Leader>s', require('telescope.builtin').git_status, { desc = 'Search Git [F]iles Status' })
 -- vim.keymap.set('n', '<Leader>o', require('telescope.builtin').find_files, { desc = 'Search [O]pen File List' })
 -- vim.keymap.set('n', '<Leader>w', require('telescope.builtin').grep_string, { desc = 'Search current [W]ord' })
 vim.keymap.set('n', '<Leader>r', require('telescope.builtin').live_grep, { desc = 'Search by g[R]ep' })
@@ -374,8 +373,8 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 -- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
@@ -398,17 +397,18 @@ local on_attach = function(_, bufnr)
 
   nmap('<Leader>n', vim.lsp.buf.rename, 'Re[N]ame')
   nmap('<Leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-  vim.diagnostic.config({
+  vim.diagnostic.config {
     virtual_text = { severity = { min = vim.diagnostic.severity.ERROR } },
     signs = { severity = { min = vim.diagnostic.severity.ERROR } },
     underline = { severity = { min = vim.diagnostic.severity.ERROR } },
-  })
+  }
   -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
   vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float)
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  nmap('<Leader>f', vim.lsp.buf.format, 'Format')
   -- nmap(',D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   -- nmap(',ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   -- nmap(',ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
@@ -445,8 +445,7 @@ local servers = {
   pylsp = {},
   rust_analyzer = {},
   terraformls = {},
-  tsserver = {
-  },
+  tsserver = {},
   -- denols = {},
   lua_ls = {
     Lua = {
@@ -459,16 +458,14 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
-
-
 --  ref.
 --  https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 -- require 'lspconfig'.racket_langserver.setup {}
 
-local lspconfig = require("lspconfig")
-lspconfig.tsserver.setup({
-  root_dir = lspconfig.util.root_pattern("package.json"),
-})
+local lspconfig = require 'lspconfig'
+lspconfig.tsserver.setup {
+  root_dir = lspconfig.util.root_pattern 'package.json',
+}
 -- lspconfig.denols.setup({
 --   root_dir = lspconfig.util.root_pattern("deno.json"),
 --   init_options = {
@@ -553,7 +550,7 @@ cmp.setup {
     {
       name = 'omni',
       option = {
-        disable_omnifuncs = { 'v:lua.vim.lsp.omnifunc' }
+        disable_omnifuncs = { 'v:lua.vim.lsp.omnifunc' },
       },
     },
   },
