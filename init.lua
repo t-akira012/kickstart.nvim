@@ -129,31 +129,33 @@ require('lazy').setup({
     },
   },
 
-  -- colorscheme は lua/options.lua で設定
-  { 'lifepillar/vim-solarized8',       priority = 1000 },
-  { 'folke/tokyonight.nvim',           priority = 1000 },
-  { 'sainnhe/gruvbox-material',        priority = 1000 },
-  { 'ayu-theme/ayu-vim',               priority = 1000 },
-  { 'hzchirs/vim-material',            priority = 1000 },
-  { 'olivercederborg/poimandres.nvim', priority = 1000 },
-
-  { -- Set lualine as statusline
+  {
     'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
-        -- theme = 'onedark',
-        component_separators = '|',
+        icons_enabled = true,
+        -- theme = 'OceanicNext',
+        component_separators = { left = '|', right = '|' },
         section_separators = '',
       },
       sections = {
+        lualine_a = { 'mode' },
+        lualine_b = {
+          'branch',
+          'diff',
+          {
+            'diagnostics',
+            colored = true,             -- Displays filetype icon in color if set to true
+            icon_only = false,          -- Display only an icon for filetype
+            icon = { align = 'right' }, -- Display filetype icon on the right hand side
+          },
+        },
         lualine_c = {
           {
             'filename',
             file_status = true,
             newfile_status = true,
-            path = 3,
+            path = 0,
             shorting_target = 40,
             symbols = {
               modified = '[+]',      -- Text to show when the file is modified.

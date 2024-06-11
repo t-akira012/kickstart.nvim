@@ -1,6 +1,7 @@
 return {
-	'echasnovski/mini.nvim',
-	config = function()
-		require('mini.trailspace').setup()
-	end
+  'echasnovski/mini.nvim',
+  branch = 'stable',
+  config = function()
+    require('mini.trailspace').setup()
+  end,
 }
