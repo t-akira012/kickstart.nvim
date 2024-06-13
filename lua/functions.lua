@@ -49,49 +49,44 @@ h.usercmd('Pwd', show_current_dir)
 
 --- DOC ------------------------------------------------------------------------------------------
 
-local open_document_dir = function()
-  local dir = '$MEMO_DIR/'
-  vim.api.nvim_command(':vs' .. dir)
-end
-h.usercmd('Doc', open_document_dir)
-
-local open_home_memo = function()
-  local dir = '$MEMO_DIR/'
-  vim.api.nvim_command(':vs' .. dir .. 'home.md')
-end
-h.usercmd('DocOpenHomeMemo', open_home_memo)
-
-local open_flow_memo = function()
-  local dir = '$MEMO_DIR/'
-  vim.api.nvim_command(':vs' .. dir .. 'flow.md')
-end
-h.usercmd('DocOpenFlowMemo', open_flow_memo)
-
+-- TODO: open_memoに統合
 local open_draft_memo = function()
-  local dir = '$MEMO_DIR/'
-  vim.api.nvim_command(':vs' .. dir .. 'draft.md')
+  local file = 'draft.md'
+  local dir = os.getenv 'MEMO_DIR'
+  local target = dir .. '/' .. file
+
+  local win_count = vim.fn.winnr '$'
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  local is_modified = vim.bo.modified
+
+  if win_count == 1 and (buf_name == '' or buf_name == '[No Name]') and not is_modified then
+    vim.api.nvim_command('edit ' .. target)
+  else
+    vim.api.nvim_command('vs ' .. target)
+  end
 end
 h.usercmd('DocOpenDraftMemo', open_draft_memo)
 
-local create_new_daily_memo = function()
-  local dir = '$MEMO_DIR/daily/'
+local open_dialy_memo = function()
   local today = vim.fn.strftime('%Y-%m-%d', vim.fn.localtime())
-  vim.api.nvim_command(':vs' .. dir .. today .. '.md')
-end
-h.usercmd('DocOpenDailyMemo', create_new_daily_memo)
-local create_new_weekly_memo = function()
-  local dir = '$MEMO_DIR/weekly/'
-  local year = vim.fn.strftime('%Y', vim.fn.localtime())
-  local week_num = vim.fn.strftime('%W', vim.fn.localtime())
-  vim.api.nvim_command(':vs' .. dir .. year .. '-W' .. week_num .. '.md')
-end
-h.usercmd('DocOpenWeeklyMemo', create_new_weekly_memo)
+  local dir = os.getenv 'MEMO_DIR'
+  local target = dir .. '/' .. today .. '.md'
 
-h.nmap('--', '<CMD>DocOpenFlowMemo<CR>')
+  local win_count = vim.fn.winnr '$'
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  local is_modified = vim.bo.modified
+
+  if win_count == 1 and (buf_name == '' or buf_name == '[No Name]') and not is_modified then
+    vim.api.nvim_command('edit ' .. target)
+  else
+    vim.api.nvim_command('vs ' .. target)
+  end
+end
+
+h.usercmd('DocOpenDailyMemo', open_dialy_memo)
+
 h.nmap('==', '<CMD>DocOpenDraftMemo<CR>')
--- h.nmap('-=', '<CMD>DocOpenHomeMemo<CR>')
 h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
-h.nmap('-w', '<CMD>DocOpenWeeklyMemo<CR>')
 
 --- CREAMTE MEMO ------------------------------------------------------------------------------------------
 
