@@ -76,7 +76,7 @@ h.nmap('<Leader>S', '<CMD>PasteImage<CR>')
 -- Toogle Term on TMUX
 local toggle_term_on_tmux = function()
   local tmux_pane_pid = vim.fn.system 'tmux display-message -p "#{pane_pid}"'
-  vim.cmd('r! ~/bin/tmux-popup.sh ' .. tmux_pane_pid)
+  vim.fn.system('~/bin/tmux-popup.sh ' .. tmux_pane_pid)
 end
 h.usercmd('ToggleTermOnTmux', toggle_term_on_tmux)
 h.nmap('<c-j>', '<CMD>ToggleTermOnTmux<CR>')
