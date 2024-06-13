@@ -1,31 +1,6 @@
 local vim = vim
 local h = require 'helper'
 
---- TODO ------------------------------------------------------------------------------------------
-
-local generate_weekly_todo = function()
-  for i = 0, 6 do
-    local bufnr = vim.api.nvim_get_current_buf()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local row = cursor[1]
-    local day = vim.fn.strftime('%-m/%d %a', vim.fn.localtime() + i * 24 * 60 * 60)
-    local str = ('- [ ] ' .. day)
-    vim.api.nvim_buf_set_lines(bufnr, row - 1, row - 1, false, { str })
-  end
-end
-h.usercmd('AddWeeklyTodo', generate_weekly_todo)
-local generate_weekly_head = function()
-  for i = 0, 6 do
-    local bufnr = vim.api.nvim_get_current_buf()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local row = cursor[1]
-    local day = vim.fn.strftime('%-m/%d %a', vim.fn.localtime() + i * 24 * 60 * 60)
-    local str = ('# ' .. day)
-    vim.api.nvim_buf_set_lines(bufnr, row - 1, row - 1, false, { str })
-  end
-end
-h.usercmd('AddWeeklyHead', generate_weekly_head)
-
 --- CHDIR ------------------------------------------------------------------------------------------
 
 local change_current_directory = function()
@@ -88,16 +63,6 @@ h.usercmd('DocOpenDailyMemo', open_dialy_memo)
 h.nmap('==', '<CMD>DocOpenDraftMemo<CR>')
 h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
 
---- CREAMTE MEMO ------------------------------------------------------------------------------------------
-
--- メモファイルを開く関数
--- '-m'に続く1桁の数字のためのマッピングを設定
-vim.api.nvim_set_keymap('n', '-m', "<cmd>lua vim.cmd('vs $MEMO_DIR/memo.md')<CR>", { noremap = true, silent = true })
-for i = 0, 9 do
-  vim.api.nvim_set_keymap('n', '-m' .. i, "<cmd>lua vim.cmd('vs $MEMO_DIR/memo" .. i .. ".md')<CR>",
-    { noremap = true, silent = true })
-end
-
 ----------------------------------------------------------------------------------------------------------
 -- Paste Image on Markdown
 local paste_image = function()
@@ -117,7 +82,7 @@ h.usercmd('ToggleTermOnTmux', toggle_term_on_tmux)
 h.nmap('<c-j>', '<CMD>ToggleTermOnTmux<CR>')
 
 ----------------------------------------------------------------------------------------------------------
--- for Bash
+-- bash abbr
 vim.api.nvim_create_augroup('sh', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
   group = 'sh',
@@ -130,7 +95,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 ----------------------------------------------------------------------------------------------------------
--- for Markdown
+-- Markdown abbr
 vim.api.nvim_create_augroup('markdown', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
   group = 'markdown',
