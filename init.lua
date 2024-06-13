@@ -155,7 +155,7 @@ require('lazy').setup({
             'filename',
             file_status = true,
             newfile_status = true,
-            path = 0,
+            path = 4,
             shorting_target = 40,
             symbols = {
               modified = '[+]',      -- Text to show when the file is modified.
