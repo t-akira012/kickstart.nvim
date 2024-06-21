@@ -67,7 +67,8 @@ h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
 -- Paste Image on Markdown
 local paste_image = function()
   -- シェルスクリプトの出力を現在のバッファに挿入
-  vim.cmd 'r! ~/.config/nvim/sh/paste_image.sh'
+  local basename = vim.fn.expand('%:r')
+  vim.cmd('r! ~/.config/nvim/sh/paste_image.sh ' .. basename)
 end
 h.usercmd('PasteImage', paste_image)
 h.nmap('<Leader>S', '<CMD>PasteImage<CR>')

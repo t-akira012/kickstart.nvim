@@ -1,6 +1,11 @@
 #!/bin/bash
 # ref. https://reona.dev/posts/20200620
- 
+
+# 使い方
+# $ paste_image.sh 元のマークダウンファイル名
+
+MD_FILENAME=$*
+
 if ! type pbpaste > /dev/null 2>&1 ; then
   echo pngpaste: command not found >&2
   exit 1
@@ -19,15 +24,23 @@ if [[ ! -d $IMAGE_DIR ]]; then
     fi
     mkdir -p $IMAGE_DIR
 fi
- 
-IMAGE_NAME=$(date +%Y%m%d-%H%M%S)
-IMAGE_PATH=$IMAGE_DIR$IMAGE_NAME
- 
-# 保存するファイル名と同一のものが存在する場合は、エラーで処理を終了する。
-if [[ -e $IMAGE_PATH ]]; then
-  echo File already existed
-  exit 1
-fi
+
+gen_file_path(){
+  IMAGE_NAME=${MD_FILENAME}${NUMBER}
+  IMAGE_PATH=${IMAGE_DIR}${IMAGE_NAME}
+}
+
+check_exits_file(){
+# 保存するファイル名と同一のものが存在する場合は、ファイル名をインクリメント
+  gen_file_path
+  NUMBER=0
+  while [ -e $IMAGE_PATH.png ];do
+    NUMBER=$(( 1 + $NUMBER ))
+    gen_file_path
+  done
+}
+
+check_exits_file
  
 # tifで出力後に、png変換
 pngpaste $IMAGE_PATH.tif && \
