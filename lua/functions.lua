@@ -43,9 +43,10 @@ end
 h.usercmd('DocOpenDraftMemo', open_draft_memo)
 
 local open_dialy_memo = function()
-  local today = vim.fn.strftime('%Y-%m-%d', vim.fn.localtime())
+  -- local today = vim.fn.strftime('%Y-%m-%d', vim.fn.localtime())
+  local today = vim.fn.strftime('%Y-%m', vim.fn.localtime())
   local dir = os.getenv 'MEMO_DIR'
-  local target = dir .. '/' .. today .. '.md'
+  local target = dir .. '/daily/' .. today .. '.md'
 
   local win_count = vim.fn.winnr '$'
   local buf_name = vim.api.nvim_buf_get_name(0)
@@ -67,7 +68,7 @@ h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
 -- Paste Image on Markdown
 local paste_image = function()
   -- シェルスクリプトの出力を現在のバッファに挿入
-  local basename = vim.fn.expand('%:r')
+  local basename = vim.fn.expand '%:r'
   vim.cmd('r! ~/.config/nvim/sh/paste_image.sh ' .. basename)
 end
 h.usercmd('PasteImage', paste_image)
