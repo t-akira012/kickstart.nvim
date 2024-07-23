@@ -284,8 +284,8 @@ local telescope_project_find = function()
     hidden = true,
     no_ignore = false,
   }
-  local ok = pcall(require('telescope.builtin').find_files, opts)
-  -- local ok = pcall(require('telescope.builtin').git_files, opts)
+  -- local ok = pcall(require('telescope.builtin').find_files, opts)
+  local ok = pcall(require('telescope.builtin').git_files, opts)
   if not ok then
     require('telescope.builtin').find_files(opts)
   end
