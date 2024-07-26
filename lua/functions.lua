@@ -46,8 +46,7 @@ local open_dialy_memo = function() -- ex. 2024-07.md
   -- local today = vim.fn.strftime('%Y-%m-%d', vim.fn.localtime())
   local today = vim.fn.strftime('%Y-%m', vim.fn.localtime())
   local dir = os.getenv 'MEMO_DIR'
-  -- local target = dir .. '/daily/' .. today .. '.md'
-  local target = dir .. today .. '.md'
+  local target = dir .. '/' .. today .. '.md'
 
   local win_count = vim.fn.winnr '$'
   local buf_name = vim.api.nvim_buf_get_name(0)
