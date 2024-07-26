@@ -98,7 +98,8 @@ require('lazy').setup({
       'folke/neodev.nvim',
     },
   },
-
+  -- Show VSCode like icon on LSP
+  { 'onsails/lspkind.nvim' },
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
@@ -107,6 +108,8 @@ require('lazy').setup({
   { 'hrsh7th/cmp-buffer' },
   { 'hrsh7th/cmp-path' },
   { 'hrsh7th/cmp-nvim-lsp-signature-help' },
+  { 'uga-rosa/cmp-dictionary' },
+  { 'lukas-reineke/cmp-rg' },
   -- Useful plugin to show you pending keybinds.
   {
     'folke/which-key.nvim',
@@ -268,6 +271,9 @@ require('telescope').setup {
     },
   },
   pickers = {
+    git_files = {
+      git_command = { 'git', 'ls-files', '--exclude-standard', '--cached', '--others' },
+    },
     find_files = {
       find_command = { 'rg', '--files', '--hidden', '--glob', '!{**/.git/*,**/node_modules/*}' },
     },
@@ -502,17 +508,84 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
+require('lspkind').init {
+  mode = 'symbol_text',
+  preset = 'codicons',
+  symbol_map = {
+    Text = '󰉿',
+    Method = '󰆧',
+    Function = '󰊕',
+    Constructor = '',
+    Field = '󰜢',
+    Variable = '󰀫',
+    Class = '󰠱',
+    Interface = '',
+    Module = '',
+    Property = '󰜢',
+    Unit = '󰑭',
+    Value = '󰎠',
+    Enum = '',
+    Keyword = '󰌋',
+    Snippet = '',
+    Color = '󰏘',
+    File = '󰈙',
+    Reference = '󰈇',
+    Folder = '󰉋',
+    EnumMember = '',
+    Constant = '󰏿',
+    Struct = '󰙅',
+    Event = '',
+    Operator = '󰆕',
+    TypeParameter = '',
+  },
+}
+
 -- nvim-cmp setup
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
+local lspkind = require 'lspkind'
 
 luasnip.config.setup {}
+
+require('cmp_dictionary').setup {
+  paths = { '/usr/share/dict/words' },
+  exact_length = 2,
+}
 
 cmp.setup {
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  experimental = {
+    ghost_text = true,
+  },
+  formatting = {
+    fields = { 'abbr', 'kind', 'menu' },
+    format = lspkind.cmp_format {
+      mode = 'symbol_text',
+      maxwidth = 50,
+      ellipsis_char = '...',
+      show_labelDetails = true,
+      before = function(entry, item)
+        local menu_icon = {
+          nvim_lsp = '[LSP]',
+          luasnip = '[SNIP]',
+          buffer = '[BUFF]',
+          path = '[PATH]',
+          rg = '[Rg]',
+          dictionary = '[DICT]',
+        }
+
+        item.menu = menu_icon[entry.source.name]
+        return item
+      end,
+    },
   },
   mapping = cmp.mapping.preset.insert {
     -- ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -556,6 +629,8 @@ cmp.setup {
     { name = 'buffer' },
     { name = 'path' },
     { name = 'nvim_lsp_signature_help' },
+    { name = 'rg',                     keyword_length = 2 },
+    { name = 'dictionary',             keyword_length = 2 },
     {
       name = 'omni',
       option = {
