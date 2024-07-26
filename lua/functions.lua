@@ -73,6 +73,7 @@ local paste_image = function()
 end
 h.usercmd('PasteImage', paste_image)
 h.nmap('<Leader>S', '<CMD>PasteImage<CR>')
+h.imap('<C-v>', '<ESC><CMD>PasteImage<CR>')
 
 ----------------------------------------------------------------------------------------------------------
 -- Toogle Term on TMUX

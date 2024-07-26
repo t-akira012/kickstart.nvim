@@ -551,7 +551,7 @@ require('cmp_dictionary').setup {
   paths = { '/usr/share/dict/words' },
   exact_length = 2,
 }
-
+vim.api.nvim_set_hl(0, 'CmpItemMenu', { link = 'CmpItemAbbrDeprecatedDefault', default = true })
 cmp.setup {
   snippet = {
     expand = function(args)
