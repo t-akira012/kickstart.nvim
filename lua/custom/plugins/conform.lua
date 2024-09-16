@@ -25,6 +25,8 @@ return {
       args = function(self, ctx)
         return {
           'fmt',
+          '--line-width',
+          '200',
           '--options-no-semicolons',
           '-',
         }
