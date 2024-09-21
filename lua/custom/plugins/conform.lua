@@ -15,7 +15,7 @@ return {
       },
       format_on_save = {
         lsp_fallback = true,
-        timeout_ms = 500,
+        timeout_ms = 1000,
       },
     }
     require('conform').formatters.deno_fmt = {
@@ -26,7 +26,7 @@ return {
         return {
           'fmt',
           '--line-width',
-          '200',
+          '150',
           '--options-no-semicolons',
           '-',
         }
