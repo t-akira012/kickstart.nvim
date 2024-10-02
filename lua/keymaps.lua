@@ -58,6 +58,10 @@ vim.cmd [[
   vnoremap <expr> gs ':s/' . expand('<cword>') . '/'
   xnoremap <expr> p 'pgv"'.v:register.'ygv<esc>'
 
+  " 発音アクセント辞典
+  nnoremap <silent> ma :silent !open 'mkdictionaries:///?category=ja-accent&text=<C-r>=expand("<cword>")<CR>' > /dev/null 2>&1 &<CR>:redraw!<CR>
+  nnoremap <silent> mw :silent !open 'mkdictionaries:///?category=ja-accent&text=<C-r>=expand("<cWORD>")<CR>' > /dev/null 2>&1 &<CR>:redraw!<CR>
+  vnoremap <silent> ma "zy:silent !open 'mkdictionaries:///?category=ja-accent&text=<C-r>=@z<CR>' > /dev/null 2>&1 &<CR>:redraw!<CR>
 
   " add current date
   inoreabbrev ddb <C-R>=substitute(system("date -v-1d '+\%Y-\%m-\%d (\%a)'"), '\n', '', 'g')<CR>
