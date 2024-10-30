@@ -58,7 +58,7 @@ if [[ $(uname) == "Darwin" ]]; then
 fi
  
 if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
-  wl-paste > $IMAGE_PATH.png
+  wl-paste --type image/png > $IMAGE_PATH.png
   RESULT=$?
 fi
  
