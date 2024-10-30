@@ -26,7 +26,7 @@ h.usercmd('Pwd', show_current_dir)
 
 -- TODO: open_memoに統合
 local open_draft_memo = function()
-  local file = 'draft.md'
+  local file = 'DRAFT.md'
   local dir = os.getenv 'MEMO_DIR'
   local target = dir .. '/' .. file
 
