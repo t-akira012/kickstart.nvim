@@ -6,13 +6,21 @@
 
 MD_FILENAME=$*
 
-if ! type pbpaste > /dev/null 2>&1 ; then
-  echo pngpaste: command not found >&2
-  exit 1
+if [[ $(uname) == "Darwin" ]]; then 
+  if ! type pbpaste > /dev/null 2>&1 ; then
+    echo pngpaste: command not found >&2
+    exit 1
+  fi
+  if ! type convert > /dev/null 2>&1 ; then
+    echo convert: command not found >&2
+    exit 1
+  fi
 fi
-if ! type convert > /dev/null 2>&1 ; then
-  echo convert: command not found >&2
-  exit 1
+if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
+  if ! type wl-paste > /dev/null 2>&1 ; then
+    echo wl-paste: command not found >&2
+    exit 1
+  fi
 fi
  
 IMAGE_DIR=images/
@@ -42,10 +50,17 @@ check_exits_file(){
 
 check_exits_file
  
-# tifで出力後に、png変換
-pngpaste $IMAGE_PATH.tif && \
-    convert $IMAGE_PATH.tif $IMAGE_PATH.png
-RESULT=$?
+if [[ $(uname) == "Darwin" ]]; then 
+  # tifで出力後に、png変換
+  pngpaste $IMAGE_PATH.tif && \
+      convert $IMAGE_PATH.tif $IMAGE_PATH.png
+  RESULT=$?
+fi
+ 
+if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
+  wl-paste > $IMAGE_PATH.png
+  RESULT=$?
+fi
  
 # 画像が保存できた場合はMarkdownに画像を展開する。
 if [ $RESULT = 0 ]; then
