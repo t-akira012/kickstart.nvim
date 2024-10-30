@@ -460,7 +460,7 @@ local servers = {
   pylsp = {},
   rust_analyzer = {},
   terraformls = {},
-  tsserver = {},
+  ts_ls = {},
   -- denols = {},
   lua_ls = {
     Lua = {
@@ -478,7 +478,7 @@ mason_lspconfig.setup {
 -- require 'lspconfig'.racket_langserver.setup {}
 
 local lspconfig = require 'lspconfig'
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
   root_dir = lspconfig.util.root_pattern 'package.json',
 }
 -- lspconfig.denols.setup({
