@@ -111,13 +111,14 @@ require('lazy').setup({
   { 'uga-rosa/cmp-dictionary' },
   { 'lukas-reineke/cmp-rg' },
   -- Useful plugin to show you pending keybinds.
-  {
-    'folke/which-key.nvim',
-    opts = {},
-    config = function()
-      vim.keymap.set('n', 'gW', '<CMD>WhichKey<CR>')
-    end,
-  },
+  -- spaceでキーバインドを表示 ... 使わない
+  -- {
+  --   'folke/which-key.nvim',
+  --   opts = {},
+  --   config = function()
+  --     vim.keymap.set('n', 'gW', '<CMD>WhichKey<CR>')
+  --   end,
+  -- },
   { -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
