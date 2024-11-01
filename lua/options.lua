@@ -40,12 +40,12 @@ opt.swapfile = false
 -- set printfont="HackGenNerd:h11"
 
 if os.getenv 'TERM_COLOR_MODE' == 'LIGHT' then
-    opt.background = 'light'
-    vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_LIGHT')
+  opt.background = 'light'
+  vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_LIGHT')
 else
-    opt.background = 'dark'
-    vim.cmd [[ let g:material_style='oceanic' ]]
-    vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_DARK')
+  opt.background = 'dark'
+  vim.cmd [[ let g:material_style='oceanic' ]]
+  vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_DARK')
 end
 
 -- ウィンドウ設定
@@ -150,8 +150,8 @@ opt.wildignore:append { '*/node_modules/*' }
 
 -- paste mode を自動で解除
 vim.api.nvim_create_autocmd('InsertLeave', {
-    pattern = '*',
-    command = 'set nopaste',
+  pattern = '*',
+  command = 'set nopaste',
 })
 -- paste mode を自動で解除
 -- インサートモード時はハイライトを除去
@@ -165,7 +165,7 @@ opt.formatoptions:append { 'r' }
 
 -- lsp
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics,
-    { virtual_text = false })
+  { virtual_text = false })
 
 -- other
 vim.cmd [[
@@ -175,6 +175,10 @@ vim.cmd [[
 
     " Browse Command
     command! -nargs=1 Browse silent exec '!open "<args>"'
+
+    " 空行の無名バッファで保存ダイアログを無視
+    autocmd QuitPre * if &modified && expand('%') == '' && line2byte('$') == 1 | set nomodified | q! | endif
 ]]
+
 
 return {}
