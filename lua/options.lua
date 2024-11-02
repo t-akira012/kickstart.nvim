@@ -47,6 +47,20 @@ else
   vim.cmd [[ let g:material_style='oceanic' ]]
   vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_DARK')
 end
+if vim.env.XDG_SESSION_TYPE == "wayland" then
+  vim.cmd [[highlight Normal ctermbg=none guibg=none]]
+  vim.cmd [[highlight NonText ctermbg=none guibg=none]]
+  vim.cmd [[highlight CursorLine ctermbg=none guibg=none]]
+  vim.cmd [[highlight LineNr ctermbg=none guibg=none]]
+  vim.cmd [[highlight CursorLineNr ctermbg=none guibg=none]]
+  vim.cmd [[highlight FoldColumn ctermbg=none guibg=none]]
+  vim.cmd [[highlight SignColumn ctermbg=none guibg=none]]
+  vim.cmd [[highlight TabLine ctermbg=none guibg=none]]
+  vim.cmd [[highlight TabLineFill ctermbg=none guibg=none]]
+  vim.cmd [[highlight TabLineSel ctermbg=none guibg=none]]
+  vim.opt.cursorline = true
+  vim.opt.termguicolors = true
+end
 
 -- ウィンドウ設定
 -- 新規windowは右, 下に開く
