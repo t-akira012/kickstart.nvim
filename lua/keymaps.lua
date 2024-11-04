@@ -75,6 +75,7 @@ vim.cmd [[
   " インデント増減
   inoremap <M-.> <C-O>>><C-O>A
   inoremap <M-,> <C-O><<<C-O>A
+  inoremap <C-a> <C-O>0<C-O>a
 ]]
 
 return {}
