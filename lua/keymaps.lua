@@ -79,6 +79,8 @@ vim.cmd [[
   " emacs like keybind
   nnoremap <C-a> 0i
   nnoremap <C-e> $a
+  inoremap <C-f> <right>
+  inoremap <C-b> <left>
   inoremap <C-k> <C-O>D<C-O>i
   inoremap <C-a> <C-O>0<C-O>i
   inoremap <C-e> <C-O>$<C-O>a
