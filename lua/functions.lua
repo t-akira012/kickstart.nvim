@@ -105,7 +105,7 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown',
   callback = function()
     vim.cmd [[
-		inoremap <expr><buffer> <C-d> strftime('%-m/%-d %a')
+		" inoremap <expr><buffer> <C-d> strftime('%-m/%-d %a')
 		inoremap <expr><buffer> <C-t> strftime('%H:%M')
 		abbr <buffer> tt - [ ]
 		]]
