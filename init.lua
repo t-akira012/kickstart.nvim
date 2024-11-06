@@ -479,7 +479,7 @@ mason_lspconfig.setup {
 -- require 'lspconfig'.racket_langserver.setup {}
 
 local lspconfig = require 'lspconfig'
-lspconfig.ts_ls.setup {
+lspconfig.vtsls.setup {
   root_dir = lspconfig.util.root_pattern 'package.json',
 }
 -- lspconfig.denols.setup({
