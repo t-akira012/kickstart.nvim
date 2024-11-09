@@ -589,18 +589,32 @@ cmp.setup {
     },
   },
   mapping = cmp.mapping.preset.insert {
-    -- ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-n>'] = cmp.mapping(function(fallback)
+    -- ['<S-Space>'] = cmp.mapping.complete {},
+    ['<C-_>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       else
         cmp.complete()
       end
     end, { 'i', 's' }),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        -- cmp.complete()
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Down>', true, true, true), 'n', true)
+      end
+    end, { 'i', 's' }),
+    ['<C-p>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Up>', true, true, true), 'n', true)
+      end
+    end, { 'i', 's' }),
+    ['<S-tab>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<S-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
