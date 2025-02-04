@@ -4,7 +4,7 @@ return {
     require('conform').setup {
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = { 'ruff_format' },
+        python = {},
         javascript = { 'deno_fmt' },
         typescript = { 'deno_fmt' },
         javascriptreact = { 'deno_fmt' },

@@ -458,7 +458,16 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 local mason_lspconfig = require 'mason-lspconfig'
 local servers = {
   gopls = {},
-  pylsp = {},
+  pylsp = {
+    plugins = {
+      autopep8 = { enabled = false },
+      pycodestyle = { enabled = false },
+      flake8 = {
+        enabled = true,
+        maxLineLength = 200,
+      },
+    },
+  },
   rust_analyzer = {},
   tflint = {},
   vtsls = {},
