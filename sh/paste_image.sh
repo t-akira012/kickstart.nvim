@@ -11,8 +11,8 @@ if [[ $(uname) == "Darwin" ]]; then
     echo pngpaste: command not found >&2
     exit 1
   fi
-  if ! type convert > /dev/null 2>&1 ; then
-    echo convert: command not found >&2
+  if ! type magick > /dev/null 2>&1 ; then
+    echo magick: command not found >&2
     exit 1
   fi
 fi
@@ -53,7 +53,7 @@ check_exits_file
 if [[ $(uname) == "Darwin" ]]; then 
   # tifで出力後に、png変換
   pngpaste $IMAGE_PATH.tif && \
-      convert $IMAGE_PATH.tif $IMAGE_PATH.png
+      magick $IMAGE_PATH.tif $IMAGE_PATH.png
   RESULT=$?
 fi
  
