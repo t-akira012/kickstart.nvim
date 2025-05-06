@@ -112,4 +112,25 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+----------------------------------------------------------------------------------------------------------
+-- ユーザーコマンド「:Bullet」を定義
+-- lua/functions.lua などに置いてください
+vim.api.nvim_create_user_command('Bullet', function(opts)
+  -- 範囲指定がある場合は opts.line1～opts.line2、ない場合はカーソル行
+  local start_row = opts.line1 or vim.fn.line '.'
+  local end_row = opts.line2 or start_row
+
+  for i = start_row, end_row do
+    local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+    vim.api.nvim_buf_set_lines(0, i - 1, i, false, { '- ' .. line })
+  end
+end, {
+  range = true, -- ビジュアルや :2,5Bullet を有効にする
+  desc = '行頭に「 - 」を挿入する',
+})
+
+-- <Leader>* でノーマル／ビジュアル両モードから呼び出し
+h.nmap('<c-t>', '<CMD>Bullet<CR>')
+h.vmap('<c-t>', '<CMD>Bullet<CR>')
+
 return {}
