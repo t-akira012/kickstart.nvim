@@ -86,6 +86,7 @@ vim.cmd [[
   inoremap <C-k> <C-O>D<C-O>i
   inoremap <C-a> <C-O>0<C-O>i
   inoremap <C-e> <C-O>$<C-O>a
+  inoremap <C-o> <C-O>O<C-O>i
 
   " Gbrowse to GBrowse
   command! -bar -bang -range=-1 -nargs=* -complete=customlist,fugitive#CompleteObject Gbrowse
