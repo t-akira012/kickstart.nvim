@@ -106,7 +106,7 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function()
     vim.cmd [[
 		" inoremap <expr><buffer> <C-d> strftime('%-m/%-d %a')
-		inoremap <expr><buffer> <C-t> strftime('%H:%M')
+		" inoremap <expr><buffer> <C-t> strftime('%H:%M')
 		abbr <buffer> tt - [ ]
 		]]
   end,
@@ -130,8 +130,8 @@ end, {
 })
 
 -- <Leader>* でノーマル／ビジュアル両モードから呼び出し
-h.nmap('<c-t>', '<CMD>Bullet<CR>')
-h.vmap('<c-t>', '<CMD>Bullet<CR>')
+h.nmap('<c-l>', '<CMD>Bullet<CR>')
+h.vmap('<c-l>', '<CMD>Bullet<CR>')
 
 vim.api.nvim_create_user_command('List', function(opts)
   local start_row = opts.line1 or vim.fn.line '.'
@@ -149,5 +149,68 @@ end, {
 -- <Leader>* でノーマル／ビジュアル両モードから呼び出し
 h.nmap('<c-l>', '<CMD>List<CR>')
 h.vmap('<c-l>', '<CMD>List<CR>')
+
+-- ToggleList
+vim.cmd [[
+
+  " バッファローカル変数でトグル状態を管理
+  function! s:InitToggleList()
+      if !exists('b:toggle_list_enabled')
+          let b:toggle_list_enabled = 0
+      endif
+  endfunction
+
+  " ToggleList機能を切り替える関数
+  function! ToggleList()
+      " バッファローカル変数の初期化
+      call s:InitToggleList()
+
+      if b:toggle_list_enabled
+          " トグルOFF: キーマッピングを無効化（バッファローカル）
+          silent! iunmap <buffer> <Tab>
+          silent! iunmap <buffer> <S-Tab>
+          silent! nunmap <buffer> <Tab>
+          silent! nunmap <buffer> <S-Tab>
+          vnoremap <buffer> <Tab> >gv
+          vnoremap <buffer> <S-Tab> <gv
+          let b:toggle_list_enabled = 0
+          echo "ToggleList: OFF (buffer " . bufnr('%') . ")"
+      else
+          " トグルON: キーマッピングを設定（バッファローカル）
+          " インサートモード
+          inoremap <buffer> <Tab> <C-T>
+          inoremap <buffer> <S-Tab> <C-D>
+          " ノーマルモード
+          nnoremap <buffer> <Tab> I<C-T><Esc>
+          nnoremap <buffer> <S-Tab> I<C-D><Esc>
+          " ビジュアルモード
+          vnoremap <buffer> <Tab> >gv
+          vnoremap <buffer> <S-Tab> <gv
+          let b:toggle_list_enabled = 1
+          echo "ToggleList: ON (buffer " . bufnr('%') . ")"
+      endif
+  endfunction
+
+  " バッファ固有の状態を確認する関数
+  function! ToggleListStatus()
+      call s:InitToggleList()
+      if b:toggle_list_enabled
+          echo "ToggleList: ON (buffer " . bufnr('%') . ")"
+      else
+          echo "ToggleList: OFF (buffer " . bufnr('%') . ")"
+      endif
+  endfunction
+
+  " コマンドを定義
+  command! ToggleList call ToggleList()
+  command! ToggleListStatus call ToggleListStatus()
+
+  " 初期設定: CTRL+T でToggleList実行
+  " バッファ作成時に設定
+  autocmd BufEnter * call s:InitToggleList() | inoremap <buffer> <C-t> <C-O>:call ToggleList()<CR>
+  " ノーマルモードでも Option+T でToggleList実行
+  autocmd BufEnter * nnoremap <buffer> <C-t> :call ToggleList()<CR>
+
+]]
 
 return {}
