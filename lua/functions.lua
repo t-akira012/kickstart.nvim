@@ -169,10 +169,17 @@ vim.cmd [[
           " トグルOFF: キーマッピングを無効化（バッファローカル）
           silent! iunmap <buffer> <Tab>
           silent! iunmap <buffer> <S-Tab>
+          silent! iunmap <buffer> <C-M>
           silent! nunmap <buffer> <Tab>
           silent! nunmap <buffer> <S-Tab>
+          silent! nunmap <buffer> <C-M>
           vnoremap <buffer> <Tab> >gv
           vnoremap <buffer> <S-Tab> <gv
+
+          " format optionを戻す
+          setlocal comments<
+          setlocal formatoptions<
+
           let b:toggle_list_enabled = 0
           echo "ToggleList: OFF (buffer " . bufnr('%') . ")"
       else
@@ -180,12 +187,21 @@ vim.cmd [[
           " インサートモード
           inoremap <buffer> <Tab> <C-T>
           inoremap <buffer> <S-Tab> <C-D>
+          inoremap <buffer> <C-M> <C-o>o*<space>
           " ノーマルモード
           nnoremap <buffer> <Tab> I<C-T><Esc>
           nnoremap <buffer> <S-Tab> I<C-D><Esc>
+          nnoremap <buffer> <C-M> o*<space>
           " ビジュアルモード
           vnoremap <buffer> <Tab> >gv
           vnoremap <buffer> <S-Tab> <gv
+
+          " format option
+          setlocal comments=nb:>,
+                \  comments+=b:-\ [\ ],b:-\ [x],b:-
+                \  comments+=b:*,b:-,b:+,b:1.
+          setlocal formatoptions-=c formatoptions+=jro
+
           let b:toggle_list_enabled = 1
           echo "ToggleList: ON (buffer " . bufnr('%') . ")"
       endif
