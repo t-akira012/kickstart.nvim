@@ -187,11 +187,11 @@ vim.cmd [[
           " インサートモード
           inoremap <buffer> <Tab> <C-T>
           inoremap <buffer> <S-Tab> <C-D>
-          inoremap <buffer> <C-M> <C-o>o*<space>
+          inoremap <buffer> <M-CR> <C-o>o*<space>
           " ノーマルモード
           nnoremap <buffer> <Tab> I<C-T><Esc>
           nnoremap <buffer> <S-Tab> I<C-D><Esc>
-          nnoremap <buffer> <C-M> o*<space>
+          nnoremap <buffer> <M-CR> o*<space>
           " ビジュアルモード
           vnoremap <buffer> <Tab> >gv
           vnoremap <buffer> <S-Tab> <gv
