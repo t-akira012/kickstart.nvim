@@ -118,22 +118,27 @@ function toggle_checkbox()
   local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
   local line = vim.api.nvim_get_current_line()
   local indent, content = line:match '^(%s*)(.*)$'
+  local move_cursor = false
+
+  -- 既存のチェックボックスを除去して中身を取得
+  local stripped = content:gsub('^%- %[%s%] ', ''):gsub('^%- %[x%] ', '')
   local new_line
 
   if content:match '^%- %[%s%] ' then
-    -- 未チェック -> チェック済み
-    new_line = indent .. content:gsub('^%- %[%s%] ', '- [x] ')
+    -- チェックする
+    new_line = indent .. '- [x] ' .. stripped
   elseif content:match '^%- %[x%] ' then
-    -- チェック済み -> 未チェック
-    new_line = indent .. content:gsub('^%- %[x%] ', '- [ ] ')
+    -- チェックを外す
+    new_line = indent .. '- [ ] ' .. stripped
   else
-    -- チェックボックスなし -> 未チェックを追加
-    new_line = indent .. '- [ ] ' .. content
+    -- チェックボックスを追加
+    new_line = indent .. '- [ ] ' .. stripped
     move_cursor = true
   end
 
+  -- 行を更新
   vim.api.nvim_set_current_line(new_line)
-  -- 必要に応じてカーソルを行末に移動
+  -- 追加時のみカーソルを行末に移動
   if move_cursor then
     local col = #new_line
     vim.api.nvim_win_set_cursor(0, { row, col })
