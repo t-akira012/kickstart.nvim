@@ -113,42 +113,35 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 ----------------------------------------------------------------------------------------------------------
--- ユーザーコマンド「:Bullet」を定義
--- lua/functions.lua などに置いてください
-vim.api.nvim_create_user_command('Bullet', function(opts)
-  -- 範囲指定がある場合は opts.line1～opts.line2、ない場合はカーソル行
-  local start_row = opts.line1 or vim.fn.line '.'
-  local end_row = opts.line2 or start_row
+-- ToggleCheckbox: 行頭チェックボックスを切り替え
+function toggle_checkbox()
+  local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+  local indent, content = line:match '^(%s*)(.*)$'
+  local new_line
 
-  for i = start_row, end_row do
-    local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
-    vim.api.nvim_buf_set_lines(0, i - 1, i, false, { '- ' .. line })
+  if content:match '^%- %[%s%] ' then
+    -- 未チェック -> チェック済み
+    new_line = indent .. content:gsub('^%- %[%s%] ', '- [x] ')
+  elseif content:match '^%- %[x%] ' then
+    -- チェック済み -> 未チェック
+    new_line = indent .. content:gsub('^%- %[x%] ', '- [ ] ')
+  else
+    -- チェックボックスなし -> 未チェックを追加
+    new_line = indent .. '- [ ] ' .. content
+    move_cursor = true
   end
-end, {
-  range = true, -- ビジュアルや :2,5Bullet を有効にする
-  desc = '行頭に「- 」を挿入する',
-})
 
--- <Leader>* でノーマル／ビジュアル両モードから呼び出し
-h.nmap('<c-l>', '<CMD>Bullet<CR>')
-h.vmap('<c-l>', '<CMD>Bullet<CR>')
-
-vim.api.nvim_create_user_command('List', function(opts)
-  local start_row = opts.line1 or vim.fn.line '.'
-  local end_row = opts.line2 or start_row
-
-  for i = start_row, end_row do
-    local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
-    vim.api.nvim_buf_set_lines(0, i - 1, i, false, { '- [ ] ' .. line })
+  vim.api.nvim_set_current_line(new_line)
+  -- 必要に応じてカーソルを行末に移動
+  if move_cursor then
+    local col = #new_line
+    vim.api.nvim_win_set_cursor(0, { row, col })
   end
-end, {
-  range = true,
-  desc = '行頭に「- [ ] 」を挿入する',
-})
+end
 
--- <Leader>* でノーマル／ビジュアル両モードから呼び出し
-h.nmap('<c-l>', '<CMD>List<CR>')
-h.vmap('<c-l>', '<CMD>List<CR>')
+vim.keymap.set('n', '<c-l>', toggle_checkbox, { noremap = true, silent = true })
+vim.keymap.set('i', '<c-l>', toggle_checkbox, { noremap = true, silent = true })
 
 -- ToggleList
 vim.cmd [[
