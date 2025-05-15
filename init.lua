@@ -36,17 +36,12 @@ require('lazy').setup({
     dependencies = {
       -- LSP自動インストール プラグイン
       { 'williamboman/mason.nvim', config = true },
-      'williamboman/mason-lspconfig.nvim',
+      { 'williamboman/mason-lspconfig.nvim' },
 
       -- 通知プラグイン
-      {
-        'j-hui/fidget.nvim',
-        tag = 'legacy',
-        opts = {},
-      },
-
+      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
       -- Lazyの開発用プラグイン
-      'folke/lazydev.nvim',
+      { 'folke/lazydev.nvim' },
     },
   },
   -- アイコン表示
