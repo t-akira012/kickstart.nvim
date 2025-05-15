@@ -94,8 +94,8 @@ require('lazy').setup({
           'diff',
           {
             'diagnostics',
-            colored = true,             -- ファイルタイプアイコンをカラー表示
-            icon_only = false,          -- ファイルタイプのアイコンのみを表示
+            colored = true, -- ファイルタイプアイコンをカラー表示
+            icon_only = false, -- ファイルタイプのアイコンのみを表示
             icon = { align = 'right' }, -- ファイルタイプアイコンを右側で表示
           },
         },
@@ -107,10 +107,10 @@ require('lazy').setup({
             path = 4,
             shorting_target = 40,
             symbols = {
-              modified = '[+]',      -- ファイル変更時
-              readonly = '[-]',      -- 読み込み専用
+              modified = '[+]', -- ファイル変更時
+              readonly = '[-]', -- 読み込み専用
               unnamed = '[No Name]', -- 名前なしバッファ
-              newfile = '[New]',     -- 新規ファイル
+              newfile = '[New]', -- 新規ファイル
             },
           },
         },
@@ -433,6 +433,13 @@ lspconfig.vtsls.setup {
   root_dir = lspconfig.util.root_pattern 'package.json',
 }
 
+require('lspconfig').tflint.setup {
+  on_init = function(client)
+    -- サーバーからの semanticTokensProvider を無効化
+    client.server_capabilities.semanticTokensProvider = nil
+  end,
+}
+
 -- denols の設定
 -- lspconfig.denols.setup({
 --   root_dir = lspconfig.util.root_pattern("deno.json"),
@@ -602,8 +609,8 @@ cmp.setup {
     { name = 'buffer' },
     { name = 'path' },
     { name = 'nvim_lsp_signature_help' },
-    { name = 'rg',                     keyword_length = 2 },
-    { name = 'dictionary',             keyword_length = 2 },
+    { name = 'rg', keyword_length = 2 },
+    { name = 'dictionary', keyword_length = 2 },
     {
       name = 'omni',
       option = {
