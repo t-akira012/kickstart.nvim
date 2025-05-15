@@ -433,6 +433,16 @@ lspconfig.vtsls.setup {
   root_dir = lspconfig.util.root_pattern 'package.json',
 }
 
+-- tflint, terraform-lsでエラーが出る対策
+local disable_semantic = function(client)
+  client.server_capabilities.semanticTokensProvider = nil
+end
+
+-- terraform-ls
+require('lspconfig').terraformls.setup {
+  on_init = disable_semantic,
+}
+
 -- denols の設定
 -- lspconfig.denols.setup({
 --   root_dir = lspconfig.util.root_pattern("deno.json"),
