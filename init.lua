@@ -410,7 +410,7 @@ local servers = {
     },
   },
   -- rust_analyzer = {},
-  tflint = {},
+  terraformls = {},
   vtsls = {},
   -- denols = {},
   lua_ls = {
@@ -431,13 +431,6 @@ local lspconfig = require 'lspconfig'
 -- vtsls の設定
 lspconfig.vtsls.setup {
   root_dir = lspconfig.util.root_pattern 'package.json',
-}
-
-require('lspconfig').tflint.setup {
-  on_init = function(client)
-    -- サーバーからの semanticTokensProvider を無効化
-    client.server_capabilities.semanticTokensProvider = nil
-  end,
 }
 
 -- denols の設定
