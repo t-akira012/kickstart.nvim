@@ -113,32 +113,80 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 ----------------------------------------------------------------------------------------------------------
--- ToggleCheckbox: 行頭チェックボックスを切り替え
-function toggle_checkbox()
+-- ToggleBullet:
+function toggle_bullet()
   local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
   local line = vim.api.nvim_get_current_line()
   local indent, content = line:match '^(%s*)(.*)$'
   local move_cursor = false
 
-  -- 既存のチェックボックスを除去して中身を取得
-  local stripped = content:gsub('^%- %[%s%] ', ''):gsub('^%- %[x%] ', '')
+  -- 先頭の "- " または "* " を取り除いた本文
+  local stripped = content:gsub('^%- ', ''):gsub('^%* ', '')
   local new_line
 
-  if content:match '^%- %[%s%] ' then
-    -- チェックする
-    new_line = indent .. '- [x] ' .. stripped
-  elseif content:match '^%- %[x%] ' then
-    -- チェックを外す
-    new_line = indent .. '- [ ] ' .. stripped
+  -- 1. 既存のチェックボックス行なら即リターン（何もしない）
+  --    stripped が "[ ]" や "[x]"、"[*]" の形式ならここで関数終了
+  if stripped:match '^%[[ xX]?%]' then
+    return
+  -- 2. 箇条書きマーカーだけの行（- foo / * foo）はマーカーを外す
+  elseif content:match '^%s*[%-%*]%s' then
+    new_line = indent .. stripped
+  -- 3. それ以外はチェックボックスを追加
   else
-    -- チェックボックスを追加
-    new_line = indent .. '- [ ] ' .. stripped
+    new_line = indent .. '- ' .. stripped
+    move_cursor = true
+  end -- if の終わり
+
+  -- 行を更新
+  vim.api.nvim_set_current_line(new_line)
+  -- 追加した場合のみ、カーソルを行末に移動
+  if move_cursor then
+    local col = #new_line
+    vim.api.nvim_win_set_cursor(0, { row, col })
+  end
+end
+
+vim.keymap.set('n', '<c-g>', toggle_bullet, { noremap = true, silent = true })
+vim.keymap.set('i', '<c-g>', toggle_bullet, { noremap = true, silent = true })
+
+-- ToggleCheckbox: 行頭チェックボックスを切り替え
+function toggle_checkbox()
+  -- カーソルの行番号と内容を取得
+  local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+  -- インデントと本文（先頭マーカー＋本文）を分離
+  local indent, content = line:match '^(%s*)(.*)$'
+  local move_cursor = false
+  local new_line
+
+  -- 先頭が "-" または "*" + " [ ]" あるいは " [x]" のパターンをキャプチャ
+  local marker, checked, body = content:match '^([%-%*]) %[([ %txX])%] (.*)$'
+  if marker then
+    -- 既存チェックボックス行の場合はオン／オフをトグル
+    if checked:match '%s' then
+      -- unchecked -> check
+      new_line = indent .. marker .. ' [x] ' .. body
+    else
+      -- checked -> uncheck
+      new_line = indent .. marker .. ' [ ] ' .. body
+    end
+  else
+    -- チェックボックスがない行の場合は、先頭マーカー（-/*）を保持して追加
+    local m2, rest = content:match '^([%-%*])%s*(.*)$'
+    if m2 then
+      -- 先頭がマーカー付きの通常リスト行
+      new_line = indent .. m2 .. ' [ ] ' .. rest
+    else
+      -- マーカーもない普通の行（必要に応じてここを変えてください）
+      new_line = indent .. '- [ ] ' .. content
+    end
     move_cursor = true
   end
 
   -- 行を更新
   vim.api.nvim_set_current_line(new_line)
-  -- 追加時のみカーソルを行末に移動
+
+  -- 追加したときだけカーソルを行末に移動
   if move_cursor then
     local col = #new_line
     vim.api.nvim_win_set_cursor(0, { row, col })
