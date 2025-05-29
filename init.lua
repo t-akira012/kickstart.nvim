@@ -39,7 +39,7 @@ require('lazy').setup({
       -- LSP自動インストール プラグイン
       { 'williamboman/mason.nvim', config = true },
       { 'williamboman/mason-lspconfig.nvim' },
-
+      { 'zapling/mason-conform.nvim' },
       -- 通知プラグイン
       -- { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
       -- Lazyの開発用プラグイン
@@ -400,7 +400,7 @@ local servers = {
     plugins = {
       autopep8 = { enabled = false },
       pycodestyle = { enabled = false },
-      flake8 = {
+      flake8 = { -- linterのみ有効
         enabled = true,
         maxLineLength = 200,
       },
@@ -469,7 +469,11 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
-
+-- mason-conform設定（conformで設定されたフォーマッターを自動インストール）
+require('mason-conform').setup {
+  -- 自動インストールを有効にする
+  -- ignore_install = {} -- 特定のフォーマッターをスキップしたい場合
+}
 ------------------------------------------------------------------------------------------------------------
 -- lspkind設定 - アイコンと表示モードを設定して補完メニューに絵文字アイコンを追加
 require('lspkind').init {

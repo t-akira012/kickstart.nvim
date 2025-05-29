@@ -4,7 +4,7 @@ return {
     require('conform').setup {
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = {},
+        python = { 'isort', 'black' }, -- isort > black の順序で実行
         javascript = { 'deno_fmt' },
         typescript = { 'deno_fmt' },
         javascriptreact = { 'deno_fmt' },
@@ -12,6 +12,14 @@ return {
         sql = { 'sqlfmt' },
         -- sh = { 'shfmt' },
         go = { 'gofmt' },
+      },
+      formatters = {
+        black = {
+          args = { '--line-length', '200', '--stdin-filename', '$FILENAME', '-' },
+        },
+        isort = {
+          args = { '--profile', 'black', '--line-length', '200', '--stdout', '--filename', '$FILENAME', '-' },
+        },
       },
       format_on_save = {
         lsp_fallback = true,
