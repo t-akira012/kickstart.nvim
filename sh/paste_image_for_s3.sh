@@ -22,9 +22,6 @@ if [ -z "$S3_ENDPOINT_URL" ]; then
 fi
 
 # デフォルト値の設定
-S3_REGION=${S3_REGION:-"us-east-1"}
-S3_PREFIX=${S3_PREFIX:-"images/"}
-
 MD_FILENAME=$*
 
 if [[ $(uname) == "Darwin" ]]; then 
@@ -57,7 +54,7 @@ trap "rm -rf $TEMP_DIR" EXIT
 gen_file_name(){
   IMAGE_NAME=${MD_FILENAME}${NUMBER}.png
   LOCAL_PATH=${TEMP_DIR}/${IMAGE_NAME}
-  S3_PATH=${S3_PREFIX}${IMAGE_NAME}
+  S3_PATH=${IMAGE_NAME}
 }
 
 check_exists_s3(){
@@ -87,7 +84,7 @@ fi
 # 画像が保存できた場合はS3にアップロード
 if [ $RESULT = 0 ]; then
   # S3にアップロード
-  aws s3 cp $LOCAL_PATH s3://${S3_BUCKET}/${S3_PATH} --endpoint-url ${S3_ENDPOINT_URL} --region ${S3_REGION}
+  aws s3 cp $LOCAL_PATH s3://${S3_BUCKET}/${S3_PATH} --endpoint-url ${S3_ENDPOINT_URL} > /dev/null
   
   if [ $? = 0 ]; then
     # S3のURLを生成
