@@ -69,7 +69,8 @@ h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
 local paste_image = function()
   -- シェルスクリプトの出力を現在のバッファに挿入
   local basename = vim.fn.expand '%:r'
-  vim.cmd('r! ~/.config/nvim/sh/paste_image.sh ' .. basename)
+  local dirname = "'" .. vim.fn.getcwd() .. "'"
+  vim.cmd('r! ~/.config/nvim/sh/paste_image.sh ' .. basename .. ' ' .. dirname)
 end
 h.usercmd('PasteImage', paste_image)
 h.nmap('<Leader>S', '<CMD>PasteImage<CR>')
