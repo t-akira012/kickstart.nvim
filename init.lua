@@ -272,10 +272,10 @@ vim.keymap.set('i', '<C-r>', require('telescope.builtin').registers)
 -- Treesitter設定
 require('nvim-treesitter.configs').setup {
   -- treesitterでインストールしたい言語
-  ensure_installed = { 'terraform', 'go', 'lua', 'python', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = { 'terraform', 'bash', 'make', 'json', 'css', 'go', 'lua', 'python', 'tsx', 'typescript', 'vimdoc', 'vim' },
 
   -- 未インストール言語を自動インストールするか
-  auto_install = false,
+  auto_install = true,
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
