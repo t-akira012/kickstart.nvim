@@ -79,12 +79,12 @@ check_exists_minio
 
 if [[ $(uname) == "Darwin" ]]; then 
   # tifで出力後に、png変換
-  pngpaste ${LOCAL_PATH%.png}.tif && \
-      magick ${LOCAL_PATH%.png}.tif $LOCAL_PATH
+  pngpaste ${LOCAL_PATH%.png}.tif
+  magick ${LOCAL_PATH%.png}.tif $LOCAL_PATH
   RESULT=$?
 fi
  
-if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
+if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
   wl-paste --type image/png > $LOCAL_PATH
   RESULT=$?
 fi
