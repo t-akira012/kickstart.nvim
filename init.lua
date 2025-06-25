@@ -19,9 +19,9 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- 時刻表記を日本語
-vim.cmd [[
-  language time ja_JP
-]]
+-- vim.cmd [[
+--   language time ja_JP
+-- ]]
 
 -- プラグイン定義
 require('lazy').setup({
