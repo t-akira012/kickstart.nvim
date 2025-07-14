@@ -61,9 +61,6 @@ end
 
 h.usercmd('DocOpenDailyMemo', open_dialy_memo)
 
-h.nmap('--', '<CMD>DocOpenDraftMemo<CR>')
-h.nmap('-d', '<CMD>DocOpenDailyMemo<CR>')
-
 ----------------------------------------------------------------------------------------------------------
 -- Paste Image on Markdown
 local paste_image = function()
