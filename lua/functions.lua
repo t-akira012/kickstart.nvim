@@ -1,6 +1,23 @@
 local vim = vim
 local h = require 'helper'
 
+-- clip ---------------------------------------------------------------------------------------------
+if vim.fn.has 'linux' == 1 and vim.env.SSH_CLIENT then
+  vim.opt.clipboard = 'unnamedplus'
+  vim.g.clipboard = {
+    name = 'ssh-pbpaste',
+    copy = {
+      ['+'] = '/usr/local/bin/pbcopy',
+      ['*'] = '/usr/local/bin/pbcopy',
+    },
+    paste = {
+      ['+'] = '/usr/local/bin/pbpaste',
+      ['*'] = '/usr/local/bin/pbpaste',
+    },
+    cache_enabled = 1,
+  }
+end
+
 --- CHDIR ------------------------------------------------------------------------------------------
 
 local change_current_directory = function()
