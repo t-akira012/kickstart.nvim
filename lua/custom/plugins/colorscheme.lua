@@ -9,4 +9,5 @@ return {
     priority = 1000,
   },
   { 'ayu-theme/ayu-vim', priority = 1000 },
+  { 'sainnhe/everforest', priority = 1000 },
 }

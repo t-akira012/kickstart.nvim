@@ -637,5 +637,5 @@ if vim.g.neovide then
   vim.g.neovide_scroll_animation_length = 0.00
 
   -- Neovide-specific colorscheme (optional)
-  vim.cmd 'colorscheme habamax'
+  vim.cmd 'colorscheme everforest'
 end
