@@ -65,6 +65,7 @@ require('lazy').setup({
   { -- 行番号にGitサインを表示
     'lewis6991/gitsigns.nvim',
     opts = {
+      signcolumn = true,
       signs = {
         add = { text = '+' },
         change = { text = '~' },
