@@ -1,7 +1,7 @@
 return {
   'akinsho/toggleterm.nvim',
   config = function()
-    if vim.g.neovide then
+    if vim.g.for_doc then
       require('toggleterm').setup {
         open_mapping = [[<c-j>]],
         size = function(term)

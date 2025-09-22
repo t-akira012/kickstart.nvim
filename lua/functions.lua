@@ -99,7 +99,7 @@ end
 h.usercmd('ToggleTermOnTmux', toggle_term_on_tmux)
 
 -- GUI以外
-if not vim.g.neovide then
+if not vim.g.for_doc then
   h.nmap('<c-j>', '<CMD>ToggleTermOnTmux<CR>')
 end
 -- if vim.g.neovide then

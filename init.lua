@@ -46,6 +46,10 @@ require('lazy').setup({
       { 'folke/lazydev.nvim' },
     },
   },
+  {
+    'kanium3/neovide-ime.nvim',
+    event = { 'UIEnter' },
+  },
   -- アイコン表示
   { 'onsails/lspkind.nvim' },
   { -- 自動補完
@@ -625,17 +629,26 @@ cmp.setup {
   },
 }
 
-if vim.g.neovide then
+local function set_for_doc()
+  vim.g.for_doc = (vim.g.neovide == true) or (vim.fn.getenv 'TMUX_SESSION_NAME' == 'doc') or (vim.g.goneovim == true)
+  -- or (vim.fn.has("gui_running") == 1)
+end
+
+set_for_doc()
+
+if vim.g.for_doc then
   vim.fn.chdir(vim.fn.expand '~/docs/doc')
 
-  -- Neovide-specific settings
-  vim.g.neovide_position_animation_length = 0
-  vim.g.neovide_cursor_animation_length = 0.00
-  vim.g.neovide_cursor_trail_size = 0
-  vim.g.neovide_cursor_animate_in_insert_mode = false
-  vim.g.neovide_cursor_animate_command_line = false
-  vim.g.neovide_scroll_animation_far_lines = 0
-  vim.g.neovide_scroll_animation_length = 0.00
+  if vim.g.neovide then
+    -- Neovide-specific settings
+    vim.g.neovide_position_animation_length = 0
+    vim.g.neovide_cursor_animation_length = 0.00
+    vim.g.neovide_cursor_trail_size = 0
+    vim.g.neovide_cursor_animate_in_insert_mode = false
+    vim.g.neovide_cursor_animate_command_line = false
+    vim.g.neovide_scroll_animation_far_lines = 0
+    vim.g.neovide_scroll_animation_length = 0.00
+  end
 
   -- Neovide-specific colorscheme (optional)
   vim.cmd 'colorscheme everforest'
