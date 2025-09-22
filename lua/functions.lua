@@ -98,13 +98,7 @@ local toggle_term_on_tmux = function()
 end
 h.usercmd('ToggleTermOnTmux', toggle_term_on_tmux)
 
--- GUI以外
-if not vim.g.for_doc then
-  h.nmap('<c-j>', '<CMD>ToggleTermOnTmux<CR>')
-end
--- if vim.g.neovide then
---   vim.api.nvim_set_keymap('n', '<c-j>', ':tabnew | terminal<CR>i', { noremap = true, silent = true })
--- end
+h.nmap('<c-j>', '<CMD>ToggleTermOnTmux<CR>')
 
 ----------------------------------------------------------------------------------------------------------
 -- bash abbr

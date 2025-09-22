@@ -168,15 +168,6 @@ require('lazy').setup({
 }, {})
 
 ------------------------------------------------------------------------------------------------------------
--- ファイルロード
--- lua/options.lua をロード
-require 'options'
--- lua/keymaps.lua をロード
-require 'keymaps'
--- lua/functions.lua をロード
-require 'functions'
-
-------------------------------------------------------------------------------------------------------------
 -- Setup neovim lua configuration
 require('lazydev').setup()
 
@@ -631,7 +622,6 @@ cmp.setup {
 
 local function set_for_doc()
   vim.g.for_doc = (vim.g.neovide == true) or (vim.fn.getenv 'TMUX_SESSION_NAME' == 'doc') or (vim.g.goneovim == true)
-  -- or (vim.fn.has("gui_running") == 1)
 end
 
 set_for_doc()
@@ -653,3 +643,12 @@ if vim.g.for_doc then
   -- Neovide-specific colorscheme (optional)
   vim.cmd 'colorscheme everforest'
 end
+
+------------------------------------------------------------------------------------------------------------
+-- ファイルロード
+-- lua/options.lua をロード
+require 'options'
+-- lua/keymaps.lua をロード
+require 'keymaps'
+-- lua/functions.lua をロード
+require 'functions'
