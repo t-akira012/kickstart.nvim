@@ -157,10 +157,36 @@ require('lazy').setup({
 
   { -- 構文解析 ハイライト
     'nvim-treesitter/nvim-treesitter',
+    event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
     build = ':TSUpdate',
+  },
+  {
+    'stevearc/aerial.nvim',
+    lazy = false,
+    opts = {
+      layout = {
+        max_width = { 40, 0.3 },
+        width = nil,
+        min_width = 10,
+        win_opts = {},
+        default_direction = 'prefer_left',
+        placement = 'window',
+        resize_to_content = true,
+        preserve_equality = false,
+      },
+      attach_mode = 'global',
+      backends = { 'lsp', 'markdown', 'man' },
+      show_guides = true,
+    },
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    keys = {
+      { '<leader>1', '<cmd>AerialToggle<cr>', desc = 'Aerial: Toggle' },
+    },
   },
 
   -- require 'kickstart.plugins.autoformat',
