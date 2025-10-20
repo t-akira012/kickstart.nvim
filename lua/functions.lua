@@ -98,7 +98,7 @@ local toggle_term_on_tmux = function()
 end
 h.usercmd('ToggleTermOnTmux', toggle_term_on_tmux)
 
-h.nmap('<c-j>', '<CMD>ToggleTermOnTmux<CR>')
+h.nmap('<c-g>', '<CMD>ToggleTermOnTmux<CR>')
 
 ----------------------------------------------------------------------------------------------------------
 -- bash abbr
@@ -162,8 +162,8 @@ function toggle_bullet()
   end
 end
 
-vim.keymap.set('n', '<c-g>', toggle_bullet, { noremap = true, silent = true })
-vim.keymap.set('i', '<c-g>', toggle_bullet, { noremap = true, silent = true })
+-- vim.keymap.set('n', '<c-g>', toggle_bullet, { noremap = true, silent = true })
+-- vim.keymap.set('i', '<c-g>', toggle_bullet, { noremap = true, silent = true })
 
 -- ToggleCheckbox: 行頭チェックボックスを切り替え
 function toggle_checkbox()
