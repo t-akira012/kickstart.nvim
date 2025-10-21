@@ -4,25 +4,23 @@ return {
     'vim-denops/denops.vim',
   },
   config = function()
-    -- skkeleton の基本設定
+    -- skkeleton 基本設定
     vim.fn['skkeleton#config'] {
-      -- グローバル辞書のパス (適宜変更してください)
       globalDictionaries = {
         '~/.skk/SKK-JISYO.L',
       },
-      -- ユーザー辞書のパス (適宜変更してください)
       userDictionary = '~/.skk/skkeleton',
-      -- 即時変換モード
       immediatelyCancel = false,
-      -- 改行時の確定動作
       keepState = false,
-      -- マーカー設定
       markerHenkan = '▽',
       markerHenkanSelect = '▼',
     }
 
-    -- キーマップ設定
-    -- Ctrl+j で SKK モードの切り替え
+    -- SKK モード切り替え
     vim.keymap.set({ 'i', 'c' }, '<C-j>', '<Plug>(skkeleton-toggle)', { silent = true })
+
+    -- 候補移動キー
+    vim.keymap.set({ 'i', 'c' }, '<C-n>', '<Plug>(skkeleton-next-candidate)', { silent = true })
+    vim.keymap.set({ 'i', 'c' }, '<C-p>', '<Plug>(skkeleton-prev-candidate)', { silent = true })
   end,
 }

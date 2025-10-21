@@ -65,6 +65,7 @@ require('lazy').setup({
   { 'hrsh7th/cmp-path' },
   { 'hrsh7th/cmp-nvim-lsp-signature-help' },
   { 'uga-rosa/cmp-dictionary' },
+  { 'uga-rosa/cmp-skkeleton' },
   { 'lukas-reineke/cmp-rg' },
   { -- 行番号にGitサインを表示
     'lewis6991/gitsigns.nvim',
@@ -637,6 +638,7 @@ cmp.setup {
     { name = 'nvim_lsp_signature_help' },
     { name = 'rg', keyword_length = 2 },
     { name = 'dictionary', keyword_length = 2 },
+    { name = 'skkeleton' },
     {
       name = 'omni',
       option = {
