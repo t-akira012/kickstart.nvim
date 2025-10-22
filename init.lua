@@ -83,42 +83,74 @@ require('lazy').setup({
 
   { -- ステータスライン
     'nvim-lualine/lualine.nvim',
-    opts = {
-      options = {
-        icons_enabled = true,
-        -- theme = 'OceanicNext',
-        component_separators = { left = '|', right = '|' },
-        section_separators = '',
-      },
-      sections = {
-        lualine_a = { 'mode' },
-        lualine_b = {
-          'branch',
-          'diff',
-          {
-            'diagnostics',
-            colored = true, -- ファイルタイプアイコンをカラー表示
-            icon_only = false, -- ファイルタイプのアイコンのみを表示
-            icon = { align = 'right' }, -- ファイルタイプアイコンを右側で表示
-          },
+    opts = function()
+      -- skkeleton 状態取得関数
+      local function get_skkeleton_status()
+        local state = vim.g['skkeleton#state']
+        if state and state.phase == 'input' then
+          return { text = 'SKK:ON', color = { fg = '#00ff5f' } }
+        else
+          return { text = 'SKK:OFF', color = { fg = '#ff5f5f' } }
+        end
+      end
+
+      -- skkeletonの有効・無効イベントにフック
+      vim.api.nvim_create_autocmd('User', {
+        pattern = { 'skkeleton-enable-post', 'skkeleton-disable-post' },
+        callback = function()
+          require('lualine').refresh()
+        end,
+      })
+
+      return {
+        options = {
+          icons_enabled = true,
+          component_separators = { left = '|', right = '|' },
+          section_separators = '',
         },
-        lualine_c = {
-          {
-            'filename',
-            file_status = true,
-            newfile_status = true,
-            path = 4,
-            shorting_target = 40,
-            symbols = {
-              modified = '[+]', -- ファイル変更時
-              readonly = '[-]', -- 読み込み専用
-              unnamed = '[No Name]', -- 名前なしバッファ
-              newfile = '[New]', -- 新規ファイル
+        sections = {
+          lualine_a = { 'mode' },
+          lualine_b = {
+            'branch',
+            'diff',
+            {
+              'diagnostics',
+              colored = true,
+              icon_only = false,
+              icon = { align = 'right' },
             },
           },
+          lualine_c = {
+            {
+              'filename',
+              file_status = true,
+              newfile_status = true,
+              path = 4,
+              shorting_target = 40,
+              symbols = {
+                modified = '[+]',
+                readonly = '[-]',
+                unnamed = '[No Name]',
+                newfile = '[New]',
+              },
+            },
+          },
+          lualine_x = {
+            {
+              function()
+                return get_skkeleton_status().text
+              end,
+              color = function()
+                return get_skkeleton_status().color
+              end,
+            },
+            'encoding',
+            'fileformat',
+            'filetype',
+          },
         },
-      },
-    },
+      }
+    end,
   },
 
   { -- インデント可視化
