@@ -33,7 +33,6 @@ require('lazy').setup({
   -- タブ幅の自動検知
   'tpope/vim-sleuth',
 
-  { 'stevearc/oil.nvim' },
   { -- LSP 設定
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -197,9 +196,6 @@ require('lazy').setup({
 ------------------------------------------------------------------------------------------------------------
 -- Setup neovim lua configuration
 require('lazydev').setup()
-
--- oil
-require('oil').setup()
 ------------------------------------------------------------------------------------------------------------
 -- Yankハイライト
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
