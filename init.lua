@@ -157,6 +157,7 @@ require('lazy').setup({
 
   { -- 構文解析 ハイライト
     'nvim-treesitter/nvim-treesitter',
+    tag = 'v0.10.0',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
@@ -181,9 +182,9 @@ require('lazy').setup({
       backends = { 'lsp', 'markdown', 'man' },
       show_guides = true,
     },
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-    },
+    -- dependencies = {
+    --   'nvim-treesitter/nvim-treesitter',
+    -- },
     keys = {
       { '<leader>1', '<cmd>AerialToggle<cr>', desc = 'Aerial: Toggle' },
     },
@@ -481,15 +482,18 @@ require('lspconfig').terraformls.setup {
 --
 
 -- mason-lspconfigが管理するLSPサーバーそれぞれに対して、この関数が自動実行される
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup { -- 各サーバーに共通設定を自動適用
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-    }
-  end,
+mason_lspconfig.setup {
+  ensure_installed = vim.tbl_keys(servers),
 }
+
+for server_name, server_settings in pairs(servers) do -- 各サーバーに共通設定を自動適用
+  require('lspconfig')[server_name].setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = server_settings,
+  }
+end
+
 -- mason-conform設定（conformで設定されたフォーマッターを自動インストール）
 require('mason-conform').setup {
   -- 自動インストールを有効にする
