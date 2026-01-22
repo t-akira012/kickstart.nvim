@@ -73,6 +73,7 @@ vim.cmd [[
   inoreabbrev <expr> lll strftime('%-m/%d %a')
   " iabbrev <expr> ddd strftime('%Y%m%d %a')
   iabbrev <expr> ttt strftime('%H:%M')
+  iabbrev <expr> poo strftime('🍅%H:%M')
 
   " インデント増減
   inoremap <M-.> <C-O>>><C-O>A
