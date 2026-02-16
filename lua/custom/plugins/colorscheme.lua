@@ -10,4 +10,5 @@ return {
   },
   { 'ayu-theme/ayu-vim', priority = 1000 },
   { 'sainnhe/everforest', priority = 1000 },
+  { 'catppuccin/nvim', priority = 1000 },
 }
