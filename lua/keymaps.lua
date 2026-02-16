@@ -32,7 +32,7 @@ h.nmap('<Leader>q', ':q<CR>')
 h.nmap('<Leader>n', ':PrevimOpen')
 
 h.nmap('<Leader>t', ':tabnew<CR>')
--- h.nmap("<Leader>s", ":new<CR>")
+h.nmap('<Leader>s', ':sp<CR>')
 h.nmap('<Leader>v', ':vnew<CR>')
 
 -- h.nmap("<Leader><Leader>", "<C-w>w")
