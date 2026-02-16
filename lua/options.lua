@@ -40,7 +40,9 @@ opt.swapfile = false
 -- set printfont="HackGenNerd:h11"
 
 if not vim.g.for_doc then
-  if os.getenv 'TERM_COLOR_MODE' == 'LIGHT' then
+  if vim.fn.has('win32') == 1 then
+    vim.cmd.colorscheme 'catppuccin'
+  elseif os.getenv 'TERM_COLOR_MODE' == 'LIGHT' then
     opt.background = 'light'
     vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_LIGHT')
   else
