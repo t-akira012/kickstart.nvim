@@ -1,7 +1,8 @@
 -- deprecate 警告無効化
 vim.deprecate = function() end
--- Windows判定
+-- OS判定
 local is_windows = vim.fn.has('win32') == 1
+local is_macos = vim.fn.has('mac') == 1
 -- lazy.nvimをインストール
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -66,7 +67,7 @@ require('lazy').setup({
   { 'hrsh7th/cmp-buffer' },
   { 'hrsh7th/cmp-path' },
   { 'hrsh7th/cmp-nvim-lsp-signature-help' },
-  { 'uga-rosa/cmp-dictionary' },
+  { 'uga-rosa/cmp-dictionary', cond = is_macos },
   { 'lukas-reineke/cmp-rg' },
   { -- 行番号にGitサインを表示
     'lewis6991/gitsigns.nvim',
@@ -547,10 +548,12 @@ local lspkind = require 'lspkind'
 
 luasnip.config.setup {}
 
-require('cmp_dictionary').setup {
-  paths = { '/usr/share/dict/words' },
-  exact_length = 2,
-}
+if is_macos then
+  require('cmp_dictionary').setup {
+    paths = { '/usr/share/dict/words' },
+    exact_length = 2,
+  }
+end
 vim.api.nvim_set_hl(0, 'CmpItemMenu', { link = 'CmpItemAbbrDeprecatedDefault', default = true })
 
 cmp.setup {
@@ -645,7 +648,7 @@ cmp.setup {
     { name = 'path' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'rg', keyword_length = 2 },
-    { name = 'dictionary', keyword_length = 2 },
+    is_macos and { name = 'dictionary', keyword_length = 2 } or nil,
     {
       name = 'omni',
       option = {
