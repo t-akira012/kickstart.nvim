@@ -1,5 +1,7 @@
 -- deprecate 警告無効化
 vim.deprecate = function() end
+-- Windows判定
+local is_windows = vim.fn.has('win32') == 1
 -- lazy.nvimをインストール
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -36,10 +38,10 @@ require('lazy').setup({
   { -- LSP 設定
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- LSP自動インストール プラグイン
-      { 'williamboman/mason.nvim', config = true },
-      { 'williamboman/mason-lspconfig.nvim' },
-      { 'zapling/mason-conform.nvim' },
+      -- LSP自動インストール プラグイン (Windows非対応)
+      { 'williamboman/mason.nvim', config = true, cond = not is_windows },
+      { 'williamboman/mason-lspconfig.nvim', cond = not is_windows },
+      { 'zapling/mason-conform.nvim', cond = not is_windows },
       -- 通知プラグイン
       -- { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
       -- Lazyの開発用プラグイン
@@ -155,9 +157,10 @@ require('lazy').setup({
     'nvim-telescope/telescope-ghq.nvim',
   },
 
-  { -- 構文解析 ハイライト
+  { -- 構文解析 ハイライト (Windows非対応)
     'nvim-treesitter/nvim-treesitter',
     tag = 'v0.10.0',
+    cond = not is_windows,
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
@@ -291,6 +294,63 @@ vim.keymap.set('i', '<C-r>', require('telescope.builtin').registers)
 -- vim.keymap.set('n', ',h', require('telescope.builtin').help_tags, { desc = 'Search H[e]lp' })
 
 ------------------------------------------------------------------------------------------------------------
+-- 診断機能（エラー・警告など）のキーマップ設定
+vim.keymap.set('n', '<S-F8>', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', '<F8>', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' }) -- VSCode like keybind
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+-- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+
+------------------------------------------------------------------------------------------------------------
+-- LSP 設定
+local on_attach = function(_, bufnr)
+  local nmap = function(keys, func, desc)
+    if desc then
+      desc = 'LSP: ' .. desc
+    end
+
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+  end
+
+  nmap('<Leader>n', vim.lsp.buf.rename, 'Re[N]ame')
+  nmap('<Leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  vim.diagnostic.config {
+    virtual_text = { severity = { min = vim.diagnostic.severity.ERROR } },
+    signs = { severity = { min = vim.diagnostic.severity.ERROR } },
+    underline = { severity = { min = vim.diagnostic.severity.ERROR } },
+  }
+  -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+  vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float)
+
+  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  -- nmap('<Leader>f', vim.lsp.buf.format, 'Format')
+  -- nmap(',D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+  -- nmap(',ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+  -- nmap(',ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+
+  -- See `:help K` for why this keymap
+  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+
+  -- 使用頻度の低いLSP機能
+  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+  -- nmap(',wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+  -- nmap(',wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  -- nmap(',wl', function()
+  --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  -- end, '[W]orkspace [L]ist Folders')
+
+  -- Create a command `:Format` local to the LSP buffer
+  -- vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+  --   vim.lsp.buf.format()
+  -- end, { desc = 'Format current buffer with LSP' })
+end
+
+------------------------------------------------------------------------------------------------------------
+-- Treesitter / Mason 設定 (Windows非対応)
+if not is_windows then
+
 -- Treesitter設定
 require('nvim-treesitter.configs').setup {
   -- treesitterでインストールしたい言語
@@ -356,61 +416,6 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
-------------------------------------------------------------------------------------------------------------
--- 診断機能（エラー・警告など）のキーマップ設定
-vim.keymap.set('n', '<S-F8>', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', '<F8>', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' }) -- VSCode like keybind
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
--- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
-
-------------------------------------------------------------------------------------------------------------
--- LSP 設定
-local on_attach = function(_, bufnr)
-  local nmap = function(keys, func, desc)
-    if desc then
-      desc = 'LSP: ' .. desc
-    end
-
-    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-  end
-
-  nmap('<Leader>n', vim.lsp.buf.rename, 'Re[N]ame')
-  nmap('<Leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-  vim.diagnostic.config {
-    virtual_text = { severity = { min = vim.diagnostic.severity.ERROR } },
-    signs = { severity = { min = vim.diagnostic.severity.ERROR } },
-    underline = { severity = { min = vim.diagnostic.severity.ERROR } },
-  }
-  -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
-  vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float)
-
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  -- nmap('<Leader>f', vim.lsp.buf.format, 'Format')
-  -- nmap(',D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-  -- nmap(',ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  -- nmap(',ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-  -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-
-  -- 使用頻度の低いLSP機能
-  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  -- nmap(',wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  -- nmap(',wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  -- nmap(',wl', function()
-  --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  -- end, '[W]orkspace [L]ist Folders')
-
-  -- Create a command `:Format` local to the LSP buffer
-  -- vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-  --   vim.lsp.buf.format()
-  -- end, { desc = 'Format current buffer with LSP' })
-end
-
-------------------------------------------------------------------------------------------------------------
 -- Mason と LSP サーバーの自動インストール設定
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -443,7 +448,6 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
-------------------------------------------------------------------------------------------------------------
 -- lspconfig 設定
 local lspconfig = require 'lspconfig'
 
@@ -499,6 +503,8 @@ require('mason-conform').setup {
   -- 自動インストールを有効にする
   -- ignore_install = {} -- 特定のフォーマッターをスキップしたい場合
 }
+
+end -- not is_windows
 ------------------------------------------------------------------------------------------------------------
 -- lspkind設定 - アイコンと表示モードを設定して補完メニューに絵文字アイコンを追加
 require('lspkind').init {
