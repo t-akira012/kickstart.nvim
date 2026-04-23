@@ -212,6 +212,7 @@ end
 vim.keymap.set('n', '<c-l>', toggle_checkbox, { noremap = true, silent = true })
 vim.keymap.set('i', '<c-l>', toggle_checkbox, { noremap = true, silent = true })
 
+-- Pomodoro Stamp
 function pomo_stamp()
   local cur = vim.api.nvim_get_current_line()
   local now = os.date '*t'
@@ -219,6 +220,9 @@ function pomo_stamp()
   local end_stamp = string.format('%02d:%02d', end_h, end_m)
 
   local sh, sm = cur:match '(%d?%d):(%d%d)%s*$'
+  local is_task = cur:match '^%s*%-%s%[.%]'
+
+  local pomo_dir = vim.fn.expand '$HOME/.tmux/plugins/tmux-pomo/scripts/cloud'
 
   if sh and sm then
     local start_h = tonumber(sh)
@@ -230,16 +234,28 @@ function pomo_stamp()
     local start_stamp = string.format('%02d:%02d', start_h, start_m)
     local body = cur:gsub('%s*%d?%d:%d%d%s*$', '')
     vim.api.nvim_set_current_line(body .. ' ' .. start_stamp .. ' - ' .. end_stamp .. ' (' .. diff .. 'min)')
+    if is_task then
+      vim.fn.jobstart { pomo_dir .. '/main.sh', 'stop_ok' }
+    end
   elseif cur == '' then
     vim.api.nvim_set_current_line(end_stamp)
   else
     vim.api.nvim_set_current_line(cur .. ' ' .. end_stamp)
+    if is_task then
+      local title = cur:gsub('^%s*', ''):gsub('^%-%s%[.%]%s*', ''):gsub('%s*%d?%d:%d%d.*$', '')
+      vim.fn.jobstart { pomo_dir .. '/session-init.sh', title }
+    end
   end
 end
 
-vim.api.nvim_create_user_command('PomoStamp', pomo_stamp, {})
-vim.keymap.set('n', '<leader>s', pomo_stamp, { desc = 'タイムスタンプを挿入/更新' })
-vim.keymap.set('i', '<leader>s', pomo_stamp, { desc = 'タイムスタンプを挿入/更新' })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function()
+    vim.api.nvim_buf_create_user_command(0, 'PomoStamp', pomo_stamp, {})
+    vim.keymap.set('n', '<leader>s', pomo_stamp, { buffer = 0, desc = 'タイムスタンプを挿入/更新' })
+    vim.keymap.set('i', '<leader>s', pomo_stamp, { buffer = 0, desc = 'タイムスタンプを挿入/更新' })
+  end,
+})
 
 -- ToggleList
 vim.cmd [[
