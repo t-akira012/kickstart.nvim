@@ -47,6 +47,7 @@ fi
 # mc コマンドの確認
 if ! type mc > /dev/null 2>&1 ; then
   echo mc: command not found >&2
+  echo '$ brew install minio/stable/mc'
   exit 1
 fi
 

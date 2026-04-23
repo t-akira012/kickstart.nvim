@@ -1,8 +1,8 @@
 -- deprecate 警告無効化
 vim.deprecate = function() end
 -- OS判定
-local is_windows = vim.fn.has('win32') == 1
-local is_macos = vim.fn.has('mac') == 1
+local is_windows = vim.fn.has 'win32' == 1
+local is_macos = vim.fn.has 'mac' == 1
 -- lazy.nvimをインストール
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -351,160 +351,158 @@ end
 ------------------------------------------------------------------------------------------------------------
 -- Treesitter / Mason 設定 (Windows非対応)
 if not is_windows then
+  -- Treesitter設定
+  require('nvim-treesitter.configs').setup {
+    -- treesitterでインストールしたい言語
+    ensure_installed = { 'terraform', 'bash', 'make', 'json', 'css', 'go', 'lua', 'python', 'tsx', 'typescript', 'vimdoc', 'vim' },
 
--- Treesitter設定
-require('nvim-treesitter.configs').setup {
-  -- treesitterでインストールしたい言語
-  ensure_installed = { 'terraform', 'bash', 'make', 'json', 'css', 'go', 'lua', 'python', 'tsx', 'typescript', 'vimdoc', 'vim' },
+    -- 未インストール言語を自動インストールするか
+    auto_install = true,
 
-  -- 未インストール言語を自動インストールするか
-  auto_install = true,
-
-  highlight = { enable = true },
-  indent = { enable = true, disable = { 'python' } },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = '<c-space>',
-      node_incremental = '<c-space>',
-      scope_incremental = '<c-s>',
-      node_decremental = '<M-space>',
-    },
-  },
-  textobjects = {
-    select = {
+    highlight = { enable = true },
+    indent = { enable = true, disable = { 'python' } },
+    incremental_selection = {
       enable = true,
-      lookahead = true, -- -- テキストオブジェクトへの自動前方ジャンプ機能（targets.vimプラグインと同様の動作）
       keymaps = {
-        -- textobjects.scmで定義されたキャプチャグループを使用できる
-        ['aa'] = '@parameter.outer',
-        ['ia'] = '@parameter.inner',
-        ['af'] = '@function.outer',
-        ['if'] = '@function.inner',
-        ['ac'] = '@class.outer',
-        ['ic'] = '@class.inner',
+        init_selection = '<c-space>',
+        node_incremental = '<c-space>',
+        scope_incremental = '<c-s>',
+        node_decremental = '<M-space>',
       },
     },
-    move = {
-      enable = true,
-      set_jumps = true, -- C-o, C-i で利用できる、ジャンプリスト履歴にジャンプを追加するか
-      goto_next_start = {
-        [']m'] = '@function.outer',
-        [']]'] = '@class.outer',
+    textobjects = {
+      select = {
+        enable = true,
+        lookahead = true, -- -- テキストオブジェクトへの自動前方ジャンプ機能（targets.vimプラグインと同様の動作）
+        keymaps = {
+          -- textobjects.scmで定義されたキャプチャグループを使用できる
+          ['aa'] = '@parameter.outer',
+          ['ia'] = '@parameter.inner',
+          ['af'] = '@function.outer',
+          ['if'] = '@function.inner',
+          ['ac'] = '@class.outer',
+          ['ic'] = '@class.inner',
+        },
       },
-      goto_next_end = {
-        [']M'] = '@function.outer',
-        [']['] = '@class.outer',
+      move = {
+        enable = true,
+        set_jumps = true, -- C-o, C-i で利用できる、ジャンプリスト履歴にジャンプを追加するか
+        goto_next_start = {
+          [']m'] = '@function.outer',
+          [']]'] = '@class.outer',
+        },
+        goto_next_end = {
+          [']M'] = '@function.outer',
+          [']['] = '@class.outer',
+        },
+        goto_previous_start = {
+          ['[m'] = '@function.outer',
+          ['[['] = '@class.outer',
+        },
+        goto_previous_end = {
+          ['[M'] = '@function.outer',
+          ['[]'] = '@class.outer',
+        },
       },
-      goto_previous_start = {
-        ['[m'] = '@function.outer',
-        ['[['] = '@class.outer',
-      },
-      goto_previous_end = {
-        ['[M'] = '@function.outer',
-        ['[]'] = '@class.outer',
-      },
-    },
-    swap = {
-      enable = true,
-      swap_next = {
-        ['<leader>a'] = '@parameter.inner',
-      },
-      swap_previous = {
-        ['<leader>A'] = '@parameter.inner',
-      },
-    },
-  },
-}
-
--- Mason と LSP サーバーの自動インストール設定
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-local mason_lspconfig = require 'mason-lspconfig'
-local servers = {
-  gopls = {},
-  pylsp = {
-    plugins = {
-      autopep8 = { enabled = false },
-      pycodestyle = { enabled = false },
-      flake8 = { -- linterのみ有効
-        enabled = true,
-        maxLineLength = 200,
+      swap = {
+        enable = true,
+        swap_next = {
+          ['<leader>a'] = '@parameter.inner',
+        },
+        swap_previous = {
+          ['<leader>A'] = '@parameter.inner',
+        },
       },
     },
-  },
-  -- rust_analyzer = {},
-  terraformls = {},
-  vtsls = {},
-  -- denols = {},
-  lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-    },
-  },
-}
-mason_lspconfig.setup {
-  ensure_installed = vim.tbl_keys(servers),
-}
-
--- lspconfig 設定
-local lspconfig = require 'lspconfig'
-
--- vtsls の設定
-lspconfig.vtsls.setup {
-  root_dir = lspconfig.util.root_pattern 'package.json',
-}
-
--- tflint, terraform-lsでエラーが出る対策
-local disable_semantic = function(client)
-  client.server_capabilities.semanticTokensProvider = nil
-end
-
--- terraform-ls
-require('lspconfig').terraformls.setup {
-  on_init = disable_semantic,
-}
-
--- denols の設定
--- lspconfig.denols.setup({
---   root_dir = lspconfig.util.root_pattern("deno.json"),
---   init_options = {
---     lint = true,
---     unstable = true,
---     suggest = {
---       imports = {
---         hosts = {
---           ["https://deno.land"] = true,
---           ["https://cdn.nest.land"] = true,
---           ["https://crux.land"] = true,
---         },
---       },
---     },
---   },
--- })
---
-
--- mason-lspconfigが管理するLSPサーバーそれぞれに対して、この関数が自動実行される
-mason_lspconfig.setup {
-  ensure_installed = vim.tbl_keys(servers),
-}
-
-for server_name, server_settings in pairs(servers) do -- 各サーバーに共通設定を自動適用
-  require('lspconfig')[server_name].setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = server_settings,
   }
-end
 
--- mason-conform設定（conformで設定されたフォーマッターを自動インストール）
-require('mason-conform').setup {
-  -- 自動インストールを有効にする
-  -- ignore_install = {} -- 特定のフォーマッターをスキップしたい場合
-}
+  -- Mason と LSP サーバーの自動インストール設定
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+  local mason_lspconfig = require 'mason-lspconfig'
+  local servers = {
+    gopls = {},
+    pylsp = {
+      plugins = {
+        autopep8 = { enabled = false },
+        pycodestyle = { enabled = false },
+        flake8 = { -- linterのみ有効
+          enabled = true,
+          maxLineLength = 200,
+        },
+      },
+    },
+    -- rust_analyzer = {},
+    terraformls = {},
+    vtsls = {},
+    -- denols = {},
+    lua_ls = {
+      Lua = {
+        workspace = { checkThirdParty = false },
+        telemetry = { enable = false },
+      },
+    },
+  }
+  mason_lspconfig.setup {
+    ensure_installed = vim.tbl_keys(servers),
+  }
+
+  -- lspconfig 設定
+  local lspconfig = require 'lspconfig'
+
+  -- vtsls の設定
+  lspconfig.vtsls.setup {
+    root_dir = lspconfig.util.root_pattern 'package.json',
+  }
+
+  -- tflint, terraform-lsでエラーが出る対策
+  local disable_semantic = function(client)
+    client.server_capabilities.semanticTokensProvider = nil
+  end
+
+  -- terraform-ls
+  require('lspconfig').terraformls.setup {
+    on_init = disable_semantic,
+  }
+
+  -- denols の設定
+  -- lspconfig.denols.setup({
+  --   root_dir = lspconfig.util.root_pattern("deno.json"),
+  --   init_options = {
+  --     lint = true,
+  --     unstable = true,
+  --     suggest = {
+  --       imports = {
+  --         hosts = {
+  --           ["https://deno.land"] = true,
+  --           ["https://cdn.nest.land"] = true,
+  --           ["https://crux.land"] = true,
+  --         },
+  --       },
+  --     },
+  --   },
+  -- })
+  --
+
+  -- mason-lspconfigが管理するLSPサーバーそれぞれに対して、この関数が自動実行される
+  mason_lspconfig.setup {
+    ensure_installed = vim.tbl_keys(servers),
+  }
+
+  for server_name, server_settings in pairs(servers) do -- 各サーバーに共通設定を自動適用
+    require('lspconfig')[server_name].setup {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = server_settings,
+    }
+  end
+
+  -- mason-conform設定（conformで設定されたフォーマッターを自動インストール）
+  require('mason-conform').setup {
+    -- 自動インストールを有効にする
+    -- ignore_install = {} -- 特定のフォーマッターをスキップしたい場合
+  }
 end -- not is_windows
 ------------------------------------------------------------------------------------------------------------
 -- lspkind設定 - アイコンと表示モードを設定して補完メニューに絵文字アイコンを追加
@@ -555,6 +553,41 @@ if is_macos then
   }
 end
 vim.api.nvim_set_hl(0, 'CmpItemMenu', { link = 'CmpItemAbbrDeprecatedDefault', default = true })
+
+-- DOC_DIR用 #タグ補完カスタムソース
+local tag_source = {}
+tag_source.new = function()
+  return setmetatable({}, { __index = tag_source })
+end
+function tag_source:is_available()
+  return vim.g.for_doc == true
+end
+function tag_source:get_trigger_characters()
+  return { '#' }
+end
+function tag_source:complete(_, callback)
+  -- タグ一覧（行を追加するだけでタグ追加可能）
+  local tag_list = [[
+e
+bodymake
+tasks
+work
+healing
+daigaku
+money
+hobby
+others
+]]
+  local items = {}
+  for tag in tag_list:gmatch '[^\n]+' do
+    table.insert(items, {
+      label = '#' .. tag,
+      kind = 14,
+    })
+  end
+  callback { items = items, isIncomplete = false }
+end
+cmp.register_source('doc_tag', tag_source)
 
 cmp.setup {
   snippet = {
@@ -642,6 +675,7 @@ cmp.setup {
     end, { 'i', 's' }),
   },
   sources = {
+    { name = 'doc_tag' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
@@ -659,28 +693,11 @@ cmp.setup {
 }
 
 local function set_for_doc()
-  vim.g.for_doc = (vim.g.neovide == true) or (vim.fn.getenv 'TMUX_SESSION_NAME' == 'doc') or (vim.g.goneovim == true)
+  local doc_dir = vim.fn.expand '~/docs/doc'
+  vim.g.for_doc = (vim.fn.getcwd() == doc_dir) or (vim.fn.getenv 'TMUX_WINDOW_NAME' == 'doc') or (vim.fn.getenv 'TMUX_SESSION_NAME' == 'doc')
 end
 
 set_for_doc()
-
-if vim.g.for_doc then
-  vim.fn.chdir(vim.fn.expand '~/docs/doc')
-
-  if vim.g.neovide then
-    -- Neovide-specific settings
-    vim.g.neovide_position_animation_length = 0
-    vim.g.neovide_cursor_animation_length = 0.00
-    vim.g.neovide_cursor_trail_size = 0
-    vim.g.neovide_cursor_animate_in_insert_mode = false
-    vim.g.neovide_cursor_animate_command_line = false
-    vim.g.neovide_scroll_animation_far_lines = 0
-    vim.g.neovide_scroll_animation_length = 0.00
-  end
-
-  -- Neovide-specific colorscheme (optional)
-  vim.cmd 'colorscheme everforest'
-end
 
 ------------------------------------------------------------------------------------------------------------
 -- ファイルロード

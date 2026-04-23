@@ -212,6 +212,35 @@ end
 vim.keymap.set('n', '<c-l>', toggle_checkbox, { noremap = true, silent = true })
 vim.keymap.set('i', '<c-l>', toggle_checkbox, { noremap = true, silent = true })
 
+function pomo_stamp()
+  local cur = vim.api.nvim_get_current_line()
+  local now = os.date '*t'
+  local end_h, end_m = now.hour, now.min
+  local end_stamp = string.format('%02d:%02d', end_h, end_m)
+
+  local sh, sm = cur:match '(%d?%d):(%d%d)%s*$'
+
+  if sh and sm then
+    local start_h = tonumber(sh)
+    local start_m = tonumber(sm)
+    local diff = (end_h * 60 + end_m) - (start_h * 60 + start_m)
+    if diff < 0 then
+      diff = diff + 24 * 60
+    end
+    local start_stamp = string.format('%02d:%02d', start_h, start_m)
+    local body = cur:gsub('%s*%d?%d:%d%d%s*$', '')
+    vim.api.nvim_set_current_line(body .. ' ' .. start_stamp .. ' - ' .. end_stamp .. ' (' .. diff .. 'min)')
+  elseif cur == '' then
+    vim.api.nvim_set_current_line(end_stamp)
+  else
+    vim.api.nvim_set_current_line(cur .. ' ' .. end_stamp)
+  end
+end
+
+vim.api.nvim_create_user_command('PomoStamp', pomo_stamp, {})
+vim.keymap.set('n', '<leader>s', pomo_stamp, { desc = 'タイムスタンプを挿入/更新' })
+vim.keymap.set('i', '<leader>s', pomo_stamp, { desc = 'タイムスタンプを挿入/更新' })
+
 -- ToggleList
 vim.cmd [[
 

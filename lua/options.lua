@@ -39,31 +39,29 @@ opt.swapfile = false
 -- 色設定
 -- set printfont="HackGenNerd:h11"
 
-if not vim.g.for_doc then
-  if vim.fn.has('win32') == 1 then
-    vim.cmd.colorscheme 'catppuccin'
-  elseif os.getenv 'TERM_COLOR_MODE' == 'LIGHT' then
-    opt.background = 'light'
-    vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_LIGHT')
-  else
-    opt.background = 'dark'
-    vim.cmd [[ let g:material_style='oceanic' ]]
-    vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_DARK')
-  end
-  if vim.env.XDG_SESSION_TYPE == 'wayland' then
-    vim.cmd [[highlight Normal ctermbg=none guibg=none]]
-    vim.cmd [[highlight NonText ctermbg=none guibg=none]]
-    vim.cmd [[highlight CursorLine ctermbg=none guibg=none]]
-    vim.cmd [[highlight LineNr ctermbg=none guibg=none]]
-    vim.cmd [[highlight CursorLineNr ctermbg=none guibg=none]]
-    vim.cmd [[highlight FoldColumn ctermbg=none guibg=none]]
-    vim.cmd [[highlight SignColumn ctermbg=none guibg=none]]
-    vim.cmd [[highlight TabLine ctermbg=none guibg=none]]
-    vim.cmd [[highlight TabLineFill ctermbg=none guibg=none]]
-    vim.cmd [[highlight TabLineSel ctermbg=none guibg=none]]
-    vim.opt.cursorline = true
-    vim.opt.termguicolors = true
-  end
+if vim.fn.has 'win32' == 1 then
+  vim.cmd.colorscheme 'catppuccin'
+elseif os.getenv 'TERM_COLOR_MODE' == 'LIGHT' then
+  opt.background = 'light'
+  vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_LIGHT')
+else
+  opt.background = 'dark'
+  vim.cmd [[ let g:material_style='oceanic' ]]
+  vim.cmd.colorscheme(os.getenv 'NVIM_COLOR_DARK')
+end
+if vim.env.XDG_SESSION_TYPE == 'wayland' then
+  vim.cmd [[highlight Normal ctermbg=none guibg=none]]
+  vim.cmd [[highlight NonText ctermbg=none guibg=none]]
+  vim.cmd [[highlight CursorLine ctermbg=none guibg=none]]
+  vim.cmd [[highlight LineNr ctermbg=none guibg=none]]
+  vim.cmd [[highlight CursorLineNr ctermbg=none guibg=none]]
+  vim.cmd [[highlight FoldColumn ctermbg=none guibg=none]]
+  vim.cmd [[highlight SignColumn ctermbg=none guibg=none]]
+  vim.cmd [[highlight TabLine ctermbg=none guibg=none]]
+  vim.cmd [[highlight TabLineFill ctermbg=none guibg=none]]
+  vim.cmd [[highlight TabLineSel ctermbg=none guibg=none]]
+  vim.opt.cursorline = true
+  vim.opt.termguicolors = true
 end
 
 -- ウィンドウ設定
