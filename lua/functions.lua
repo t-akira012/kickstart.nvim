@@ -253,7 +253,6 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function()
     vim.api.nvim_buf_create_user_command(0, 'PomoStamp', pomo_stamp, {})
     vim.keymap.set('n', '<leader>s', pomo_stamp, { buffer = 0, desc = 'タイムスタンプを挿入/更新' })
-    vim.keymap.set('i', '<leader>s', pomo_stamp, { buffer = 0, desc = 'タイムスタンプを挿入/更新' })
   end,
 })
 
