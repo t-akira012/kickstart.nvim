@@ -1,4 +1,4 @@
 clear:
-	clear.sh
+	./clear.sh
 commit:
 	npx git-cz

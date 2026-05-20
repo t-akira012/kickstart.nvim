@@ -33,6 +33,12 @@ install_python_formatters_via_uv() {
   uv tool install shandy-sqlfmt
 }
 
+install_tree_sitter_cli_via_cargo() {
+  # tree-sitter-manager.nvim が parser ビルドのため tree-sitter CLI を直接呼ぶ。
+  # cargo install は同一バージョンなら skip、差分があれば上書きする冪等動作。
+  cargo install tree-sitter-cli
+}
+
 check_command() {
   # 引数のコマンドが PATH 上に存在するか検査し、結果を標準出力に表示する。
   local command_name=${1}
@@ -48,6 +54,8 @@ verify_runtime_deps() {
   check_command fnm
   # Mason 経由 vtsls 導入時に必要
   check_command npm
+  # Rust toolchain（tree-sitter CLI 導入基盤）
+  check_command cargo
   # tree-sitter-manager.nvim が parser ビルドのため直接呼び出す
   check_command tree-sitter
   # Python フォーマッタ管理基盤
@@ -63,6 +71,7 @@ main() {
   ensure_treesitter_cache_dir
   install_node_via_fnm
   install_python_formatters_via_uv
+  install_tree_sitter_cli_via_cargo
   verify_runtime_deps
 }
 
