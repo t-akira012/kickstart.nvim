@@ -158,15 +158,9 @@ require('lazy').setup({
     'nvim-telescope/telescope-ghq.nvim',
   },
 
-  { -- 構文解析 ハイライト (Windows非対応)
-    'nvim-treesitter/nvim-treesitter',
-    tag = 'v0.10.0',
+  { -- 構文解析・ハイライト (Windows非対応)
+    'romus204/tree-sitter-manager.nvim',
     cond = not is_windows,
-    event = { 'BufReadPost', 'BufNewFile' },
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-    },
-    build = ':TSUpdate',
   },
   {
     'stevearc/aerial.nvim',
@@ -194,7 +188,6 @@ require('lazy').setup({
     },
   },
 
-  -- require 'kickstart.plugins.autoformat',
   { import = 'custom.plugins' },
 }, {})
 
@@ -351,69 +344,11 @@ end
 ------------------------------------------------------------------------------------------------------------
 -- Treesitter / Mason 設定 (Windows非対応)
 if not is_windows then
-  -- Treesitter設定
-  require('nvim-treesitter.configs').setup {
-    -- treesitterでインストールしたい言語
+  -- Tree-sitter Manager 設定
+  require('tree-sitter-manager').setup {
     ensure_installed = { 'terraform', 'bash', 'make', 'json', 'css', 'go', 'lua', 'python', 'tsx', 'typescript', 'vimdoc', 'vim' },
-
-    -- 未インストール言語を自動インストールするか
     auto_install = true,
-
-    highlight = { enable = true },
-    indent = { enable = true, disable = { 'python' } },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = '<c-space>',
-        node_incremental = '<c-space>',
-        scope_incremental = '<c-s>',
-        node_decremental = '<M-space>',
-      },
-    },
-    textobjects = {
-      select = {
-        enable = true,
-        lookahead = true, -- -- テキストオブジェクトへの自動前方ジャンプ機能（targets.vimプラグインと同様の動作）
-        keymaps = {
-          -- textobjects.scmで定義されたキャプチャグループを使用できる
-          ['aa'] = '@parameter.outer',
-          ['ia'] = '@parameter.inner',
-          ['af'] = '@function.outer',
-          ['if'] = '@function.inner',
-          ['ac'] = '@class.outer',
-          ['ic'] = '@class.inner',
-        },
-      },
-      move = {
-        enable = true,
-        set_jumps = true, -- C-o, C-i で利用できる、ジャンプリスト履歴にジャンプを追加するか
-        goto_next_start = {
-          [']m'] = '@function.outer',
-          [']]'] = '@class.outer',
-        },
-        goto_next_end = {
-          [']M'] = '@function.outer',
-          [']['] = '@class.outer',
-        },
-        goto_previous_start = {
-          ['[m'] = '@function.outer',
-          ['[['] = '@class.outer',
-        },
-        goto_previous_end = {
-          ['[M'] = '@function.outer',
-          ['[]'] = '@class.outer',
-        },
-      },
-      swap = {
-        enable = true,
-        swap_next = {
-          ['<leader>a'] = '@parameter.inner',
-        },
-        swap_previous = {
-          ['<leader>A'] = '@parameter.inner',
-        },
-      },
-    },
+    highlight = true,
   }
 
   -- Mason と LSP サーバーの自動インストール設定
@@ -500,8 +435,7 @@ if not is_windows then
 
   -- mason-conform設定（conformで設定されたフォーマッターを自動インストール）
   require('mason-conform').setup {
-    -- 自動インストールを有効にする
-    -- ignore_install = {} -- 特定のフォーマッターをスキップしたい場合
+    ignore_install = { 'black', 'isort', 'sqlfmt' },
   }
 end -- not is_windows
 ------------------------------------------------------------------------------------------------------------

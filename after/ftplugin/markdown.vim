@@ -4,7 +4,6 @@
 " setlocal formatoptions-=c formatoptions+=jro
 
 setlocal nolist
-setlocal nonumber
 
 " 監視対象のディレクトリを変数として定義（init.vimなどで設定可能）
 if !exists('g:markdown_autoread_dirs')
