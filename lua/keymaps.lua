@@ -66,7 +66,7 @@ vim.cmd [[
 
   " add current date
   inoreabbrev ddb <C-R>=substitute(system("date -v-1d '+\%Y/\%m/\%d (\%a)'"), '\n', '', 'g')<CR>
-  inoreabbrev <expr> aaa strftime('# %Y/%m/%d(%a) %H:%M')
+  inoreabbrev <expr> aaa &shell =~? 'cmd.exe' ? strftime('# %Y/%m/%d(') . ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][str2nr(strftime('%w'))] . strftime(') %H:%M') : strftime('# %Y/%m/%d(%a) %H:%M')
   inoreabbrev <expr> aat strftime('# %Y/%m/%d(%a)', localtime() + 86400)
   inoreabbrev <expr> xxx strftime('==★==')
   inoreabbrev <expr> ddd strftime('%Y-%m-%d(%a)')
