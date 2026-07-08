@@ -208,7 +208,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 ------------------------------------------------------------------------------------------------------------
 -- Telescope設定
 require('telescope').setup {
-  defaults = {
+  -- 全 picker を中央式（dropdown）に統一
+  defaults = require('telescope.themes').get_dropdown {
     mappings = {
       i = {
         ['<C-u>'] = false,

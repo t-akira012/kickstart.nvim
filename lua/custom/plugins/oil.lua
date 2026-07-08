@@ -52,6 +52,6 @@ return {
         },
       },
     }
-    vim.keymap.set('n', '<Leader>o', '<CMD>lua require("oil").open_float(".")<CR>')
+    vim.keymap.set('n', '<Leader>O', '<CMD>lua require("oil").open_float(".")<CR>')
   end,
 }

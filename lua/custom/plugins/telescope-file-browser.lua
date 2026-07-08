@@ -7,7 +7,7 @@ return {
     require('telescope').setup {
       extensions = {
         file_browser = {
-          theme = 'ivy',
+          theme = 'dropdown',
           -- disables netrw and use telescope-file-browser in its place
           hijack_netrw = false,
           hidden = true,
@@ -19,7 +19,7 @@ return {
         },
       },
     }
-    vim.api.nvim_set_keymap('n', '<Leader>O', ':Telescope file_browser<CR>', { noremap = true })
+    vim.api.nvim_set_keymap('n', '<Leader>o', ':Telescope file_browser<CR>', { noremap = true })
     require('telescope').load_extension 'file_browser'
   end,
 }
