@@ -1,6 +1,10 @@
 local vim = vim
 local h = require 'helper'
 
+-- disable backup ---
+vim.opt.backup = false
+vim.opt.writebackup = false
+
 -- clip ---------------------------------------------------------------------------------------------
 if vim.fn.has 'linux' == 1 and vim.env.SSH_CLIENT then
   vim.opt.clipboard = 'unnamedplus'
