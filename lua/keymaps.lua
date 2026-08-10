@@ -23,6 +23,24 @@ h.vmap('x', '"_x')
 h.vmap('s', '"_s')
 h.vmap('c', '"_c')
 
+-- tmux と同様に、実行ホストに対応するクリップボードへ Visual 選択を送る
+vim.keymap.set('x', 'y', function()
+  local register = vim.v.register
+  vim.cmd.normal { args = { '"' .. register .. 'y' }, bang = true }
+
+  local command
+  if vim.fn.hostname() == 'm4mini-prv' and vim.env.SSH_CONNECTION then
+    command = { 'nc', '-U', vim.fn.expand '~/.clipper.sock' }
+  else
+    command = { 'pbcopy' }
+  end
+
+  vim.fn.system(command, vim.fn.getreg(register))
+  if vim.v.shell_error ~= 0 then
+    vim.notify('クリップボードへのコピーに失敗しました', vim.log.levels.ERROR)
+  end
+end, { desc = 'Yank to host clipboard' })
+
 h.nmap('<Leader>z', ':res <CR>:vertical res<CR>')
 h.nmap('<Leader>x', '<C-w>=')
 
