@@ -11,12 +11,12 @@ if vim.fn.has 'linux' == 1 and vim.env.SSH_CLIENT then
   vim.g.clipboard = {
     name = 'ssh-pbpaste',
     copy = {
-      ['+'] = '/usr/local/bin/pbcopy',
-      ['*'] = '/usr/local/bin/pbcopy',
+      ['+'] = 'pbcopy',
+      ['*'] = 'pbcopy',
     },
     paste = {
-      ['+'] = '/usr/local/bin/pbpaste',
-      ['*'] = '/usr/local/bin/pbpaste',
+      ['+'] = 'pbpaste',
+      ['*'] = 'pbpaste',
     },
     cache_enabled = 1,
   }
