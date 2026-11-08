@@ -28,6 +28,13 @@ vim.keymap.set('x', 'y', function()
   local register = vim.v.register
   vim.cmd.normal { args = { '"' .. register .. 'y' }, bang = true }
 
+  if vim.fn.has 'win32' == 1 then
+    if vim.fn.setreg('+', vim.fn.getreg(register), vim.fn.getregtype(register)) ~= 0 then
+      vim.notify('クリップボードへのコピーに失敗しました', vim.log.levels.ERROR)
+    end
+    return
+  end
+
   vim.fn.system({ 'pbcopy' }, vim.fn.getreg(register))
   if vim.v.shell_error ~= 0 then
     vim.notify('クリップボードへのコピーに失敗しました', vim.log.levels.ERROR)
