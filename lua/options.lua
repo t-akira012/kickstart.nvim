@@ -19,6 +19,10 @@ opt.shortmess:remove { S = true }
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
+-- tmux forwards its clipboard to the SSH client's terminal via OSC 52.
+if vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT) then
+  vim.g.clipboard = 'tmux'
+end
 opt.clipboard:append { 'unnamedplus' }
 
 -- nobell

@@ -35,7 +35,8 @@ vim.keymap.set('x', 'y', function()
     return
   end
 
-  vim.fn.system({ 'pbcopy' }, vim.fn.getreg(register))
+  local copy_command = vim.g.clipboard == 'tmux' and { 'tmux', 'load-buffer', '-w', '-' } or { 'pbcopy' }
+  vim.fn.system(copy_command, vim.fn.getreg(register))
   if vim.v.shell_error ~= 0 then
     vim.notify('クリップボードへのコピーに失敗しました', vim.log.levels.ERROR)
   end
