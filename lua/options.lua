@@ -19,9 +19,20 @@ opt.shortmess:remove { S = true }
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
--- tmux forwards its clipboard to the SSH client's terminal via OSC 52.
-if vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT) then
-  vim.g.clipboard = 'tmux'
+-- Copy through tmux/OSC 52 while reading pasted text from the Mac clipboard.
+if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT) then
+  vim.g.clipboard = {
+    name = 'ssh-tmux-copy-mac-paste',
+    copy = {
+      ['+'] = { 'tmux', 'load-buffer', '-w', '-' },
+      ['*'] = { 'tmux', 'load-buffer', '-w', '-' },
+    },
+    paste = {
+      ['+'] = { '/usr/bin/pbpaste' },
+      ['*'] = { '/usr/bin/pbpaste' },
+    },
+    cache_enabled = 0,
+  }
 end
 opt.clipboard:append { 'unnamedplus' }
 
