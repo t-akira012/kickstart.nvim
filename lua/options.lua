@@ -19,20 +19,48 @@ opt.shortmess:remove { S = true }
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
--- Copy through tmux/OSC 52 while reading pasted text from the Mac clipboard.
+-- Copy through tmux/OSC 52 and read pasted text from the SSH client.
 if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT) then
+  local paste_source = 'mac'
+  local paste_script = vim.fn.stdpath 'config' .. '/sh/host_clipboard_paste.sh'
+  local function host_paste()
+    local source = paste_source
+    paste_source = 'mac'
+    local output = vim.fn.system({ paste_script, source })
+    if vim.v.shell_error ~= 0 then
+      vim.notify('接続元クリップボードの読み取りに失敗しました: ' .. output, vim.log.levels.ERROR)
+      return { {}, 'v' }
+    end
+    return { vim.split(output, '\n', { plain = true }), 'v' }
+  end
+
   vim.g.clipboard = {
-    name = 'ssh-tmux-copy-mac-paste',
+    name = 'ssh-tmux-copy-host-paste',
     copy = {
       ['+'] = { 'tmux', 'load-buffer', '-w', '-' },
       ['*'] = { 'tmux', 'load-buffer', '-w', '-' },
     },
     paste = {
-      ['+'] = { '/usr/bin/pbpaste' },
-      ['*'] = { '/usr/bin/pbpaste' },
+      ['+'] = host_paste,
+      ['*'] = host_paste,
     },
     cache_enabled = 0,
   }
+
+  -- tmux sends the source-specific key for the client that pressed p.
+  vim.keymap.set({ 'n', 'x' }, '<M-p>', function()
+    paste_source = 'mac'
+    return 'p'
+  end, { expr = true, remap = true, desc = 'Paste from Mac SSH client' })
+  vim.keymap.set({ 'n', 'x' }, '<M-P>', function()
+    paste_source = 'windows'
+    return 'p'
+  end, { expr = true, remap = true, desc = 'Paste from Windows SSH client' })
+  -- tmux also translates the literal p key while Neovim is in other modes.
+  for _, mode in ipairs { 'i', 'c', 's', 't' } do
+    vim.keymap.set(mode, '<M-p>', 'p')
+    vim.keymap.set(mode, '<M-P>', 'p')
+  end
 end
 opt.clipboard:append { 'unnamedplus' }
 
