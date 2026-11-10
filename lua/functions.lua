@@ -84,15 +84,39 @@ h.usercmd('DocOpenDailyMemo', open_dialy_memo)
 
 ----------------------------------------------------------------------------------------------------------
 -- Paste Image on Markdown
-local paste_image = function()
-  -- シェルスクリプトの出力を現在のバッファに挿入
+local paste_image = function(opts)
   local basename = vim.fn.expand '%:r'
-  local dirname = "'" .. vim.fn.getcwd() .. "'"
-  vim.cmd('r! ~/.config/nvim/sh/paste_image.sh ' .. basename .. ' ' .. dirname)
+  local dirname = vim.fn.getcwd()
+  local source = opts.args ~= '' and opts.args or 'local'
+  local script = vim.fn.stdpath 'config' .. '/sh/paste_image.sh'
+  local output = vim.fn.system({ script, basename, dirname, source })
+  if vim.v.shell_error ~= 0 then
+    vim.notify('画像の貼り付けに失敗しました: ' .. output, vim.log.levels.ERROR)
+    return
+  end
+  local markdown
+  for line in output:gmatch '[^\r\n]+' do
+    if line:match '^!%[%]%(' then
+      markdown = line
+    end
+  end
+  if not markdown then
+    vim.notify('画像の保存先が返されませんでした', vim.log.levels.ERROR)
+    return
+  end
+  vim.api.nvim_put({ markdown }, 'l', true, true)
 end
-h.usercmd('PasteImage', paste_image)
+vim.api.nvim_create_user_command('PasteImage', paste_image, { nargs = '?' })
 h.nmap('<Leader>S', '<CMD>PasteImage<CR>')
 h.imap('<C-v>', '<ESC><CMD>PasteImage<CR>')
+if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT) then
+  h.imap('<M-j>', '<ESC><CMD>PasteImage mac<CR>')
+  h.imap('<M-J>', '<ESC><CMD>PasteImage windows<CR>')
+  for _, mode in ipairs { 'n', 'x', 'c', 's', 't' } do
+    vim.keymap.set(mode, '<M-j>', '<C-v>')
+    vim.keymap.set(mode, '<M-J>', '<C-v>')
+  end
+end
 
 ----------------------------------------------------------------------------------------------------------
 -- Toogle Term on TMUX

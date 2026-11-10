@@ -27,10 +27,11 @@ fi
 
 # デフォルト値の設定
 MD_FILENAME=$1
+IMAGE_SOURCE=${2:-local}
 OPERATING_SYSTEM=$(uname)
 RESULT=1
 
-if [ "${OPERATING_SYSTEM}" = "Darwin" ]; then
+if [ "$IMAGE_SOURCE" = local ] && [ "${OPERATING_SYSTEM}" = "Darwin" ]; then
   if ! type pngpaste > /dev/null 2>&1; then
     echo pngpaste: command not found >&2
     exit 1
@@ -40,7 +41,7 @@ if [ "${OPERATING_SYSTEM}" = "Darwin" ]; then
     exit 1
   fi
 fi
-if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
+if [ "$IMAGE_SOURCE" = local ] && [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
   if ! type wl-paste > /dev/null 2>&1; then
     echo wl-paste: command not found >&2
     exit 1
@@ -89,7 +90,10 @@ check_exists_minio() {
 
 check_exists_minio
 
-if [ "${OPERATING_SYSTEM}" = "Darwin" ]; then
+if [ "$IMAGE_SOURCE" != local ]; then
+  "$SCRIPT_DIR/capture_host_image.sh" "$IMAGE_SOURCE" "$LOCAL_PATH"
+  RESULT=$?
+elif [ "${OPERATING_SYSTEM}" = "Darwin" ]; then
   # tifで出力後に、png変換
   pngpaste "${LOCAL_PATH}.tif"
   RESULT=$?
@@ -99,7 +103,7 @@ if [ "${OPERATING_SYSTEM}" = "Darwin" ]; then
   fi
 fi
  
-if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
+if [ "$IMAGE_SOURCE" = local ] && [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
   wl-paste --type image/png > "${LOCAL_PATH}"
   RESULT=$?
 fi
@@ -117,4 +121,6 @@ if [ "${RESULT}" -eq 0 ]; then
     echo "Failed to upload to MinIO" >&2
     exit 1
   fi
+else
+  exit "${RESULT}"
 fi

@@ -5,6 +5,7 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 MD_NAME=$1
 DIR_NAME=$2
+IMAGE_SOURCE=${3:-local}
 
 # 今のカレントディレクトリをチェックして、minioフラグを立てる
 GIT_ROOT=$(git -C "$DIR_NAME" rev-parse --show-toplevel 2>/dev/null)
@@ -17,8 +18,8 @@ fi
 # FOR_S3_UPLOADの値に応じて適切なスクリプトを呼び出す
 if [ "$FOR_MINIO_UPLOAD" == 1 ]; then
   # S3アップロード用スクリプトを実行
-  exec "$SCRIPT_DIR/paste_image_for_minio.sh" "$MD_NAME"
+  exec "$SCRIPT_DIR/paste_image_for_minio.sh" "$MD_NAME" "$IMAGE_SOURCE"
 else
   # ローカル保存用スクリプトを実行
-  exec "$SCRIPT_DIR/paste_image_for_local.sh" "$MD_NAME"
+  exec "$SCRIPT_DIR/paste_image_for_local.sh" "$MD_NAME" "$IMAGE_SOURCE"
 fi
