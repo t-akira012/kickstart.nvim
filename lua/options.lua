@@ -24,9 +24,7 @@ if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env
   local paste_source = 'mac'
   local paste_script = vim.fn.stdpath 'config' .. '/sh/host_clipboard_paste.sh'
   local function host_paste()
-    local source = paste_source
-    paste_source = 'mac'
-    local output = vim.fn.system({ paste_script, source })
+    local output = vim.fn.system({ paste_script, paste_source })
     if vim.v.shell_error ~= 0 then
       vim.notify('接続元クリップボードの読み取りに失敗しました: ' .. output, vim.log.levels.ERROR)
       return { {}, 'v' }
@@ -56,10 +54,20 @@ if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env
     paste_source = 'windows'
     return 'p'
   end, { expr = true, remap = true, desc = 'Paste from Windows SSH client' })
-  -- tmux also translates the literal p key while Neovim is in other modes.
+  vim.keymap.set({ 'n', 'x' }, '<M-k>', function()
+    paste_source = 'mac'
+    return 'P'
+  end, { expr = true, remap = true, desc = 'Put before from Mac SSH client' })
+  vim.keymap.set({ 'n', 'x' }, '<M-K>', function()
+    paste_source = 'windows'
+    return 'P'
+  end, { expr = true, remap = true, desc = 'Put before from Windows SSH client' })
+  -- tmux also translates literal p and P while Neovim is in other modes.
   for _, mode in ipairs { 'i', 'c', 's', 't' } do
     vim.keymap.set(mode, '<M-p>', 'p')
     vim.keymap.set(mode, '<M-P>', 'p')
+    vim.keymap.set(mode, '<M-k>', 'P')
+    vim.keymap.set(mode, '<M-K>', 'P')
   end
 end
 opt.clipboard:append { 'unnamedplus' }
