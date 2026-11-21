@@ -47,10 +47,10 @@ if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env
 
   -- tmux sends distinct function keys so Insert-mode p cannot be read as Esc then put.
   for _, binding in ipairs {
-    { key = '<F13>', source = 'mac', put = 'p' },
-    { key = '<F14>', source = 'windows', put = 'p' },
-    { key = '<F15>', source = 'mac', put = 'P' },
-    { key = '<F16>', source = 'windows', put = 'P' },
+    { key = '<F9>', source = 'mac', put = 'p' },
+    { key = '<F10>', source = 'windows', put = 'p' },
+    { key = '<F11>', source = 'mac', put = 'P' },
+    { key = '<F12>', source = 'windows', put = 'P' },
   } do
     local source, put = binding.source, binding.put
     vim.keymap.set({ 'n', 'x' }, binding.key, function()
