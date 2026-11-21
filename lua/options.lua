@@ -62,8 +62,15 @@ if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env
     paste_source = 'windows'
     return 'P'
   end, { expr = true, remap = true, desc = 'Put before from Windows SSH client' })
+  -- Insert the literal character directly; tmux sends these keys for p in Insert mode.
+  local function insert_p()
+    vim.api.nvim_put({ 'p' }, 'c', true, true)
+  end
+  vim.keymap.set('i', '<M-p>', insert_p)
+  vim.keymap.set('i', '<M-P>', insert_p)
+
   -- tmux also translates literal p and P while Neovim is in other modes.
-  for _, mode in ipairs { 'i', 'c', 's', 't' } do
+  for _, mode in ipairs { 'c', 's', 't' } do
     vim.keymap.set(mode, '<M-p>', 'p')
     vim.keymap.set(mode, '<M-P>', 'p')
     vim.keymap.set(mode, '<M-k>', 'P')
