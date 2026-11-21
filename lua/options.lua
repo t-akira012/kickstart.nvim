@@ -20,6 +20,23 @@ opt.shortmess:remove { S = true }
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 -- Copy through tmux/OSC 52 and read pasted text from the SSH client.
+local tmux_put_keys = {
+  { key = '<F9>', source = 'mac', put = 'p' },
+  { key = '<F10>', source = 'windows', put = 'p' },
+  { key = '<F11>', source = 'mac', put = 'P' },
+  { key = '<F12>', source = 'windows', put = 'P' },
+}
+
+-- tmux may send these keys even when the pane has no SSH environment variables.
+if vim.env.TMUX then
+  for _, binding in ipairs(tmux_put_keys) do
+    vim.keymap.set({ 'n', 'x' }, binding.key, binding.put, { remap = true })
+    for _, mode in ipairs { 'i', 'c', 's', 't' } do
+      vim.keymap.set(mode, binding.key, binding.put)
+    end
+  end
+end
+
 if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT) then
   local paste_source = 'mac'
   local paste_script = vim.fn.stdpath 'config' .. '/sh/host_clipboard_paste.sh'
@@ -45,21 +62,13 @@ if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env
     cache_enabled = 0,
   }
 
-  -- tmux sends distinct function keys so Insert-mode p cannot be read as Esc then put.
-  for _, binding in ipairs {
-    { key = '<F9>', source = 'mac', put = 'p' },
-    { key = '<F10>', source = 'windows', put = 'p' },
-    { key = '<F11>', source = 'mac', put = 'P' },
-    { key = '<F12>', source = 'windows', put = 'P' },
-  } do
+  -- In Normal and Visual mode, choose the clipboard of the client that pressed p/P.
+  for _, binding in ipairs(tmux_put_keys) do
     local source, put = binding.source, binding.put
     vim.keymap.set({ 'n', 'x' }, binding.key, function()
       paste_source = source
       return put
     end, { expr = true, remap = true, desc = 'Put from ' .. source .. ' SSH client' })
-    for _, mode in ipairs { 'i', 'c', 's', 't' } do
-      vim.keymap.set(mode, binding.key, put)
-    end
   end
 end
 opt.clipboard:append { 'unnamedplus' }

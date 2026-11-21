@@ -20,6 +20,8 @@ Host host-clipboard
 
 tmux で接続元ごとの `p` / `P` を Neovim に渡す設定では、Mac 側の `p` / `P` に `F9` / `F11`、Windows 側に `F10` / `F12` を送る。`TERM=screen-256color` で定義されたキーを使う。Neovim は通常・Visual モードでは接続元のクリップボードから貼り付け、挿入モードでは文字 `p` / `P` を入力する。`Alt-p` は端末で `Esc` と `p` に分かれ、挿入モードを抜けて貼り付けが起きるため使わない。
 
+このキーの文字入力マッピングは SSH 環境変数の有無に関係なく tmux 内で設定する。SSH 接続元の hostmachine 上でも `p` / `P` を文字として入力できる。接続先クリップボードを読む設定だけを mini 上の SSH セッションに限定する。
+
 ## 備考
 
 - `./paste_image_for_s3.sh` は未完成
