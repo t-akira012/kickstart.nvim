@@ -45,36 +45,21 @@ if vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env
     cache_enabled = 0,
   }
 
-  -- tmux sends the source-specific key for the client that pressed p.
-  vim.keymap.set({ 'n', 'x' }, '<M-p>', function()
-    paste_source = 'mac'
-    return 'p'
-  end, { expr = true, remap = true, desc = 'Paste from Mac SSH client' })
-  vim.keymap.set({ 'n', 'x' }, '<M-P>', function()
-    paste_source = 'windows'
-    return 'p'
-  end, { expr = true, remap = true, desc = 'Paste from Windows SSH client' })
-  vim.keymap.set({ 'n', 'x' }, '<M-k>', function()
-    paste_source = 'mac'
-    return 'P'
-  end, { expr = true, remap = true, desc = 'Put before from Mac SSH client' })
-  vim.keymap.set({ 'n', 'x' }, '<M-K>', function()
-    paste_source = 'windows'
-    return 'P'
-  end, { expr = true, remap = true, desc = 'Put before from Windows SSH client' })
-  -- Insert the literal character directly; tmux sends these keys for p in Insert mode.
-  local function insert_p()
-    vim.api.nvim_put({ 'p' }, 'c', true, true)
-  end
-  vim.keymap.set('i', '<M-p>', insert_p)
-  vim.keymap.set('i', '<M-P>', insert_p)
-
-  -- tmux also translates literal p and P while Neovim is in other modes.
-  for _, mode in ipairs { 'c', 's', 't' } do
-    vim.keymap.set(mode, '<M-p>', 'p')
-    vim.keymap.set(mode, '<M-P>', 'p')
-    vim.keymap.set(mode, '<M-k>', 'P')
-    vim.keymap.set(mode, '<M-K>', 'P')
+  -- tmux sends distinct function keys so Insert-mode p cannot be read as Esc then put.
+  for _, binding in ipairs {
+    { key = '<F13>', source = 'mac', put = 'p' },
+    { key = '<F14>', source = 'windows', put = 'p' },
+    { key = '<F15>', source = 'mac', put = 'P' },
+    { key = '<F16>', source = 'windows', put = 'P' },
+  } do
+    local source, put = binding.source, binding.put
+    vim.keymap.set({ 'n', 'x' }, binding.key, function()
+      paste_source = source
+      return put
+    end, { expr = true, remap = true, desc = 'Put from ' .. source .. ' SSH client' })
+    for _, mode in ipairs { 'i', 'c', 's', 't' } do
+      vim.keymap.set(mode, binding.key, put)
+    end
   end
 end
 opt.clipboard:append { 'unnamedplus' }
