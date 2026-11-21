@@ -18,7 +18,7 @@ case "$source" in
       echo 'Mac image SSH forward is not active' >&2
       exit 1
     fi
-    ssh -T -o BatchMode=yes -o ConnectTimeout=2 -p 2222 127.0.0.1 \
+    ssh -T -o BatchMode=yes -o ConnectTimeout=2 host-clipboard \
       'tmp=$(mktemp /tmp/ssh-clipboard.XXXXXX.png) || exit; trap "rm -f $tmp" EXIT; if [ -x /opt/homebrew/bin/pngpaste ]; then tool=/opt/homebrew/bin/pngpaste; elif [ -x /usr/local/bin/pngpaste ]; then tool=/usr/local/bin/pngpaste; else tool=pngpaste; fi; "$tool" "$tmp" && cat "$tmp"' > "$temporary"
     ;;
   windows)
