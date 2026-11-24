@@ -26,10 +26,26 @@ h.vmap('c', '"_c')
 -- tmux と同様に、実行ホストに対応するクリップボードへ Visual 選択を送る
 vim.keymap.set('x', 'y', function()
   local register = vim.v.register
-  vim.cmd.normal { args = { '"' .. register .. 'y' }, bang = true }
+  local contents, regtype
+  local capture = vim.api.nvim_create_autocmd('TextYankPost', {
+    once = true,
+    callback = function()
+      contents = vim.deepcopy(vim.v.event.regcontents)
+      regtype = vim.v.event.regtype
+    end,
+  })
+  local ok, err = pcall(vim.cmd.normal, { args = { '"' .. register .. 'y' }, bang = true })
+  -- Remove the capture even if yank failed or did not emit TextYankPost.
+  pcall(vim.api.nvim_del_autocmd, capture)
+  if not ok then
+    error(err)
+  end
+  if not contents then
+    return
+  end
 
   if vim.fn.has 'win32' == 1 then
-    if vim.fn.setreg('+', vim.fn.getreg(register), vim.fn.getregtype(register)) ~= 0 then
+    if vim.fn.setreg('+', contents, regtype) ~= 0 then
       vim.notify('クリップボードへのコピーに失敗しました', vim.log.levels.ERROR)
     end
     return
@@ -37,7 +53,8 @@ vim.keymap.set('x', 'y', function()
 
   local copy_command = vim.fn.has 'mac' == 1 and vim.env.TMUX and (vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT)
       and { 'tmux', 'load-buffer', '-w', '-' } or { 'pbcopy' }
-  vim.fn.system(copy_command, vim.fn.getreg(register))
+  local text = table.concat(contents, '\n') .. (regtype == 'V' and '\n' or '')
+  vim.fn.system(copy_command, text)
   if vim.v.shell_error ~= 0 then
     vim.notify('クリップボードへのコピーに失敗しました', vim.log.levels.ERROR)
   end
