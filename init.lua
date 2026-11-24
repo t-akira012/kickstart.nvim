@@ -3,6 +3,36 @@ vim.deprecate = function() end
 -- OS判定
 local is_windows = vim.fn.has 'win32' == 1
 local is_macos = vim.fn.has 'mac' == 1
+
+-- cmdrun.bat と共通の一覧から、プラグイン初期化前に Windows の PATH を設定する。
+if is_windows then
+  local home = vim.env.USERPROFILE
+  local path_file = home and (home .. '/bin/paths.txt')
+  if path_file and vim.fn.filereadable(path_file) == 1 then
+    local function path_key(path)
+      return path:gsub('/', '\\'):gsub('\\+$', ''):lower()
+    end
+    local path = vim.env.PATH or ''
+    local seen = {}
+    for entry in path:gmatch '[^;]+' do
+      seen[path_key(entry)] = true
+    end
+    for _, relative in ipairs(vim.fn.readfile(path_file)) do
+      if relative ~= '' then
+        local entry = home .. '\\' .. relative
+        local key = path_key(entry)
+        if not seen[key] then
+          path = path == '' and entry or (path .. ';' .. entry)
+          seen[key] = true
+        end
+      end
+    end
+    vim.env.PATH = path
+  else
+    vim.notify('Windows PATH list missing: ' .. (path_file or 'USERPROFILE is unset') .. '. Run dotfiles dl.bat again.', vim.log.levels.WARN)
+  end
+end
+
 -- lazy.nvimをインストール
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
